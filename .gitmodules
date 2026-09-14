@@ -1,0 +1,6 @@
+[submodule "third_party/AutoDiffusion"]
+	path = third_party/AutoDiffusion
+	url = https://github.com/lilijiangg/AutoDiffusion.git
+[submodule "third_party/DeepCache"]
+	path = third_party/DeepCache
+	url = https://github.com/horseee/DeepCache.git
