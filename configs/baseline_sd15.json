@@ -1,0 +1,24 @@
+{
+  "method": "baseline",
+  "model": {
+    "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "height": 512,
+    "width": 512
+  },
+  "prompts": ["a photo of an astronaut riding a horse on the moon"],
+  "seeds": [42],
+  "inference": {
+    "scheduler": "ddim",
+    "num_inference_steps": 20,
+    "guidance_scale": 7.5
+  },
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "warmup_runs": 1,
+    "repetitions": 3
+  },
+  "save_images": true,
+  "output_root": "artifacts/runs"
+}
+

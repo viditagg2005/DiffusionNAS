@@ -1,0 +1,9 @@
+# Install a CUDA-compatible PyTorch build separately for the target machine.
+# NumPy is capped because older PyTorch wheels fail against NumPy 2.x.
+numpy>=1.24,<2
+diffusers>=0.32,<0.33
+transformers>=4.45,<5
+accelerate>=0.34,<2
+safetensors>=0.4,<1
+Pillow>=10,<12
+

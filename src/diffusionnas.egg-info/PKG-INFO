@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: diffusionnas
+Version: 0.1.0
+Summary: Standardized training-free SD1.5 acceleration benchmark harness
+Requires-Python: >=3.10
