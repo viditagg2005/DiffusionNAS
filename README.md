@@ -38,11 +38,44 @@ All runs create an immutable directory under `artifacts/runs/` containing resolv
 
 The harness currently establishes execution and systems metrics. CLIP/KID/FID scoring should consume the saved images in a separate stage so metric computation is not included in inference latency.
 
+## Calibration, Pareto front, and hold-out validation
+
+Score every successful calibration run with one frozen CLIP model loaded once:
+
+```bash
+diffusionnas score --runs-root artifacts/calibration/runs \
+  --clip-model openai/clip-vit-large-patch14 --device cuda --batch-size 8
+```
+
+Construct the calibration front. The default objectives are mean CLIP score (maximize), median end-to-end latency (minimize), and peak allocated GPU memory (minimize):
+
+```bash
+diffusionnas pareto --runs-root artifacts/calibration/runs \
+  --output artifacts/calibration/pareto_front.json
+```
+
+Use `--include-energy` only when every candidate has a physical energy measurement. Missing quality/system metrics make a run ineligible and are reported in the front's `skipped` list.
+
+Materialize and inspect a hold-out run plan without GPU work:
+
+```bash
+diffusionnas holdout \
+  --front artifacts/calibration/pareto_front.json \
+  --prompts data/prompts/holdout.json --seeds 101,202 \
+  --output artifacts/holdout --dry-run
+```
+
+Remove `--dry-run` to rerun every calibration-front policy on untouched prompts, score the images, reconstruct the hold-out front, and report the retained policies plus Spearman rank correlation between calibration and hold-out CLIP scores.
+
 ## Commands
 
 ```bash
 diffusionnas validate CONFIG.json
 diffusionnas run CONFIG.json [--dry-run]
+diffusionnas score RUN_DIR [RUN_DIR ...]
+diffusionnas score --runs-root RUNS_ROOT
+diffusionnas pareto --runs-root RUNS_ROOT --output FRONT.json
+diffusionnas holdout --front FRONT.json --prompts PROMPTS.json --seeds 101,202 --output OUTPUT_DIR
 diffusionnas preflight
 python3 -m unittest discover -s tests -v
 ```
