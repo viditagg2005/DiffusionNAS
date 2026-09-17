@@ -1,0 +1,37 @@
+{
+  "search_method": "ecad",
+  "method": "deepcache",
+  "model": {
+    "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "height": 512,
+    "width": 512
+  },
+  "budget": 100,
+  "seed": 42,
+  "population_size": 20,
+  "crossover_rate": 0.9,
+  "mutation_rate": 0.05,
+  "prompts": [
+    "a photo of an astronaut riding a horse on the moon"
+  ],
+  "seeds": [
+    42
+  ],
+  "inference": {
+    "scheduler": "ddim",
+    "num_inference_steps": 20,
+    "guidance_scale": 7.5
+  },
+  "deepcache": {
+    "interval": 3,
+    "branch_id": 0,
+    "skip_mode": "uniform"
+  },
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "warmup_runs": 1,
+    "repetitions": 3
+  },
+  "output_root": "artifacts/search/ecad"
+}
