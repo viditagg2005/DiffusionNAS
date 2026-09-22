@@ -11,3 +11,6 @@ data/prompts/*
 !data/prompts/README.md
 !data/prompts/example_holdout.json
 .env
+.cache/
+configs/generated/
+slurm-*.out
