@@ -8,7 +8,8 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
+REPO_ROOT="${DIFFUSIONNAS_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
+DIFFUSIONNAS_REQUIRE_GPU=0
 source "${REPO_ROOT}/scripts/slurm/job_env.sh"
 
 diffusionnas pareto \

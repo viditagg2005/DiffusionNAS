@@ -14,5 +14,11 @@ These scripts assume one NVIDIA A6000-class GPU, Stable Diffusion 1.5 at 512×51
 
 The SLURM files request `--gres=gpu:1`. Select the A6000 partition/GRES in the `sbatch` command because cluster resource names are site-specific. The benchmark array is throttled with `%1`, avoiding simultaneous model downloads and reducing timing interference.
 
+Submit jobs from the repository root. SLURM copies batch scripts into a spool directory, so the jobs resolve the checkout using `SLURM_SUBMIT_DIR`, not the batch file's runtime path. When submitting from another directory, pass the checkout explicitly:
+
+```bash
+sbatch --export=ALL,DIFFUSIONNAS_ROOT=/absolute/path/to/DiffusionNAS scripts/slurm/benchmark_array.sbatch
+```
+
 `prepare_experiment.py` deliberately sets calibration benchmark repetitions to one. With 48 prompts and two seeds, each policy already has 96 timed samples; repetitions apply to every prompt/seed pair.
 
