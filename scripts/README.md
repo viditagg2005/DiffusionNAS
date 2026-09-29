@@ -5,6 +5,7 @@ These scripts assume one NVIDIA A6000-class GPU, Stable Diffusion 1.5 at 512×51
 ## Files
 
 - `setup_cluster.sh`: initialize submodules, create the environment, install CUDA PyTorch and project dependencies, then run CPU tests/preflight.
+- `build_coco_prompt_splits.py`: select deterministic, image-disjoint COCO calibration and hold-out captions.
 - `prepare_experiment.py`: inject versioned prompt splits and seeds into matched benchmark and search configs.
 - `slurm/benchmark_array.sbatch`: sequential baseline, AutoDiffusion-adaptation, and DeepCache runs.
 - `slurm/score_calibration.sbatch`: frozen CLIP-L/14 quality scoring.

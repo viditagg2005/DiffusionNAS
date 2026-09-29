@@ -9,6 +9,7 @@ data/*
 data/prompts/*
 !data/prompts/README.md
 !data/prompts/example_holdout.json
+!data/prompts/calibration.json
+!data/prompts/holdout.json
 .env
 .cache/
-configs/generated/
