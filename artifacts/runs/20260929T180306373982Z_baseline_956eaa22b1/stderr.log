@@ -1,0 +1,17 @@
+
+Fetching 15 files:   0%|          | 0/15 [00:00<?, ?it/s]
+Fetching 15 files:  53%|█████▎    | 8/15 [00:00<00:00, 11.93it/s]
+Fetching 15 files:  73%|███████▎  | 11/15 [00:19<00:07,  1.80s/it]
+Fetching 15 files:  80%|████████  | 12/15 [00:38<00:09,  3.20s/it]
+Fetching 15 files:  87%|████████▋ | 13/15 [00:51<00:07,  3.98s/it]
+Fetching 15 files:  93%|█████████▎| 14/15 [00:56<00:04,  4.03s/it]
+Fetching 15 files: 100%|██████████| 15/15 [01:24<00:00,  5.61s/it]
+Fetching 15 files: 100%|██████████| 15/15 [01:24<00:00,  5.61s/it]
+
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
+Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:05,  1.10it/s]
+Loading pipeline components...:  43%|████▎     | 3/7 [00:01<00:01,  2.39it/s]`torch_dtype` is deprecated! Use `dtype` instead!
+
+Loading pipeline components...:  57%|█████▋    | 4/7 [00:01<00:01,  2.49it/s]
+Loading pipeline components...:  71%|███████▏  | 5/7 [00:02<00:00,  2.62it/s]
+Loading pipeline components...: 100%|██████████| 7/7 [00:02<00:00,  3.22it/s]
