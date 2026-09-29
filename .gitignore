@@ -13,4 +13,3 @@ data/prompts/*
 .env
 .cache/
 configs/generated/
-slurm-*.out
