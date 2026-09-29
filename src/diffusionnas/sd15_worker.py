@@ -62,7 +62,7 @@ def run(config: dict[str, Any], output_dir: Path) -> None:
     warmup_prompt = config["prompts"][0]
     for warmup_index in range(runtime["warmup_runs"]):
         generator = torch.Generator(device=runtime["device"]).manual_seed(config["seeds"][0] + warmup_index)
-        pipe(warmup_prompt, generator=generator, output_type="latent", **call_args)
+        pipe(warmup_prompt, generator=generator, output_type="pil", **call_args)
     torch.cuda.synchronize()
 
     image_dir = output_dir / "images"

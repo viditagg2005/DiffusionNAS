@@ -23,10 +23,31 @@ def package_version(name: str) -> str | None:
         return None
 
 
+def cuda_device() -> dict[str, Any] | None:
+    """Describe the GPU visible to this process, if one is allocated."""
+    try:
+        import torch
+
+        if not torch.cuda.is_available():
+            return None
+        index = torch.cuda.current_device()
+        device = torch.cuda.get_device_properties(index)
+        return {
+            "index": index,
+            "name": device.name,
+            "total_memory_bytes": device.total_memory,
+            "compute_capability": f"{device.major}.{device.minor}",
+            "cuda_runtime": torch.version.cuda,
+        }
+    except (ImportError, OSError, RuntimeError):
+        return None
+
+
 def collect(project_root: Path) -> dict[str, Any]:
     return {
         "python": platform.python_version(),
         "platform": platform.platform(),
+        "gpu": cuda_device(),
         "project_commit": _git_output(project_root, "rev-parse", "HEAD"),
         "project_dirty": bool(_git_output(project_root, "status", "--porcelain")),
         "upstream": {
