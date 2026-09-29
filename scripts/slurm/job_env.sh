@@ -23,6 +23,9 @@ fi
 cd "${REPO_ROOT}"
 source .venv/bin/activate
 
+echo "DiffusionNAS checkout: ${REPO_ROOT}"
+echo "Slurm job: ${SLURM_JOB_ID:-not submitted via Slurm}; node: ${SLURMD_NODENAME:-$(hostname)}"
+
 export PYTHONUNBUFFERED=1
 export HF_HOME="${HF_HOME:-${SCRATCH:-${REPO_ROOT}/.cache}/huggingface}"
 export HF_HUB_DISABLE_TELEMETRY=1

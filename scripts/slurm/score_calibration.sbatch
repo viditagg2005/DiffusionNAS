@@ -6,6 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=48G
 #SBATCH --time=04:00:00
+#SBATCH --output=slurm-%j.out
 
 set -euo pipefail
 
@@ -16,5 +17,5 @@ diffusionnas score \
   --runs-root "${REPO_ROOT}/artifacts/calibration/runs" \
   --clip-model openai/clip-vit-large-patch14 \
   --device cuda \
-  --batch-size "${CLIP_BATCH_SIZE:-32}"
+  --batch-size "${CLIP_BATCH_SIZE:-8}"
 

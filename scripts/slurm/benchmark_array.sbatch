@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=48G
 #SBATCH --time=12:00:00
-#SBATCH --array=0-2%1
+#SBATCH --output=slurm-%j.out
 
 set -euo pipefail
 
@@ -20,5 +20,15 @@ CONFIGS=(
 )
 
 nvidia-smi
-diffusionnas run "${CONFIGS[${SLURM_ARRAY_TASK_ID}]}"
+for config in "${CONFIGS[@]}"; do
+  [[ -f "${config}" ]] || { echo "Missing calibration config: ${config}" >&2; exit 2; }
+  diffusionnas validate "${config}"
+done
+
+# Keep all three timings on one allocated GPU; array tasks may land on different models.
+for config in "${CONFIGS[@]}"; do
+  echo "Starting calibration benchmark: ${config}"
+  diffusionnas run "${config}"
+done
+echo "All three calibration benchmarks completed."
 
