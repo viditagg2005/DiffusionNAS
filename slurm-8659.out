@@ -1,0 +1,33 @@
+DiffusionNAS checkout: /home2/home/dhish_saxena/DiffusionNAS
+Slurm job: 8659; node: ub
+NVIDIA RTX 6000 Ada Generation
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+{
+  "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192729671988Z_baseline_1abddf7f4f": {
+    "count": 96,
+    "definition": "100 * max(cosine_similarity(CLIP_image, CLIP_text), 0)",
+    "mean": 26.21483087539673,
+    "median": 25.87904644012451,
+    "model_id": "openai/clip-vit-large-patch14",
+    "p10": 22.131763458251953,
+    "population_std": 3.5138403266546923
+  },
+  "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192938924723Z_autodiffusion_58af617a7f": {
+    "count": 96,
+    "definition": "100 * max(cosine_similarity(CLIP_image, CLIP_text), 0)",
+    "mean": 25.26432791352272,
+    "median": 25.51478385925293,
+    "model_id": "openai/clip-vit-large-patch14",
+    "p10": 21.429866790771484,
+    "population_std": 3.630935919024818
+  },
+  "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T193009025063Z_deepcache_c205271943": {
+    "count": 96,
+    "definition": "100 * max(cosine_similarity(CLIP_image, CLIP_text), 0)",
+    "mean": 26.157461374998093,
+    "median": 25.693090438842773,
+    "model_id": "openai/clip-vit-large-patch14",
+    "p10": 22.15810203552246,
+    "population_std": 3.535995679327252
+  }
+}

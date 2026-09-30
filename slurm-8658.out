@@ -1,0 +1,33 @@
+DiffusionNAS checkout: /home2/home/dhish_saxena/DiffusionNAS
+Slurm job: 8658; node: ub
+NVIDIA RTX 6000 Ada Generation
+Tue Sep 29 19:27:29 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX 6000 Ada Gene...    Off |   00000000:4B:00.0 Off |                  Off |
+| 50%   71C    P0            104W /  300W |       4MiB /  49140MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+valid: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/baseline_sd15.json
+valid: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/autodiffusion_sd15.json
+valid: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/deepcache_sd15.json
+Starting calibration benchmark: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/baseline_sd15.json
+/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192729671988Z_baseline_1abddf7f4f
+Starting calibration benchmark: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/autodiffusion_sd15.json
+/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192938924723Z_autodiffusion_58af617a7f
+Starting calibration benchmark: /home2/home/dhish_saxena/DiffusionNAS/configs/generated/calibration/deepcache_sd15.json
+/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T193009025063Z_deepcache_c205271943
+All three calibration benchmarks completed.

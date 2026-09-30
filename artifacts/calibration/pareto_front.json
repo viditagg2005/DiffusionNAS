@@ -1,0 +1,90 @@
+{
+  "eligible_count": 3,
+  "generated_at": "2026-09-29T19:31:24.254777+00:00",
+  "nondominated_count": 3,
+  "objectives": [
+    {
+      "direction": "max",
+      "name": "clip_score"
+    },
+    {
+      "direction": "min",
+      "name": "latency_p50_ms"
+    },
+    {
+      "direction": "min",
+      "name": "peak_allocated_mb"
+    }
+  ],
+  "points": [
+    {
+      "implementation_fidelity": "adapted",
+      "method": "autodiffusion",
+      "objectives": {
+        "clip_score": 25.26432791352272,
+        "latency_p50_ms": 142.8100115,
+        "peak_allocated_mb": 3269.0263671875
+      },
+      "policy": {
+        "deepcache": null,
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 4,
+          "scheduler": "dpm_solver++",
+          "timesteps": [
+            999,
+            749,
+            499,
+            249
+          ]
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192938924723Z_autodiffusion_58af617a7f",
+      "run_id": "20260929T192938924723Z_autodiffusion_58af617a7f"
+    },
+    {
+      "implementation_fidelity": "paper_implementation",
+      "method": "deepcache",
+      "objectives": {
+        "clip_score": 26.157461374998093,
+        "latency_p50_ms": 239.292374,
+        "peak_allocated_mb": 3380.4013671875
+      },
+      "policy": {
+        "deepcache": {
+          "branch_id": 0,
+          "interval": 3,
+          "skip_mode": "uniform"
+        },
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 20,
+          "scheduler": "ddim"
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T193009025063Z_deepcache_c205271943",
+      "run_id": "20260929T193009025063Z_deepcache_c205271943"
+    },
+    {
+      "implementation_fidelity": "reference",
+      "method": "baseline",
+      "objectives": {
+        "clip_score": 26.21483087539673,
+        "latency_p50_ms": 505.03439249999997,
+        "peak_allocated_mb": 3256.4248046875
+      },
+      "policy": {
+        "deepcache": null,
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 20,
+          "scheduler": "ddim"
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/runs/20260929T192729671988Z_baseline_1abddf7f4f",
+      "run_id": "20260929T192729671988Z_baseline_1abddf7f4f"
+    }
+  ],
+  "schema_version": 1,
+  "skipped": []
+}

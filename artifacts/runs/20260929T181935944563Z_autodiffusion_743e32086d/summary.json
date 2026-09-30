@@ -1,0 +1,15 @@
+{
+  "energy_joules_per_image": null,
+  "latency_ms": {
+    "mean": 148.33109100000001,
+    "p50": 141.998075,
+    "p90": 164.928996
+  },
+  "method": "autodiffusion",
+  "peak_allocated_mb": 3260.4169921875,
+  "peak_reserved_mb": 3838.0,
+  "quality_metrics": {},
+  "sample_count": 3,
+  "schema_version": 1,
+  "status": "succeeded"
+}

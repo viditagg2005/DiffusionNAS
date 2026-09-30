@@ -1,0 +1,81 @@
+{
+  "inference": {
+    "guidance_scale": 7.5,
+    "num_inference_steps": 4,
+    "scheduler": "dpm_solver++",
+    "timesteps": [
+      999,
+      749,
+      499,
+      249
+    ]
+  },
+  "method": "autodiffusion",
+  "model": {
+    "height": 512,
+    "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "width": 512
+  },
+  "output_root": "artifacts/calibration/runs",
+  "prompts": [
+    "Two different shaped white vases on a rack.",
+    "A person sitting at a table with electronics on top of it.",
+    "A bus pulls toward the sidewalk behind a cyclist as a line of cars makes their way down the street on the other side.",
+    "Two dogs walking down a street side by side.",
+    "A single zebra grazes on a ledge near the water,",
+    "A train yard with multiple sets of tracks and various train engines and cars on the different tracks.",
+    "A person wears a large cat costume to entertain children.",
+    "A small apartment has some framed pictures and posters",
+    "A kid with a video game guitar and a large TV on the wall behind him with a video game on it.",
+    "The two people are on the mountains to ski.",
+    "A man holding a camera in between his hands.",
+    "A milk carton and plate of food (including a hot dog and grape juice) sits on a place mat.",
+    "a guy standing in the water holding his surf board",
+    "A bathroom with a white toilet sitting next to a white tub.",
+    "A woman in a blue dress with no shoes, seated with her legs crossed on a chair in the middle of a room.",
+    "there is a cat that is drinking from a toilet",
+    "A tall giraffe rests amidst green grass and trees.",
+    "A lake with a boat riding on the water and trees in the background below a blue sky.",
+    "A classic car at a stop sign during the day.",
+    "A small pizza with assorted vegetable toppings in a delivery box.",
+    "It looks as if one skateboarder is trying to pull the skateboard out from another as he attempts a jump over the steps.",
+    "A man eating a hotdog in a kitchen",
+    "Four people trying to get a black horse into the back of a blue and white truck.",
+    "A close-up shot of a giraffe bending over to get a drink of water from a stream.",
+    "A man on skis talks on a cell phone outside.",
+    "two elephants standing side by side in the grass next to the trees",
+    "a bowl full of brocoli sitting on a towel with a fork and spoon sitting next to it",
+    "A woman standing by a Target sign looking at something.",
+    "A crosswalk on a city street with cars and buildings in the background.",
+    "Two people, a woman with pink hair and a man, hold wine glasses and the shelf in the distance is filled with bottles.",
+    "Video game remote wrapped around a bottle of wine",
+    "Woman surfer at the end of her run, near the beach.",
+    "a herd of zebra graze in a clearing in the shrubs, and antelope looks on through the bushes.",
+    "A man sits by a motorcycle on a box.",
+    "Three gray sheep in a field next to their owner.",
+    "A cluster of tall buildings are in the distance and one building has a white clock face on it.",
+    "Two people standing in the snow using skis.",
+    "A couple of motorcycles in front of sign, with people standing around.",
+    "A woman is holding her daughter in front of a birthday cake with candles while another lady stands nearby",
+    "A birthday candle has been placed on a parking meter",
+    "A cat sitting on a dresser with a person in the mirror behind it",
+    "A stop light on a street in front of a red brick building and a tall green building.",
+    "A man that is standing on ski's in the snow.",
+    "two plates of food on a table with chairs",
+    "A man smiling wearing a suit jacket, dress shirt and red tie with polka dots with a table and beer in the background.",
+    "A fire truck parked in a snowy field.",
+    "Two men are sitting under a tree on a park bench.",
+    "A group of dogs are playing catch in the interior room of a house as a man stands and watches."
+  ],
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "repetitions": 1,
+    "warmup_runs": 10
+  },
+  "save_images": true,
+  "seeds": [
+    42,
+    123
+  ]
+}

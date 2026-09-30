@@ -1,0 +1,6 @@
+DiffusionNAS checkout: /home2/home/dhish_saxena/DiffusionNAS
+Slurm job: 8660; node: ub
+{
+  "output": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/pareto_front.json",
+  "points": 3
+}

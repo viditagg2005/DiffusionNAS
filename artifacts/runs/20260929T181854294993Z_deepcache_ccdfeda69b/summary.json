@@ -1,0 +1,15 @@
+{
+  "energy_joules_per_image": null,
+  "latency_ms": {
+    "mean": 240.85033299999998,
+    "p50": 230.953951,
+    "p90": 261.152609
+  },
+  "method": "deepcache",
+  "peak_allocated_mb": 3371.7216796875,
+  "peak_reserved_mb": 3878.0,
+  "quality_metrics": {},
+  "sample_count": 3,
+  "schema_version": 1,
+  "status": "succeeded"
+}

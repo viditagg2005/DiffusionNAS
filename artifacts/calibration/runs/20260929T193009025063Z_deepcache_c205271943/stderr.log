@@ -1,0 +1,8 @@
+
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
+Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:02,  2.64it/s]`torch_dtype` is deprecated! Use `dtype` instead!
+
+Loading pipeline components...:  29%|██▊       | 2/7 [00:00<00:01,  4.14it/s]
+Loading pipeline components...:  86%|████████▌ | 6/7 [00:00<00:00, 11.62it/s]
+Loading pipeline components...: 100%|██████████| 7/7 [00:00<00:00, 10.24it/s]
+Potential NSFW content was detected in one or more images. A black image will be returned instead. Try again with a different prompt and/or seed.

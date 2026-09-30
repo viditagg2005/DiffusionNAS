@@ -1,0 +1,25 @@
+{
+  "energy_joules_per_image": null,
+  "latency_ms": {
+    "mean": 503.52276451041666,
+    "p50": 505.03439249999997,
+    "p90": 511.789209
+  },
+  "method": "baseline",
+  "peak_allocated_mb": 3256.4248046875,
+  "peak_reserved_mb": 3816.0,
+  "quality_metrics": {
+    "clip_score": {
+      "count": 96,
+      "definition": "100 * max(cosine_similarity(CLIP_image, CLIP_text), 0)",
+      "mean": 26.21483087539673,
+      "median": 25.87904644012451,
+      "model_id": "openai/clip-vit-large-patch14",
+      "p10": 22.131763458251953,
+      "population_std": 3.5138403266546923
+    }
+  },
+  "sample_count": 96,
+  "schema_version": 1,
+  "status": "succeeded"
+}

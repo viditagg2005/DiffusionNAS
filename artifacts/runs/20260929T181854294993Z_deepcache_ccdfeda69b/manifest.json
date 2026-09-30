@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/home2/home/dhish_saxena/DiffusionNAS/.venv/bin/python",
+    "-m",
+    "diffusionnas.sd15_worker",
+    "--config",
+    "/home2/home/dhish_saxena/DiffusionNAS/artifacts/runs/20260929T181854294993Z_deepcache_ccdfeda69b/config.json",
+    "--output-dir",
+    "/home2/home/dhish_saxena/DiffusionNAS/artifacts/runs/20260929T181854294993Z_deepcache_ccdfeda69b"
+  ],
+  "exit_code": 0,
+  "finished_at": "2026-09-29T18:19:01.206326+00:00",
+  "implementation_fidelity": "paper_implementation",
+  "method": "deepcache",
+  "model_id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+  "provenance": {
+    "packages": {
+      "DeepCache": null,
+      "accelerate": "1.15.0",
+      "diffusers": "0.32.2",
+      "numpy": "1.26.4",
+      "torch": "2.14.0+cu130",
+      "transformers": "4.57.6"
+    },
+    "platform": "Linux-5.15.0-191-generic-x86_64-with-glibc2.35",
+    "project_commit": "e7b9149ba2f2b840c82d3f2c5d9fc7f7a9f8ee62",
+    "project_dirty": true,
+    "python": "3.13.13",
+    "upstream": {
+      "autodiffusion": "cab60633e2da00b2d4593be4752a710b807a179a",
+      "deepcache": "1691a3ab22308fe06685e4ff151a9ab175be2dc4"
+    }
+  },
+  "run_id": "20260929T181854294993Z_deepcache_ccdfeda69b",
+  "schema_version": 1,
+  "started_at": "2026-09-29T18:18:54.295233+00:00",
+  "status": "succeeded"
+}

@@ -1,0 +1,32 @@
+{
+  "deepcache": {
+    "branch_id": 0,
+    "interval": 3,
+    "skip_mode": "uniform"
+  },
+  "inference": {
+    "guidance_scale": 7.5,
+    "num_inference_steps": 20,
+    "scheduler": "ddim"
+  },
+  "method": "deepcache",
+  "model": {
+    "height": 512,
+    "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "width": 512
+  },
+  "output_root": "artifacts/runs",
+  "prompts": [
+    "a photo of an astronaut riding a horse on the moon"
+  ],
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "repetitions": 3,
+    "warmup_runs": 1
+  },
+  "save_images": true,
+  "seeds": [
+    42
+  ]
+}
