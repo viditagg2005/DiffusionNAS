@@ -1,0 +1,90 @@
+{
+  "eligible_count": 3,
+  "generated_at": "2026-09-30T18:23:20.044890+00:00",
+  "nondominated_count": 3,
+  "objectives": [
+    {
+      "direction": "max",
+      "name": "clip_score"
+    },
+    {
+      "direction": "min",
+      "name": "latency_p50_ms"
+    },
+    {
+      "direction": "min",
+      "name": "peak_allocated_mb"
+    }
+  ],
+  "points": [
+    {
+      "implementation_fidelity": "adapted",
+      "method": "autodiffusion",
+      "objectives": {
+        "clip_score": 25.894363697618246,
+        "latency_p50_ms": 140.878358,
+        "peak_allocated_mb": 3269.0263671875
+      },
+      "policy": {
+        "deepcache": null,
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 4,
+          "scheduler": "dpm_solver++",
+          "timesteps": [
+            999,
+            749,
+            499,
+            249
+          ]
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181729968814Z_autodiffusion_0f38954d63",
+      "run_id": "20260930T181729968814Z_autodiffusion_0f38954d63"
+    },
+    {
+      "implementation_fidelity": "paper_implementation",
+      "method": "deepcache",
+      "objectives": {
+        "clip_score": 26.908377800136805,
+        "latency_p50_ms": 237.923091,
+        "peak_allocated_mb": 3380.5263671875
+      },
+      "policy": {
+        "deepcache": {
+          "branch_id": 0,
+          "interval": 3,
+          "skip_mode": "uniform"
+        },
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 20,
+          "scheduler": "ddim"
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181842130607Z_deepcache_d81fb487bc",
+      "run_id": "20260930T181842130607Z_deepcache_d81fb487bc"
+    },
+    {
+      "implementation_fidelity": "reference",
+      "method": "baseline",
+      "objectives": {
+        "clip_score": 27.068014331161976,
+        "latency_p50_ms": 514.0886694999999,
+        "peak_allocated_mb": 3271.3388671875
+      },
+      "policy": {
+        "deepcache": null,
+        "inference": {
+          "guidance_scale": 7.5,
+          "num_inference_steps": 20,
+          "scheduler": "ddim"
+        }
+      },
+      "run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T182013972434Z_baseline_2f20413cee",
+      "run_id": "20260930T182013972434Z_baseline_2f20413cee"
+    }
+  ],
+  "schema_version": 1,
+  "skipped": []
+}

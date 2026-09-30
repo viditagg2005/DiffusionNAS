@@ -1,0 +1,34 @@
+{
+  "calibration_front": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/calibration/pareto_front.json",
+  "clip_spearman": 0.9999999999999998,
+  "generated_at": "2026-09-30T18:22:58.361799+00:00",
+  "holdout_front": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/holdout_pareto_front.json",
+  "holdout_prompt_count": 128,
+  "holdout_prompt_file": "/home2/home/dhish_saxena/DiffusionNAS/data/prompts/holdout.json",
+  "retained_source_run_ids": [
+    "20260929T192938924723Z_autodiffusion_58af617a7f",
+    "20260929T193009025063Z_deepcache_c205271943",
+    "20260929T192729671988Z_baseline_1abddf7f4f"
+  ],
+  "retention_fraction": 1.0,
+  "runs": [
+    {
+      "holdout_run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181729968814Z_autodiffusion_0f38954d63",
+      "source_run_id": "20260929T192938924723Z_autodiffusion_58af617a7f"
+    },
+    {
+      "holdout_run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181842130607Z_deepcache_d81fb487bc",
+      "source_run_id": "20260929T193009025063Z_deepcache_c205271943"
+    },
+    {
+      "holdout_run_dir": "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T182013972434Z_baseline_2f20413cee",
+      "source_run_id": "20260929T192729671988Z_baseline_1abddf7f4f"
+    }
+  ],
+  "schema_version": 1,
+  "seeds": [
+    101,
+    202
+  ],
+  "status": "succeeded"
+}

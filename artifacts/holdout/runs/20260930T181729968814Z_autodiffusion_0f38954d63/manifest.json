@@ -1,0 +1,50 @@
+{
+  "command": [
+    "/home2/home/dhish_saxena/DiffusionNAS/.venv/bin/python",
+    "-m",
+    "diffusionnas.sd15_worker",
+    "--config",
+    "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181729968814Z_autodiffusion_0f38954d63/config.json",
+    "--output-dir",
+    "/home2/home/dhish_saxena/DiffusionNAS/artifacts/holdout/runs/20260930T181729968814Z_autodiffusion_0f38954d63"
+  ],
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:18:42.129776+00:00",
+  "implementation_fidelity": "adapted",
+  "method": "autodiffusion",
+  "model_id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+  "provenance": {
+    "gpu": {
+      "compute_capability": "8.9",
+      "cuda_runtime": "13.0",
+      "index": 0,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory_bytes": 50865307648
+    },
+    "packages": {
+      "DeepCache": null,
+      "accelerate": "1.15.0",
+      "diffusers": "0.32.2",
+      "numpy": "1.26.4",
+      "torch": "2.14.0+cu130",
+      "transformers": "4.57.6"
+    },
+    "platform": "Linux-5.15.0-191-generic-x86_64-with-glibc2.35",
+    "project_commit": "6f9f1f8ad5b5ddd6cf1a3381843a1d128acfea31",
+    "project_dirty": true,
+    "python": "3.13.13",
+    "upstream": {
+      "autodiffusion": "cab60633e2da00b2d4593be4752a710b807a179a",
+      "deepcache": "1691a3ab22308fe06685e4ff151a9ab175be2dc4"
+    }
+  },
+  "quality_scoring": {
+    "model_id": "openai/clip-vit-large-patch14",
+    "scored_at": "2026-09-30T18:23:11.762853+00:00",
+    "status": "succeeded"
+  },
+  "run_id": "20260930T181729968814Z_autodiffusion_0f38954d63",
+  "schema_version": 1,
+  "started_at": "2026-09-30T18:17:29.969074+00:00",
+  "status": "succeeded"
+}
