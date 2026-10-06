@@ -16,6 +16,7 @@ from typing import Any
 from .ecad import run_ecad_search
 from .quality import DEFAULT_CLIP_MODEL
 from .random_search import run_random_search
+from .search_checkpoint import SearchPaused
 from .search_space import validate_search_config
 
 
@@ -47,6 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     rand_parser.add_argument("--clip-model", default=DEFAULT_CLIP_MODEL, help="CLIP scoring model")
     rand_parser.add_argument("--device", default="cuda", help="CLIP scoring device")
     rand_parser.add_argument("--batch-size", type=int, default=8, help="CLIP scoring batch size")
+    rand_parser.add_argument("--max-walltime-seconds", type=float, help="Pause before starting a candidate after this many seconds")
 
     # Subcommand: ecad
     ecad_parser = subparsers.add_parser("ecad", help="Run ECAD evolutionary search")
@@ -56,6 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     ecad_parser.add_argument("--clip-model", default=DEFAULT_CLIP_MODEL, help="CLIP scoring model")
     ecad_parser.add_argument("--device", default="cuda", help="CLIP scoring device")
     ecad_parser.add_argument("--batch-size", type=int, default=8, help="CLIP scoring batch size")
+    ecad_parser.add_argument("--max-walltime-seconds", type=float, help="Pause before starting a candidate after this many seconds")
 
     # Subcommand: run (auto-detects method from config)
     run_parser = subparsers.add_parser("run", help="Run search optimizer based on config search_method")
@@ -65,6 +68,7 @@ def main(argv: list[str] | None = None) -> int:
     run_parser.add_argument("--clip-model", default=DEFAULT_CLIP_MODEL, help="CLIP scoring model")
     run_parser.add_argument("--device", default="cuda", help="CLIP scoring device")
     run_parser.add_argument("--batch-size", type=int, default=8, help="CLIP scoring batch size")
+    run_parser.add_argument("--max-walltime-seconds", type=float, help="Pause before starting a candidate after this many seconds")
 
     args = parser.parse_args(argv)
 
@@ -84,6 +88,7 @@ def main(argv: list[str] | None = None) -> int:
                 clip_model_id=args.clip_model,
                 score_device=args.device,
                 batch_size=args.batch_size,
+                max_walltime_seconds=args.max_walltime_seconds,
             )
             print(
                 json.dumps(
@@ -108,6 +113,7 @@ def main(argv: list[str] | None = None) -> int:
                 clip_model_id=args.clip_model,
                 score_device=args.device,
                 batch_size=args.batch_size,
+                max_walltime_seconds=args.max_walltime_seconds,
             )
             print(
                 json.dumps(
@@ -126,6 +132,14 @@ def main(argv: list[str] | None = None) -> int:
 
         raise ValueError(f"unknown search method: {method}")
 
+    except SearchPaused as exc:
+        print(json.dumps({
+            "status": "paused",
+            "checkpoint": str(exc.checkpoint_path),
+            "completed_evaluations": exc.completed,
+            "reason": exc.reason,
+        }, indent=2))
+        return 75
     except Exception as exc:
         parser.error(str(exc))
         return 2
@@ -133,4 +147,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

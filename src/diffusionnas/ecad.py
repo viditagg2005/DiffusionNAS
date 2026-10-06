@@ -12,7 +12,6 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import random
-import time
 from typing import Any
 
 from .hypervolume import compute_hypervolume
@@ -20,6 +19,7 @@ from .pareto import BASE_OBJECTIVES, dominates, nondominated
 from .quality import ClipScorer, DEFAULT_CLIP_MODEL
 from .random_search import DEFAULT_REFERENCE_POINT, _simulate_objectives
 from .runner import execute
+from .search_checkpoint import SearchCheckpoint
 from .search_space import (
     CHROMOSOME_LENGTH,
     decode_policy,
@@ -226,6 +226,8 @@ def run_ecad_search(
     score_device: str = "cuda",
     batch_size: int = 8,
     reference_point: dict[str, float] | None = None,
+    max_walltime_seconds: float | None = None,
+    max_new_evaluations: int | None = None,
 ) -> dict[str, Any]:
     """Execute ECAD evolutionary search over diffusion inference policies.
 
@@ -281,6 +283,18 @@ def run_ecad_search(
     runs_dir.mkdir(parents=True, exist_ok=True)
 
     ref_point = dict(reference_point or DEFAULT_REFERENCE_POINT)
+    checkpoint = SearchCheckpoint(
+        output_dir=target_dir,
+        config=config,
+        method="ecad",
+        dry_run=dry_run,
+        clip_model_id=clip_model_id,
+        score_device=score_device,
+        batch_size=batch_size,
+        reference_point=ref_point,
+        max_walltime_seconds=max_walltime_seconds,
+        max_new_evaluations=max_new_evaluations,
+    )
 
     scorer = None
     if not dry_run:
@@ -289,8 +303,6 @@ def run_ecad_search(
     evaluated_archive: list[Individual] = []
     generation_logs: list[dict[str, Any]] = []
     hv_history: list[dict[str, Any]] = []
-    start_time = time.time()
-
     def evaluate_individual(ind: Individual) -> None:
         candidate_config = policy_to_config(
             policy=ind.policy,
@@ -300,18 +312,21 @@ def run_ecad_search(
             output_root=str(runs_dir.relative_to(project_root) if runs_dir.is_relative_to(project_root) else runs_dir),
             save_images=True,
         )
-        run_dir = execute(candidate_config, project_root, dry_run=dry_run)
-        ind.run_dir = str(run_dir)
-
-        if dry_run:
-            ind.objectives = _simulate_objectives(ind.policy, ind.chromosome)
-        else:
+        def evaluate_new() -> tuple[Path, dict[str, float]]:
+            run_dir = execute(candidate_config, project_root, dry_run=dry_run)
+            if dry_run:
+                return run_dir, _simulate_objectives(ind.policy, ind.chromosome)
             assert scorer is not None
             scorer.score_run(run_dir)
             extracted = read_objectives(run_dir)
             if extracted is None:
                 raise RuntimeError(f"failed to extract objectives from completed run: {run_dir}")
-            ind.objectives = extracted
+            return run_dir, extracted
+
+        run_dir, ind.objectives = checkpoint.evaluate(
+            ind.candidate_id, ind.chromosome, ind.generation, evaluate_new
+        )
+        ind.run_dir = str(run_dir)
 
         evaluated_archive.append(ind)
 
@@ -328,6 +343,7 @@ def run_ecad_search(
             "hypervolume": round(hv, 4),
             "nondominated_count": len(current_front),
         })
+        print(f"ECAD search: {len(evaluated_archive)}/{budget} candidates checkpointed", flush=True)
 
     # 1. Initialize Generation 0
     population: list[Individual] = []
@@ -399,7 +415,7 @@ def run_ecad_search(
             "population": [ind.to_dict() for ind in population],
         })
 
-    elapsed_time = time.time() - start_time
+    elapsed_time = checkpoint.elapsed_wall_seconds
     all_archive_dicts = [ind.to_dict() for ind in evaluated_archive]
     final_front = nondominated(all_archive_dicts, BASE_OBJECTIVES)
     sorted_front = sorted(final_front, key=lambda p: p["objectives"]["latency_p50_ms"])
@@ -472,4 +488,5 @@ def run_ecad_search(
                 **point["objectives"],
             })
 
+    checkpoint.mark_complete()
     return search_result

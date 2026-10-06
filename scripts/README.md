@@ -36,3 +36,34 @@ squeue -j "$benchmark_job,$score_job,$pareto_job,$holdout_job"
 
 Each job writes `slurm-JOB_ID.out` in the submission directory. After jobs leave `squeue`, inspect their final states with `sacct -j JOB_ID --format=JobID,State,ExitCode,Elapsed,NodeList`. A dependency-held job with state `DependencyNeverSatisfied` means an upstream stage failed.
 
+## Search jobs on the 24-hour partition
+
+Both search scripts request **one GPU for 23h50m**, below the partition's 24-hour limit. Each search has 100 candidates, 48 calibration prompts and two seeds. The September calibration run on the same RTX 6000 Ada measured approximately 129 seconds for a 20-step baseline candidate (including initial model load), 30 seconds for the four-step AutoDiffusion adaptation, and 39 seconds for the DeepCache candidate, before CLIP scoring. Even a conservative 130 seconds of generation plus 60 seconds of scoring per candidate projects about **5h17m per 100-candidate search**, plus overhead. This is an estimate, not a guaranteed completion time; unusual candidates, model downloads, or cluster contention may extend it.
+
+The scripts stop starting new candidates after **23 hours** (`SEARCH_MAX_WALLTIME_SECONDS=82800`), leaving 50 minutes before Slurm's hard limit. After every fully scored candidate, `artifacts/search/{random,ecad}/checkpoint.json` is atomically updated with its chromosome, objectives, run path, and elapsed time. If a job stops during a candidate, at most that candidate's generation/scoring must be repeated. Re-submit the **same** script against the **same** output directory to resume. The search configuration, CLIP settings, and GPU identity must remain unchanged. Do not run two jobs for the same search/output directory concurrently.
+
+A completed search exits 0 and writes `search_results.json` and `pareto_front.json`. A soft-time-limit pause exits 75, leaves `checkpoint.json` with `"status": "paused"`, and requires another submission. Check progress with:
+
+```bash
+python -c 'import json; from pathlib import Path; [(lambda p, d: print(p, d["status"], len(d["evaluations"]), "/", d["budget"]))(p, json.loads(p.read_text())) for p in (Path("artifacts/search/random/checkpoint.json"), Path("artifacts/search/ecad/checkpoint.json")) if p.exists()]'
+```
+
+Previously submitted jobs retain their old 47h30m Slurm request and will not pick up the new `#SBATCH` directives. Once the updated checkout is on the cluster, cancel pending jobs **8695 and 8694 only if they are still yours and pending**, then submit random search afresh. Submit ECAD when random has succeeded; a paused random job exits 75, so an `afterok`-dependent ECAD job will not run automatically.
+
+```bash
+squeue -j 8694,8695
+scancel 8695 8694
+cd /home2/home/dhish_saxena/DiffusionNAS
+git pull --ff-only
+random_job=$(sbatch --parsable --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/random_search.sbatch)
+echo "random_job=$random_job"
+squeue -j "$random_job"
+```
+
+After random search exits, check `sacct -j "$random_job" --format=JobID,State,ExitCode,Elapsed` and the checkpoint status. If paused, re-submit `random_search.sbatch` using the same `sbatch` command. When it says `succeeded`, submit ECAD (and re-submit it if it pauses):
+
+```bash
+ecad_job=$(sbatch --parsable --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/ecad_search.sbatch)
+echo "ecad_job=$ecad_job"
+squeue -j "$ecad_job"
+```

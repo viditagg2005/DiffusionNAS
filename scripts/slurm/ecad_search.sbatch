@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=48G
-#SBATCH --time=47:30:00
+#SBATCH --time=23:50:00
 #SBATCH --output=slurm-%j.out
 
 set -euo pipefail
@@ -18,5 +18,5 @@ python -m diffusionnas.search_cli ecad \
   --output "${REPO_ROOT}/artifacts/search/ecad" \
   --clip-model openai/clip-vit-large-patch14 \
   --device cuda \
-  --batch-size "${CLIP_BATCH_SIZE:-8}"
-
+  --batch-size "${CLIP_BATCH_SIZE:-8}" \
+  --max-walltime-seconds "${SEARCH_MAX_WALLTIME_SECONDS:-82800}"

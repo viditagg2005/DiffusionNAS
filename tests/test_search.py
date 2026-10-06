@@ -26,6 +26,7 @@ from diffusionnas.hypervolume import (
     default_reference_point,
 )
 from diffusionnas.random_search import run_random_search
+from diffusionnas.search_checkpoint import SearchPaused
 from diffusionnas.schema import validate_config
 from diffusionnas.search_cli import main as search_cli_main
 from diffusionnas.search_space import (
@@ -172,6 +173,67 @@ class RandomSearchTests(unittest.TestCase):
             saved_results = json.loads((output_path / "search_results.json").read_text())
             self.assertEqual(saved_results["evaluated_count"], 5)
 
+    def test_random_resume_matches_uninterrupted_search(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = {
+                "search_method": "random",
+                "budget": 7,
+                "seed": 42,
+                "prompts": ["an astronaut"],
+                "seeds": [7],
+                "runtime": {"device": "cuda", "precision": "float16", "warmup_runs": 0, "repetitions": 1},
+            }
+            full = run_random_search(config, ROOT, output_dir=root / "full", dry_run=True)
+            resumed_dir = root / "resumed"
+            with self.assertRaises(SearchPaused) as first:
+                run_random_search(config, ROOT, output_dir=resumed_dir, dry_run=True, max_new_evaluations=2)
+            self.assertEqual(first.exception.completed, 2)
+            self.assertEqual(json.loads((resumed_dir / "checkpoint.json").read_text())["status"], "paused")
+            with self.assertRaises(SearchPaused) as second:
+                run_random_search(config, ROOT, output_dir=resumed_dir, dry_run=True, max_new_evaluations=2)
+            self.assertEqual(second.exception.completed, 4)
+            resumed = run_random_search(config, ROOT, output_dir=resumed_dir, dry_run=True)
+            self.assertEqual(resumed["evaluated_count"], 7)
+            self.assertEqual(resumed["hypervolume_history"], full["hypervolume_history"])
+            for left, right in zip(resumed["candidates"], full["candidates"]):
+                self.assertEqual(left["chromosome"], right["chromosome"])
+                self.assertEqual(left["policy"], right["policy"])
+                self.assertEqual(left["objectives"], right["objectives"])
+            self.assertEqual(len(list((resumed_dir / "runs").glob("*/manifest.json"))), 7)
+            checkpoint = json.loads((resumed_dir / "checkpoint.json").read_text())
+            self.assertEqual(checkpoint["status"], "succeeded")
+            self.assertEqual(len(checkpoint["evaluations"]), 7)
+
+    def test_checkpoint_rejects_changed_config(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            target = Path(temp_dir) / "random"
+            config = {
+                "search_method": "random", "budget": 3, "seed": 42,
+                "prompts": ["a photo"], "seeds": [7],
+                "runtime": {"device": "cuda", "precision": "float16"},
+            }
+            with self.assertRaises(SearchPaused):
+                run_random_search(config, ROOT, output_dir=target, dry_run=True, max_new_evaluations=1)
+            changed = {**config, "seed": 43}
+            with self.assertRaisesRegex(ValueError, "config/protocol changed"):
+                run_random_search(changed, ROOT, output_dir=target, dry_run=True)
+
+    def test_walltime_pause_preserves_empty_checkpoint(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            target = Path(temp_dir) / "random"
+            config = {
+                "search_method": "random", "budget": 3, "seed": 42,
+                "prompts": ["a photo"], "seeds": [7],
+                "runtime": {"device": "cuda", "precision": "float16"},
+            }
+            with self.assertRaises(SearchPaused) as pause:
+                run_random_search(config, ROOT, output_dir=target, dry_run=True, max_walltime_seconds=0)
+            self.assertEqual(pause.exception.completed, 0)
+            checkpoint = json.loads((target / "checkpoint.json").read_text())
+            self.assertEqual(checkpoint["evaluations"], [])
+            self.assertEqual(checkpoint["status"], "paused")
+
 
 class ECADTests(unittest.TestCase):
     def test_crossover_and_mutation_invariants(self):
@@ -241,8 +303,59 @@ class ECADTests(unittest.TestCase):
             self.assertTrue((output_path / "pareto_front.json").exists())
             self.assertTrue((output_path / "pareto_front.csv").exists())
 
+    def test_ecad_resume_mid_generation_matches_uninterrupted_search(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = {
+                "search_method": "ecad",
+                "budget": 9,
+                "population_size": 4,
+                "crossover_rate": 0.9,
+                "mutation_rate": 0.05,
+                "seed": 42,
+                "prompts": ["an astronaut"],
+                "seeds": [7],
+                "runtime": {"device": "cuda", "precision": "float16", "warmup_runs": 0, "repetitions": 1},
+            }
+            full = run_ecad_search(config, ROOT, output_dir=root / "full", dry_run=True)
+            resumed_dir = root / "resumed"
+            with self.assertRaises(SearchPaused) as first:
+                run_ecad_search(config, ROOT, output_dir=resumed_dir, dry_run=True, max_new_evaluations=2)
+            self.assertEqual(first.exception.completed, 2)
+            with self.assertRaises(SearchPaused) as second:
+                run_ecad_search(config, ROOT, output_dir=resumed_dir, dry_run=True, max_new_evaluations=4)
+            self.assertEqual(second.exception.completed, 6)
+            resumed = run_ecad_search(config, ROOT, output_dir=resumed_dir, dry_run=True)
+            self.assertEqual(resumed["evaluated_count"], 9)
+            self.assertEqual(resumed["hypervolume_history"], full["hypervolume_history"])
+            for left, right in zip(resumed["candidates"], full["candidates"]):
+                self.assertEqual(left["generation"], right["generation"])
+                self.assertEqual(left["chromosome"], right["chromosome"])
+                self.assertEqual(left["policy"], right["policy"])
+                self.assertEqual(left["objectives"], right["objectives"])
+            self.assertEqual(len(list((resumed_dir / "runs").glob("*/manifest.json"))), 9)
+            checkpoint = json.loads((resumed_dir / "checkpoint.json").read_text())
+            self.assertEqual(checkpoint["status"], "succeeded")
+            self.assertEqual(len(checkpoint["evaluations"]), 9)
+
 
 class SearchCLITests(unittest.TestCase):
+    def test_cli_walltime_pause_exits_75_and_resumes(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cfg_path = Path(temp_dir) / "cfg.json"
+            output = Path(temp_dir) / "out"
+            cfg_path.write_text(json.dumps({
+                "search_method": "random", "budget": 2, "seed": 1,
+                "prompts": ["test prompt"], "seeds": [10],
+                "runtime": {"device": "cuda", "precision": "float16"},
+                "output_root": str(output),
+            }), encoding="utf-8")
+            argv = ["random", "--config", str(cfg_path), "--dry-run"]
+            self.assertEqual(search_cli_main(argv + ["--max-walltime-seconds", "0"]), 75)
+            self.assertEqual(json.loads((output / "checkpoint.json").read_text())["status"], "paused")
+            self.assertEqual(search_cli_main(argv), 0)
+            self.assertEqual(json.loads((output / "checkpoint.json").read_text())["status"], "succeeded")
+
     def test_cli_random_dry_run(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             cfg_path = Path(temp_dir) / "cfg.json"
@@ -285,4 +398,3 @@ class SearchCLITests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
