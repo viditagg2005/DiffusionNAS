@@ -30,7 +30,7 @@ def execute(config: dict[str, Any], project_root: Path, dry_run: bool = False) -
     resolved_config = run_dir / "config.json"
     _write_json(resolved_config, config)
 
-    fidelity = "adapted" if config["method"] == "autodiffusion" else "paper_implementation"
+    fidelity = "adapted" if config["method"] in {"autodiffusion", "flexiffusion"} else "paper_implementation"
     if config["method"] == "baseline":
         fidelity = "reference"
     command = [

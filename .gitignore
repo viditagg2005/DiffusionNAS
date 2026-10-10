@@ -13,3 +13,6 @@ data/prompts/*
 !data/prompts/holdout.json
 .env
 .cache/
+artifacts/search
+artifacts/controls
+artifacts/analysis

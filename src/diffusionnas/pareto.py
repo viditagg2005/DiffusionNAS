@@ -95,6 +95,7 @@ def construct_front(
                 "policy": {
                     "inference": config["inference"],
                     "deepcache": config.get("deepcache"),
+                    "flexiffusion": config.get("flexiffusion"),
                 },
                 "objectives": values,
             }

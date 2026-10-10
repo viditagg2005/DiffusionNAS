@@ -49,6 +49,10 @@ def run(config: dict[str, Any], output_dir: Path) -> None:
             skip_mode=config["deepcache"].get("skip_mode", "uniform"),
         )
         helper.enable()
+    elif config["method"] == "flexiffusion":
+        from .flexiffusion import build_helper, config_actions
+        helper = build_helper(pipe, config_actions(config))
+        helper.enable()
 
     call_args = {
         "height": config["model"]["height"],
@@ -115,6 +119,9 @@ def run(config: dict[str, Any], output_dir: Path) -> None:
         "quality_metrics": {},
         "energy_joules_per_image": None,
     }
+    if config["method"] == "flexiffusion":
+        from .flexiffusion import config_actions, schedule_stats
+        summary["schedule"] = schedule_stats(config_actions(config))
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )

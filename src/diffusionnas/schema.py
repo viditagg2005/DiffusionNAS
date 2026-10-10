@@ -6,7 +6,7 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-METHODS = {"baseline", "autodiffusion", "deepcache"}
+METHODS = {"baseline", "autodiffusion", "deepcache", "flexiffusion"}
 SD15_MODEL = "stable-diffusion-v1-5/stable-diffusion-v1-5"
 
 
@@ -72,6 +72,27 @@ def validate_config(config: dict[str, Any]) -> None:
             errors.append("deepcache.interval must be a positive integer")
         if not isinstance(cache.get("branch_id"), int) or not 0 <= cache.get("branch_id", -1) <= 11:
             errors.append("deepcache.branch_id must be an integer in [0, 11]")
+
+    if method == "flexiffusion":
+        flex = config.get("flexiffusion", {})
+        length = flex.get("segment_length")
+        segments = flex.get("segments")
+        if inference.get("scheduler") != "ddim":
+            errors.append("Flexiffusion null steps reuse the noise prediction, which equals skipping a timestep only for deterministic DDIM")
+        if not isinstance(length, int) or length < 1:
+            errors.append("flexiffusion.segment_length must be a positive integer")
+        elif not isinstance(segments, list) or not segments:
+            errors.append("flexiffusion.segments must be a non-empty list")
+        else:
+            for index, segment in enumerate(segments):
+                branch = segment.get("branch") if isinstance(segment, dict) else None
+                interval = segment.get("interval") if isinstance(segment, dict) else None
+                if not isinstance(branch, int) or not 0 <= branch <= 11:
+                    errors.append(f"flexiffusion.segments[{index}].branch must be an integer in [0, 11]")
+                if not isinstance(interval, int) or not 1 <= interval <= length:
+                    errors.append(f"flexiffusion.segments[{index}].interval must be an integer in [1, segment_length]")
+            if steps != len(segments) * length:
+                errors.append("num_inference_steps must equal len(flexiffusion.segments) * segment_length")
 
     runtime = config.get("runtime", {})
     if runtime.get("device") != "cuda":

@@ -12,6 +12,8 @@ These scripts assume one 48 GB NVIDIA GPU, Stable Diffusion 1.5 at 512×512, and
 - `slurm/build_pareto.sbatch`: CPU-only calibration Pareto construction.
 - `slurm/holdout.sbatch`: untouched prompt validation of calibration-front policies.
 - `slurm/random_search.sbatch` and `slurm/ecad_search.sbatch`: equal-budget search experiments.
+- `prepare_controls.py` and `slurm/controls_benchmark.sbatch`: matched control benchmark (native DPM-Solver++ and the Flexiffusion slice; see below).
+- `analyze_strata.py`: CPU-only per-stratum CLIP, fronts and paired baseline differences from existing scored runs.
 
 GPU jobs request `--gres=gpu:1`. The benchmark keeps all three methods on the same allocated GPU so latency comparisons cannot mix GPU models. The observed cluster allocation was an RTX 6000 Ada (48 GB), not an RTX A6000. CLIP scoring defaults to batch size 8; set `CLIP_BATCH_SIZE` to override it.
 
@@ -66,4 +68,21 @@ After random search exits, check `sacct -j "$random_job" --format=JobID,State,Ex
 ecad_job=$(sbatch --parsable --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/ecad_search.sbatch)
 echo "ecad_job=$ecad_job"
 squeue -j "$ecad_job"
+```
+
+## Control benchmark: native DPM-Solver++ and Flexiffusion
+
+`prepare_controls.py` writes 22 calibration configs to `configs/generated/controls/`: the 20-step DDIM baseline, DeepCache (interval 3, branch 0), the AutoDiffusion timestep adaptation, a **native four-step DPM-Solver++** control (default Diffusers spacing, `[999, 749, 500, 250]`), and 18 **uniform Flexiffusion schedules** (N-segment {7, 9, 11} × branch {1, 3, 6} × interval {2, 3}, segment length 3, DDIM). The references are re-measured in the same allocation so every latency is comparable. One job generates, scores with CLIP and builds the Pareto front under `artifacts/controls/` (git-ignored):
+
+```bash
+python scripts/prepare_controls.py --prompts data/prompts/calibration.json --seeds 42,123
+controls_job=$(sbatch --parsable --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/controls_benchmark.sbatch)
+squeue -j "$controls_job"
+```
+
+The Flexiffusion policies are members of the paper's SD1.5 search space (Table 8), not its searched schedules, which the paper does not publish. Per-stratum analysis of existing results:
+
+```bash
+python scripts/analyze_strata.py --prompts data/prompts/holdout.json --runs-root artifacts/holdout/runs \
+  --baseline-run artifacts/holdout/runs/20260930T182013972434Z_baseline_2f20413cee --output artifacts/analysis/strata_holdout.json
 ```

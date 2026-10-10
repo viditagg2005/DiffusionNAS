@@ -49,6 +49,7 @@ class RunnerTests(unittest.TestCase):
             "baseline_sd15.json": "reference",
             "autodiffusion_sd15.json": "adapted",
             "deepcache_sd15.json": "paper_implementation",
+            "flexiffusion_sd15.json": "adapted",
         }
         with tempfile.TemporaryDirectory() as temporary:
             for filename, fidelity in expected_fidelity.items():
