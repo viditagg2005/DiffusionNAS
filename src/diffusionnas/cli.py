@@ -43,6 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     holdout_parser.add_argument("--clip-model", default=DEFAULT_CLIP_MODEL)
     holdout_parser.add_argument("--device", default="cuda")
     holdout_parser.add_argument("--batch-size", type=int, default=8)
+    holdout_parser.add_argument("--warmup-runs", type=int, help="override every policy's warm-up count")
     holdout_parser.add_argument("--dry-run", action="store_true")
     subparsers.add_parser("preflight")
     args = parser.parse_args(argv)
@@ -94,6 +95,7 @@ def main(argv: list[str] | None = None) -> int:
                 clip_model_id=args.clip_model,
                 score_device=args.device,
                 batch_size=args.batch_size,
+                warmup_runs=args.warmup_runs,
             )
             print(json.dumps(result, indent=2, sort_keys=True))
             return 0

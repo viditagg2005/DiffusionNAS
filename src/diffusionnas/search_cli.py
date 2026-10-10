@@ -104,7 +104,7 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
 
-        if method == "ecad":
+        if method in {"ecad", "nsga2"}:
             result = run_ecad_search(
                 config=config,
                 project_root=root,
@@ -118,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 json.dumps(
                     {
-                        "search_method": "ecad",
+                        "search_method": result["search_method"],
                         "status": result["status"],
                         "generations": result["total_generations"],
                         "evaluations": result["evaluated_count"],

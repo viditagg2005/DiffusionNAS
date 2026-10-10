@@ -12,7 +12,9 @@ python scripts/build_coco_prompt_splits.py --annotations /path/to/captions_val20
 python scripts/prepare_experiment.py --calibration-prompts data/prompts/calibration.json --calibration-seeds 42,123
 ~~~
 
-Use calibration seeds 42 and 123, and hold-out seeds 101 and 202. The generated benchmark and search configs are tracked under configs/generated.
+`validation.json` is a third, untouched split (128 prompts, same strata and quotas as hold-out, selection seed 20261010) that is image- and caption-disjoint from both; build it with `scripts/build_validation_split.py`. It is reserved for the locked v2-search finalists because hold-out results have already been inspected.
+
+Use calibration seeds 42 and 123, hold-out seeds 101 and 202, and validation seeds 303 and 404. The generated benchmark and search configs are tracked under configs/generated.
 
 Captions are attributed to the COCO Consortium under CC BY 4.0:
 https://cocodataset.org/#termsofuse

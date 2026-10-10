@@ -18,6 +18,7 @@ from .hypervolume import compute_hypervolume, default_reference_point
 from .pareto import BASE_OBJECTIVES, nondominated
 from .quality import ClipScorer, DEFAULT_CLIP_MODEL
 from .runner import execute
+from . import policy_space
 from .search_checkpoint import SearchCheckpoint
 from .search_space import (
     CHROMOSOME_LENGTH,
@@ -133,7 +134,9 @@ def run_random_search(
     runs_dir = target_dir / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
 
-    ref_point = dict(reference_point or DEFAULT_REFERENCE_POINT)
+    ref_point = dict(reference_point or config.get("reference_point") or DEFAULT_REFERENCE_POINT)
+    v2 = config.get("search_space", "v1") == "v2"
+    seen: set[str] = set()
     checkpoint = SearchCheckpoint(
         output_dir=target_dir,
         config=config,
@@ -154,8 +157,14 @@ def run_random_search(
     candidates: list[dict[str, Any]] = []
     hv_history: list[dict[str, Any]] = []
     for idx in range(budget):
-        chromosome = random_chromosome(rng)
-        policy = decode_policy(chromosome)
+        if v2:
+            # Uniform over methods, then over that method's genes; never re-evaluate a policy.
+            chromosome = policy_space.novel(lambda: policy_space.random_genome(rng), seen, rng)
+            policy = policy_space.decode(chromosome)
+            seen.add(policy_space.signature(policy))
+        else:
+            chromosome = random_chromosome(rng)
+            policy = decode_policy(chromosome)
 
         candidate_config = policy_to_config(
             policy=policy,
@@ -214,6 +223,7 @@ def run_random_search(
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "budget": budget,
         "seed": seed,
+        "search_space": config.get("search_space", "v1"),
         "evaluated_count": len(candidates),
         "reference_point": ref_point,
         "objectives": [{"name": name, "direction": direction} for name, direction in BASE_OBJECTIVES],

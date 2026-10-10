@@ -67,6 +67,7 @@ def validate_holdout(
     clip_model_id: str = DEFAULT_CLIP_MODEL,
     score_device: str = "cuda",
     batch_size: int = 8,
+    warmup_runs: int | None = None,
 ) -> dict[str, Any]:
     if not seeds or any(seed < 0 for seed in seeds):
         raise ValueError("hold-out seeds must be non-negative integers")
@@ -82,6 +83,9 @@ def validate_holdout(
         config["prompts"] = prompts
         config["seeds"] = seeds
         config["runtime"]["repetitions"] = 1
+        if warmup_runs is not None:
+            # Equalize warm-up across finalists drawn from runs with different protocols.
+            config["runtime"]["warmup_runs"] = warmup_runs
         config["output_root"] = str(runs_root)
         config["holdout"] = {
             "source_run_id": point["run_id"],

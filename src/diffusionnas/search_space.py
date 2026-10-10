@@ -228,6 +228,8 @@ def policy_to_config(
     }
     if policy["method"] == "autodiffusion":
         config["inference"]["timesteps"] = policy["timesteps"]
+    if policy["method"] == "flexiffusion":
+        config["flexiffusion"] = policy["flexiffusion"]
     if policy["method"] == "deepcache":
         config["deepcache"] = {
             "interval": policy["deepcache_interval"],
@@ -266,8 +268,20 @@ def validate_search_config(config: dict[str, Any]) -> None:
     """
     errors: list[str] = []
     method = config.get("search_method")
-    if method not in {"random", "ecad"}:
-        errors.append("search_method must be 'random' or 'ecad'")
+    if method not in {"random", "ecad", "nsga2"}:
+        errors.append("search_method must be 'random', 'ecad' or 'nsga2'")
+    space = config.get("search_space", "v1")
+    if space not in {"v1", "v2"}:
+        errors.append("search_space must be 'v1' or 'v2'")
+    if method == "nsga2" and space != "v2":
+        errors.append("search_method 'nsga2' requires search_space 'v2'")
+    reference = config.get("reference_point")
+    if reference is not None and (
+        not isinstance(reference, dict)
+        or set(reference) != {"clip_score", "latency_p50_ms", "peak_allocated_mb"}
+        or not all(isinstance(v, (int, float)) for v in reference.values())
+    ):
+        errors.append("reference_point must give numeric clip_score, latency_p50_ms and peak_allocated_mb")
 
     budget = config.get("budget")
     if not isinstance(budget, int) or budget < 1:
@@ -291,7 +305,7 @@ def validate_search_config(config: dict[str, Any]) -> None:
     if runtime.get("precision") not in {"float16", "float32"}:
         errors.append("runtime.precision must be 'float16' or 'float32'")
 
-    if method == "ecad":
+    if method in {"ecad", "nsga2"}:
         pop = config.get("population_size")
         if not isinstance(pop, int) or pop < 2:
             errors.append("population_size must be an integer >= 2")

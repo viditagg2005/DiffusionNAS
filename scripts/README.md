@@ -13,6 +13,8 @@ These scripts assume one 48 GB NVIDIA GPU, Stable Diffusion 1.5 at 512×512, and
 - `slurm/holdout.sbatch`: untouched prompt validation of calibration-front policies.
 - `slurm/random_search.sbatch` and `slurm/ecad_search.sbatch`: equal-budget search experiments.
 - `prepare_controls.py` and `slurm/controls_benchmark.sbatch`: matched control benchmark (native DPM-Solver++ and the Flexiffusion slice; see below).
+- `prepare_search_v2.py` and `slurm/search_v2.sbatch`: repeated v2 searches (random and NSGA-II, three optimizer seeds each) in one allocation.
+- `build_validation_split.py`, `select_finalists.py` and `slurm/validation.sbatch`: fresh validation split, pre-registered finalist lock and validation run.
 - `analyze_strata.py`: CPU-only per-stratum CLIP, fronts and paired baseline differences from existing scored runs.
 
 GPU jobs request `--gres=gpu:1`. The benchmark keeps all three methods on the same allocated GPU so latency comparisons cannot mix GPU models. The observed cluster allocation was an RTX 6000 Ada (48 GB), not an RTX A6000. CLIP scoring defaults to batch size 8; set `CLIP_BATCH_SIZE` to override it.
@@ -85,4 +87,19 @@ The Flexiffusion policies are members of the paper's SD1.5 search space (Table 8
 ```bash
 python scripts/analyze_strata.py --prompts data/prompts/holdout.json --runs-root artifacts/holdout/runs \
   --baseline-run artifacts/holdout/runs/20260930T182013972434Z_baseline_2f20413cee --output artifacts/analysis/strata_holdout.json
+```
+
+## v2 search, finalist lock and validation
+
+The v2 space (`src/diffusionnas/policy_space.py`) draws the method uniformly (baseline, DeepCache, Flexiffusion), searches only that method's genes, and never evaluates a policy whose execution signature (scheduler, guidance, steps, per-step full/partial/null actions) was already seen. Hypervolume uses the pre-registered reference point CLIP 25.0, 600 ms, 4,000 MB, so policies below the quality floor add nothing. The job runs random and NSGA-II with search seeds 1–3, interleaved, with one shared wall-time deadline; resubmit it if it exits 75:
+
+```bash
+python scripts/prepare_search_v2.py --prompts data/prompts/calibration.json   # configs already committed
+search_job=$(sbatch --parsable --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/search_v2.sbatch)
+```
+
+After **both** the control benchmark and the v2 searches succeed **on the same GPU model**, lock finalists and run them on the untouched validation split (`select_finalists.py` refuses a pool with mixed GPU models). The lock is written once to `artifacts/finalists/finalists.json` and is never re-selected:
+
+```bash
+sbatch --dependency="afterok:${search_job}" --export=ALL,DIFFUSIONNAS_ROOT="$PWD" scripts/slurm/validation.sbatch
 ```

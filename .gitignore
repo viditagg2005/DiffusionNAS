@@ -11,8 +11,12 @@ data/prompts/*
 !data/prompts/example_holdout.json
 !data/prompts/calibration.json
 !data/prompts/holdout.json
+!data/prompts/validation.json
 .env
 .cache/
 artifacts/search
 artifacts/controls
 artifacts/analysis
+artifacts/search_v2
+artifacts/finalists
+artifacts/validation

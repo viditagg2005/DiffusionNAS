@@ -1,0 +1,35 @@
+{
+  "search_method": "random",
+  "search_space": "v2",
+  "method": "baseline",
+  "model": {
+    "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "height": 512,
+    "width": 512
+  },
+  "budget": 100,
+  "seed": 42,
+  "prompts": [
+    "a photo of an astronaut riding a horse on the moon"
+  ],
+  "seeds": [
+    42
+  ],
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "warmup_runs": 1,
+    "repetitions": 3
+  },
+  "output_root": "artifacts/search_v2/random_search_v2",
+  "reference_point": {
+    "clip_score": 25.0,
+    "latency_p50_ms": 600.0,
+    "peak_allocated_mb": 4000.0
+  },
+  "inference": {
+    "scheduler": "ddim",
+    "num_inference_steps": 20,
+    "guidance_scale": 7.5
+  }
+}

@@ -19,6 +19,7 @@ from .pareto import BASE_OBJECTIVES, dominates, nondominated
 from .quality import ClipScorer, DEFAULT_CLIP_MODEL
 from .random_search import DEFAULT_REFERENCE_POINT, _simulate_objectives
 from .runner import execute
+from . import policy_space
 from .search_checkpoint import SearchCheckpoint
 from .search_space import (
     CHROMOSOME_LENGTH,
@@ -39,11 +40,12 @@ class Individual:
         chromosome: list[int],
         candidate_id: int,
         generation: int = 0,
+        decoder=decode_policy,
     ) -> None:
         self.chromosome = list(chromosome)
         self.candidate_id = candidate_id
         self.generation = generation
-        self.policy: dict[str, Any] = decode_policy(self.chromosome)
+        self.policy: dict[str, Any] = decoder(self.chromosome)
         self.run_dir: str | None = None
         self.objectives: dict[str, float] | None = None
         self.rank: int = 0
@@ -282,11 +284,16 @@ def run_ecad_search(
     runs_dir = target_dir / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
 
-    ref_point = dict(reference_point or DEFAULT_REFERENCE_POINT)
+    ref_point = dict(reference_point or config.get("reference_point") or DEFAULT_REFERENCE_POINT)
+    label = config["search_method"]
+    v2 = config.get("search_space", "v1") == "v2"
+    decoder = policy_space.decode if v2 else decode_policy
+    method_switch_rate = float(config.get("method_switch_rate", 0.1))
+    seen: set[str] = set()
     checkpoint = SearchCheckpoint(
         output_dir=target_dir,
         config=config,
-        method="ecad",
+        method=label,
         dry_run=dry_run,
         clip_model_id=clip_model_id,
         score_device=score_device,
@@ -343,20 +350,39 @@ def run_ecad_search(
             "hypervolume": round(hv, 4),
             "nondominated_count": len(current_front),
         })
-        print(f"ECAD search: {len(evaluated_archive)}/{budget} candidates checkpointed", flush=True)
+        print(f"{label} search: {len(evaluated_archive)}/{budget} candidates checkpointed", flush=True)
+
+    def new_individual(chromosome: list[int], generation: int, pending: int = 0) -> Individual:
+        ind = Individual(chromosome, candidate_id=len(evaluated_archive) + pending, generation=generation, decoder=decoder)
+        if v2:
+            seen.add(policy_space.signature(ind.policy))
+        return ind
+
+    def breed_v2() -> list[int]:
+        parent1 = tournament_select(population, rng)
+        parent2 = tournament_select(population, rng)
+        child = parent1.chromosome
+        if rng.random() < crossover_rate:
+            child, _ = policy_space.crossover(parent1.chromosome, parent2.chromosome, rng)
+        if rng.random() < mutation_rate:
+            child = policy_space.mutate(child, rng, method_switch_rate)
+        return child
 
     # 1. Initialize Generation 0
     population: list[Individual] = []
-    initial_chromosomes = initial_seeds()
+    initial_chromosomes = policy_space.initial_genomes() if v2 else initial_seeds()
     for chrom in initial_chromosomes:
         if len(population) < pop_size and len(evaluated_archive) < budget:
-            ind = Individual(chrom, candidate_id=len(evaluated_archive), generation=0)
+            ind = new_individual(chrom, generation=0)
             evaluate_individual(ind)
             population.append(ind)
 
     while len(population) < pop_size and len(evaluated_archive) < budget:
-        chrom = random_chromosome(rng)
-        ind = Individual(chrom, candidate_id=len(evaluated_archive), generation=0)
+        if v2:
+            chrom = policy_space.novel(lambda: policy_space.random_genome(rng), seen, rng)
+        else:
+            chrom = random_chromosome(rng)
+        ind = new_individual(chrom, generation=0)
         evaluate_individual(ind)
         population.append(ind)
 
@@ -378,7 +404,10 @@ def run_ecad_search(
         offspring: list[Individual] = []
 
         # Create offspring
-        while len(offspring) < pop_size and len(evaluated_archive) + len(offspring) < budget:
+        while v2 and len(offspring) < pop_size and len(evaluated_archive) + len(offspring) < budget:
+            # One child at a time, re-bred until its executed policy is new.
+            offspring.append(new_individual(policy_space.novel(breed_v2, seen, rng), gen_idx, len(offspring)))
+        while not v2 and len(offspring) < pop_size and len(evaluated_archive) + len(offspring) < budget:
             parent1 = tournament_select(population, rng)
             parent2 = tournament_select(population, rng)
             c1_bits, c2_bits = crossover(parent1.chromosome, parent2.chromosome, rng, crossover_rate)
@@ -422,7 +451,7 @@ def run_ecad_search(
 
     search_result: dict[str, Any] = {
         "schema_version": 1,
-        "search_method": "ecad",
+        "search_method": label,
         "status": "dry_run" if dry_run else "succeeded",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "budget": budget,
@@ -430,6 +459,7 @@ def run_ecad_search(
         "crossover_rate": crossover_rate,
         "mutation_rate": mutation_rate,
         "seed": seed,
+        "search_space": config.get("search_space", "v1"),
         "total_generations": gen_idx + 1,
         "evaluated_count": len(evaluated_archive),
         "reference_point": ref_point,
@@ -458,7 +488,7 @@ def run_ecad_search(
     pareto_export = {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "search_method": "ecad",
+        "search_method": label,
         "objectives": [{"name": name, "direction": direction} for name, direction in BASE_OBJECTIVES],
         "eligible_count": len(evaluated_archive),
         "nondominated_count": len(sorted_front),
