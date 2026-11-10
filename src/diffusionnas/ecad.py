@@ -64,7 +64,7 @@ class Individual:
         }
 
 
-def fast_nondominated_sort(individuals: list[Individual]) -> list[list[Individual]]:
+def fast_nondominated_sort(individuals: list[Individual], objectives=BASE_OBJECTIVES) -> list[list[Individual]]:
     """Partition individuals into non-dominated Pareto fronts (NSGA-II)."""
     domination_counts = [0] * len(individuals)
     dominated_sets: list[list[int]] = [[] for _ in individuals]
@@ -76,9 +76,9 @@ def fast_nondominated_sort(individuals: list[Individual]) -> list[list[Individua
             if p_idx == q_idx:
                 continue
             assert q.objectives is not None
-            if dominates(p.objectives, q.objectives, BASE_OBJECTIVES):
+            if dominates(p.objectives, q.objectives, objectives):
                 dominated_sets[p_idx].append(q_idx)
-            elif dominates(q.objectives, p.objectives, BASE_OBJECTIVES):
+            elif dominates(q.objectives, p.objectives, objectives):
                 domination_counts[p_idx] += 1
 
         if domination_counts[p_idx] == 0:
@@ -103,7 +103,7 @@ def fast_nondominated_sort(individuals: list[Individual]) -> list[list[Individua
     return fronts
 
 
-def calculate_crowding_distance(front: list[Individual]) -> None:
+def calculate_crowding_distance(front: list[Individual], objectives=BASE_OBJECTIVES) -> None:
     """Calculate crowding distance for individuals within a single front."""
     size = len(front)
     if size == 0:
@@ -116,7 +116,7 @@ def calculate_crowding_distance(front: list[Individual]) -> None:
             ind.crowding_distance = float("inf")
         return
 
-    for obj_name, _ in BASE_OBJECTIVES:
+    for obj_name, _ in objectives:
         front.sort(key=lambda ind: ind.objectives[obj_name])  # type: ignore[index]
         front[0].crowding_distance = float("inf")
         front[-1].crowding_distance = float("inf")

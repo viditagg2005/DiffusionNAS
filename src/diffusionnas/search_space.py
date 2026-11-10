@@ -230,6 +230,8 @@ def policy_to_config(
         config["inference"]["timesteps"] = policy["timesteps"]
     if policy["method"] == "flexiffusion":
         config["flexiffusion"] = policy["flexiffusion"]
+    if policy.get("architecture"):
+        config["architecture"] = policy["architecture"]
     if policy["method"] == "deepcache":
         config["deepcache"] = {
             "interval": policy["deepcache_interval"],

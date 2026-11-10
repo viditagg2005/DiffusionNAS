@@ -1,0 +1,25 @@
+{
+  "search_method": "random",
+  "search_space": "v3",
+  "budget": 150,
+  "seed": 1,
+  "prompts": [
+    "a photo of an astronaut riding a horse on the moon"
+  ],
+  "seeds": [
+    42
+  ],
+  "runtime": {
+    "device": "cuda",
+    "precision": "float16",
+    "warmup_runs": 1,
+    "repetitions": 1,
+    "count_flops": true
+  },
+  "reference_point": {
+    "clip_score": 25.2,
+    "clip_image_fidelity": 75.0,
+    "latency_p50_ms": 600.0,
+    "unet_weight_mb": 1700.0
+  }
+}

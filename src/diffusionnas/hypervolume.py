@@ -55,6 +55,26 @@ def _hypervolume_3d(points: list[list[float]], ref: list[float]) -> float:
     return volume
 
 
+def _hypervolume_nd(points: list[list[float]], ref: list[float]) -> float:
+    """Exact hypervolume in any dimension by slicing along the last objective (HSO).
+
+    Fine for the few dozen nondominated points a search produces.
+    """
+    dim = len(ref)
+    filtered = [p for p in points if all(p[i] < ref[i] for i in range(dim))]
+    if not filtered:
+        return 0.0
+    if dim == 2:
+        return _hypervolume_2d(filtered, ref)
+    filtered.sort(key=lambda p: p[-1])
+    volume = 0.0
+    for i, point in enumerate(filtered):
+        upper = filtered[i + 1][-1] if i + 1 < len(filtered) else ref[-1]
+        if upper > point[-1]:
+            volume += _hypervolume_nd([q[:-1] for q in filtered[: i + 1]], ref[:-1]) * (upper - point[-1])
+    return volume
+
+
 # ---- public API --------------------------------------------------------
 
 def compute_hypervolume(
@@ -78,8 +98,8 @@ def compute_hypervolume(
     """
     obj_list = list(objectives)
     ndim = len(obj_list)
-    if ndim < 2 or ndim > 3:
-        raise ValueError(f"hypervolume requires 2 or 3 objectives, got {ndim}")
+    if ndim < 2:
+        raise ValueError(f"hypervolume requires at least 2 objectives, got {ndim}")
     if not points:
         return 0.0
 
@@ -95,7 +115,9 @@ def compute_hypervolume(
 
     if ndim == 2:
         return _hypervolume_2d(converted, ref)
-    return _hypervolume_3d(converted, ref)
+    if ndim == 3:
+        return _hypervolume_3d(converted, ref)
+    return _hypervolume_nd(converted, ref)
 
 
 def default_reference_point(

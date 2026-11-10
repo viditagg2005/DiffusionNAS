@@ -35,10 +35,10 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | Phase | What | Where | Status |
 | --- | --- | --- | --- |
 | 0 | Harness, baselines (DDIM, DeepCache, AutoDiffusion timestep adaptation), calibration + hold-out benchmark, v1 searches, Flexiffusion reimplementation, v2 policy search, validation split, finalist rule | — | ✅ Done (exploratory; see CLAUDE.md) |
-| 0b | Control benchmark (native DPM++, 18 Flexiffusion schedules) | cluster, submitted Oct 10 | ⏳ results not yet copied back (`artifacts/controls`, json/jsonl only) |
-| 1 | Single-unit sensitivity probe (24 units, 6 groups, int8) | `scripts/run_probe.sh` (srun, ~45–60 min) | ⏳ ready to run |
-| 2 | v3 search space from probe; random vs NSGA-II, 3 seeds, equal unique budgets | sbatch jobs < 24 h, one GPU each | ☐ |
-| 3 | Lock finalists (committed rule) | CPU | ☐ |
+| 0b | Control benchmark (native DPM++, 18 Flexiffusion schedules) | cluster, Oct 10 | ✅ see Results |
+| 1 | Single-unit sensitivity probe (24 units, 6 groups, int8) | `scripts/run_probe.sh` (srun) | ✅ see Results; 15 units kept (`configs/nas/units.json`) |
+| 2 | v3 search: random vs NSGA-II, 150 unique candidates each, seeds 1–3 | `nas_search.sbatch` × 3 (one seed per job, ~6–9 h) | ⏳ ready to submit |
+| 3 | Lock finalists (`scripts/lock_nas_finalists.py`, committed before searches ran) | CPU | ☐ |
 | 4 | Validation: finalists + baselines (DDIM step sweep, native DPM++, DeepCache, Flexiffusion, BK-SDM external) in one allocation | sbatch | ☐ |
 | 5 | Final report, Pareto/HV figures, docs, Notion | local | ☐ |
 
@@ -50,7 +50,21 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | 2026-10-06/08 | v1 random + ECAD-inspired searches | `random_search.sbatch`, `ecad_search.sbatch` | ✅ no algorithm difference |
 | 2026-10-10 | control benchmark | `controls_benchmark.sbatch` | results pending copy-back |
 | — | v2 search (`search_v2.sbatch`) | — | **superseded by v3; do not run** |
+| 2026-11-10 | sensitivity probe | `scripts/run_probe.sh` (srun) | ✅ RTX 6000 Ada |
 
 ## Local smoke evidence (RTX 3070 Ti laptop, 2 prompts, not a result)
 
 20-step reference 34,672 GFLOPs/image, U-Net 859.5 M params / 1,639 MB. int8: U-Net 821 MB, peak 3,256 → 2,443 MB, +17% latency, fidelity 91.7. Removing `mid.attn0`: −34.7 M params, fidelity 79.2. Removing all 64-px attention: −22% GFLOPs, −24% latency, only −24 MB weights, fidelity 73.9. Compute-heavy and parameter-heavy units differ, so FLOPs/latency and weight bytes are genuinely separate objectives.
+
+## Results so far (RTX 6000 Ada, calibration split, 48 prompts × 2 seeds)
+
+**Controls (Oct 10).** Native 4-step DPM-Solver++ (140.5 ms, CLIP 25.280) is indistinguishable from the AutoDiffusion timestep adaptation (140.3 ms, 25.264): the adapted timetable adds nothing. No uniform Flexiffusion schedule dominates DeepCache i3 b0 (236 ms, 26.157); the fastest (N7 b1 i2) is 245 ms at CLIP 25.93. Long Flexiffusion schedules (N9–11, branch 6, interval 2: 399–478 ms, CLIP 26.35–26.51) sit slightly above the 20-step baseline's CLIP at lower latency, within calibration noise.
+
+**Sensitivity probe (Nov 10).** Reference: 505 ms, 34.7 TFLOPs/image, U-Net 859.5 M params / 1,639 MB, peak 3,271 MB.
+- int8 weights: U-Net 1,639 → 821 MB, peak 3,271 → 2,438 MB, CLIP +0.04 [−0.26, +0.32], fidelity 95.9, latency +24% (628 ms). Memory compression with no measurable alignment loss.
+- Safe single removals (CLIP CI reaches 0, fidelity ≥ 80): 15 units — `down0.attn0/1`, `down1.attn1`, `down1.res1`, `down2.attn0/1`, `down3.res0/1`, `mid.res1`, `up1.attn2`, `up2.attn0/1/2`, `up3.attn0/1`. Deep units save 59–66 MB each; 64-px attentions save 4.5% FLOPs each but only 5 MB.
+- Harmful: `down0.res0` (−11.5 CLIP, 16 black images), `up3.attn2` (−5.1, 15 black), `down0.res1` (−3.8), `mid.attn0` (−2.0), `down2.res1` (−1.8), `up1.attn0/1`, `mid.res0`, `down1.attn0`.
+- Removals interact: removing 5 individually-harmless 32-px attentions together costs −3.1 CLIP; all 16-px attentions −7.7. Hence a search over combinations, not greedy stacking.
+- Latency responds weakly to removing low-resolution units on this GPU (batch 1 is not compute-bound there): −22% FLOPs from all 64-px attentions gives −18% latency, while deep-unit removals change latency by ±3%.
+
+**Decision D021 (search objectives).** Search on 4 objectives (CLIP, fidelity, latency, U-Net MB); measure and report GFLOPs and peak VRAM for every candidate. With 6 objectives nearly every candidate is nondominated and NSGA-II selection degenerates; GFLOPs tracks latency and peak VRAM tracks weight bytes plus a cache term. Pre-registered hypervolume reference: CLIP 25.2 (reference − 1.0), fidelity 75, 600 ms, 1,700 MB. NSGA-II starts from random novel genomes (no hand-picked seeds), so its hypervolume gap over random search measures the optimizer only.
