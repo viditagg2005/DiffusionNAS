@@ -94,7 +94,18 @@ def validate_config(config: dict[str, Any]) -> None:
             if steps != len(segments) * length:
                 errors.append("num_inference_steps must equal len(flexiffusion.segments) * segment_length")
 
+    if "architecture" in config:
+        from .architecture import validate_architecture
+
+        architecture = config["architecture"]
+        if not isinstance(architecture, dict):
+            errors.append("architecture must be an object")
+        else:
+            errors.extend(validate_architecture(architecture))
+
     runtime = config.get("runtime", {})
+    if runtime.get("count_flops") not in {None, True, False}:
+        errors.append("runtime.count_flops must be a boolean")
     if runtime.get("device") != "cuda":
         errors.append("the benchmark timing protocol currently requires runtime.device='cuda'")
     if runtime.get("precision") not in {"float16", "float32"}:

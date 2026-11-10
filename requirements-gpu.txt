@@ -7,3 +7,5 @@ accelerate>=0.34,<2
 safetensors>=0.4,<1
 Pillow>=10,<12
 
+scipy>=1.10,<2
+pytorch-fid>=0.3,<0.4

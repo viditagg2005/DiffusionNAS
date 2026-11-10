@@ -105,7 +105,7 @@ class ClipScorer:
                 image_features = image_features / image_features.norm(dim=-1, keepdim=True)
                 text_features = text_features / text_features.norm(dim=-1, keepdim=True)
                 scores = (100.0 * (image_features * text_features).sum(dim=-1).clamp(min=0)).cpu().tolist()
-            for record, score in zip(batch, scores):
+            for record, score, image in zip(batch, scores, images):
                 rows.append(
                     {
                         "schema_version": 1,
@@ -113,6 +113,8 @@ class ClipScorer:
                         "seed": record.seed,
                         "image": str(record.image_path.relative_to(run_path)),
                         "clip_score": float(score),
+                        # The SD safety checker replaces flagged outputs with a black image.
+                        "black_image": image.getextrema() == ((0, 0),) * 3,
                     }
                 )
             for image in images:
@@ -125,6 +127,7 @@ class ClipScorer:
         clip_summary = summarize_clip_scores([row["clip_score"] for row in rows], self.model_id)
         summary = _read_json(run_path / "summary.json")
         summary.setdefault("quality_metrics", {})["clip_score"] = clip_summary
+        summary["quality_metrics"]["black_images"] = sum(row["black_image"] for row in rows)
         _write_json(run_path / "summary.json", summary)
 
         manifest = _read_json(run_path / "manifest.json")
@@ -135,6 +138,44 @@ class ClipScorer:
         }
         _write_json(run_path / "manifest.json", manifest)
         return clip_summary
+
+
+    def image_features(self, paths: list[Path]):
+        """L2-normalized CLIP image embeddings, in input order."""
+        from PIL import Image
+
+        chunks = []
+        for start in range(0, len(paths), self.batch_size):
+            images = [Image.open(path).convert("RGB") for path in paths[start : start + self.batch_size]]
+            pixels = self.processor(images=images, return_tensors="pt")["pixel_values"].to(self.device)
+            with self.torch.inference_mode():
+                features = self.model.get_image_features(pixel_values=pixels)
+            chunks.append(features / features.norm(dim=-1, keepdim=True))
+            for image in images:
+                image.close()
+        return self.torch.cat(chunks)
+
+    def fidelity_run(self, run_dir: str | Path, reference_dir: str | Path) -> dict[str, Any]:
+        """CLIP image-image similarity to the reference model's image for the same prompt and seed.
+
+        Measures how faithfully a compressed policy reproduces the original model's output
+        (the role relative FID plays in Flexiffusion), complementing prompt alignment.
+        """
+        run_path, reference_path = Path(run_dir).resolve(), Path(reference_dir).resolve()
+        reference = {(r.prompt_index, r.seed): r.image_path for r in image_records(reference_path)}
+        pairs = [(r, reference[(r.prompt_index, r.seed)]) for r in image_records(run_path)
+                 if (r.prompt_index, r.seed) in reference]
+        if not pairs:
+            raise ValueError(f"no matching prompt/seed images between {run_path} and {reference_path}")
+        own = self.image_features([record.image_path for record, _ in pairs])
+        ref = self.image_features([path for _, path in pairs])
+        similarities = (100.0 * (own * ref).sum(dim=-1)).cpu().tolist()
+        result = summarize_clip_scores(similarities, self.model_id)
+        result["reference_run"] = reference_path.name
+        summary = _read_json(run_path / "summary.json")
+        summary.setdefault("quality_metrics", {})["clip_image_fidelity"] = result
+        _write_json(run_path / "summary.json", summary)
+        return result
 
 
 def discover_successful_runs(runs_root: str | Path) -> list[Path]:

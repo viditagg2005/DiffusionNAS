@@ -27,6 +27,20 @@ def _scheduler(pipe: Any, name: str) -> None:
         )
 
 
+def _count_gflops(pipe: Any, config: dict[str, Any], call_args: dict[str, Any]) -> float:
+    """FLOPs of one full image generation (text encoder, U-Net steps, VAE), measured untimed."""
+    import torch
+    from torch.utils.flop_counter import FlopCounterMode
+
+    generator = torch.Generator(device=config["runtime"]["device"]).manual_seed(config["seeds"][0])
+    with FlopCounterMode(display=False) as counter:
+        pipe(config["prompts"][0], generator=generator, output_type="latent", **call_args)
+        latents = torch.zeros(1, 4, config["model"]["height"] // 8, config["model"]["width"] // 8,
+                              device=pipe.device, dtype=pipe.vae.dtype)
+        pipe.vae.decode(latents / pipe.vae.config.scaling_factor)
+    return counter.get_total_flops() / 1e9
+
+
 def run(config: dict[str, Any], output_dir: Path) -> None:
     import torch
     from diffusers import StableDiffusionPipeline
@@ -38,6 +52,9 @@ def run(config: dict[str, Any], output_dir: Path) -> None:
     ).to(runtime["device"])
     pipe.set_progress_bar_config(disable=True)
     _scheduler(pipe, config["inference"]["scheduler"])
+    from .architecture import apply_architecture
+    # Static edits come first: removed weights are freed before any timing or caching.
+    architecture_stats = apply_architecture(pipe, config.get("architecture"))
 
     helper = None
     if config["method"] == "deepcache":
@@ -119,6 +136,9 @@ def run(config: dict[str, Any], output_dir: Path) -> None:
         "quality_metrics": {},
         "energy_joules_per_image": None,
     }
+    summary["architecture"] = architecture_stats
+    if runtime.get("count_flops"):
+        summary["gflops_per_image"] = _count_gflops(pipe, config, call_args)
     if config["method"] == "flexiffusion":
         from .flexiffusion import config_actions, schedule_stats
         summary["schedule"] = schedule_stats(config_actions(config))
