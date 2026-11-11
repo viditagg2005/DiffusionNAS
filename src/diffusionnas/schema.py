@@ -8,6 +8,8 @@ from typing import Any
 SCHEMA_VERSION = 1
 METHODS = {"baseline", "autodiffusion", "deepcache", "flexiffusion"}
 SD15_MODEL = "stable-diffusion-v1-5/stable-diffusion-v1-5"
+# Distilled compact U-Nets (BK-SDM, distilled from SD-v1.4) used only as external reference points.
+EXTERNAL_MODELS = {"nota-ai/bk-sdm-base", "nota-ai/bk-sdm-small", "nota-ai/bk-sdm-tiny"}
 
 
 class ConfigError(ValueError):
@@ -33,7 +35,10 @@ def validate_config(config: dict[str, Any]) -> None:
         errors.append(f"method must be one of {sorted(METHODS)}")
 
     model = config.get("model", {})
-    if model.get("id") != SD15_MODEL:
+    if model.get("id") in EXTERNAL_MODELS:
+        if method != "baseline" or config.get("architecture"):
+            errors.append("external models run only as plain baselines without architecture edits")
+    elif model.get("id") != SD15_MODEL:
         errors.append(f"model.id must be the locked SD1.5 repository: {SD15_MODEL}")
     if model.get("height") != 512 or model.get("width") != 512:
         errors.append("the initial matched benchmark is locked to 512x512")

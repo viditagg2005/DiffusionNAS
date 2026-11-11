@@ -170,6 +170,10 @@ class ClipScorer:
         own = self.image_features([record.image_path for record, _ in pairs])
         ref = self.image_features([path for _, path in pairs])
         similarities = (100.0 * (own * ref).sum(dim=-1)).cpu().tolist()
+        (run_path / "fidelity_measurements.jsonl").write_text("".join(
+            json.dumps({"prompt_index": record.prompt_index, "seed": record.seed, "clip_image_fidelity": float(value)},
+                       sort_keys=True) + "\n"
+            for (record, _), value in zip(pairs, similarities)), encoding="utf-8")
         result = summarize_clip_scores(similarities, self.model_id)
         result["reference_run"] = reference_path.name
         summary = _read_json(run_path / "summary.json")

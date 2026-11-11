@@ -8,10 +8,14 @@ import random
 import statistics
 
 
+FIELD_FILES = {"clip_score": "quality_measurements.jsonl", "black_image": "quality_measurements.jsonl",
+               "clip_image_fidelity": "fidelity_measurements.jsonl"}
+
+
 def per_prompt_scores(run_dir: str | Path, field: str = "clip_score") -> dict[int, float]:
     """Mean of a per-image metric over seeds, keyed by prompt index."""
     by_prompt: dict[int, list[float]] = defaultdict(list)
-    for line in Path(run_dir, "quality_measurements.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in Path(run_dir, FIELD_FILES[field]).read_text(encoding="utf-8").splitlines():
         if line.strip():
             row = json.loads(line)
             by_prompt[row["prompt_index"]].append(float(row[field]))

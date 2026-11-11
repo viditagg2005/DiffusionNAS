@@ -36,7 +36,8 @@ def is_reference(config: dict) -> bool:
     inference = config["inference"]
     architecture = config.get("architecture") or {}
     return (
-        config["method"] == "baseline"
+        config["model"]["id"] == "stable-diffusion-v1-5/stable-diffusion-v1-5"
+        and config["method"] == "baseline"
         and inference["scheduler"] == "ddim"
         and inference["num_inference_steps"] == 20
         and inference["guidance_scale"] == 7.5

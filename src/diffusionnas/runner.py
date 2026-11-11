@@ -33,6 +33,10 @@ def execute(config: dict[str, Any], project_root: Path, dry_run: bool = False) -
     fidelity = "adapted" if config["method"] in {"autodiffusion", "flexiffusion"} else "paper_implementation"
     if config["method"] == "baseline":
         fidelity = "reference"
+    if config.get("architecture"):
+        fidelity = "searched_architecture"
+    if config["model"]["id"] != "stable-diffusion-v1-5/stable-diffusion-v1-5":
+        fidelity = "external_distilled"
     command = [
         sys.executable,
         "-m",
