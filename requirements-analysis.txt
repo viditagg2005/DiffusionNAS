@@ -1,0 +1,5 @@
+# CPU-only analysis dependencies (surrogate benchmark, figures)
+scikit-learn>=1.3,<2
+moocore>=0.3,<1
+matplotlib>=3.7,<4
+scipy>=1.10,<2

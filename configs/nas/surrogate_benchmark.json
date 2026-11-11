@@ -1,0 +1,30 @@
+{
+  "purpose": "Compare many-objective selection schemes (LHFiD, NSGA-III, NSGA-II, random) at realistic evaluation budgets on surrogates of the real v3 SD1.5 NAS problem. Fixed before any benchmark run.",
+  "training_data": "artifacts/nas/seed{1,2,3}/{random,nsga2}/search_results.json (900 real calibration evaluations); latency normalized by each job's reference",
+  "objective_sets": {
+    "M4": ["clip_score", "clip_image_fidelity", "latency_p50_ms", "unet_weight_mb"],
+    "M6": ["clip_score", "clip_image_fidelity", "latency_p50_ms", "gflops_per_image", "peak_allocated_mb", "unet_weight_mb"]
+  },
+  "reference_point": {"clip_score": 25.2, "clip_image_fidelity": 75.0, "latency_p50_ms": 600.0,
+                      "gflops_per_image": 36000.0, "peak_allocated_mb": 3500.0, "unet_weight_mb": 1700.0},
+  "scaling": "minimization form (CLIP and fidelity negated); fixed affine map with 0 = best value of each objective among the 900 training candidates and 1 = reference point; applied identically for every algorithm before selection",
+  "reference_vectors": {"M4": "Das-Dennis p=5 (56)", "M6": "two-layer Das-Dennis boundary p=2 + inner p=2 shrunk halfway to centroid (42)"},
+  "population": {"M4": 56, "M6": 42},
+  "budget": 3360,
+  "checkpoints": [150, 336, 840, 1680, 3360],
+  "algorithms": ["random", "nsga2", "nsga3", "lhfid", "lhfid_equal"],
+  "variation": "identical for all: crossover rate 0.9 (nas_space.crossover), mutation rate 1.0 (nas_space.mutate), no re-evaluation of an execution signature",
+  "lhfid_settings": "preferences p_m = 1/w_m with zero components floored at the smallest positive component (lhfid) or p_m = 1/M (lhfid_equal); stabilization psi_N = (2 decimals, 10 generations); nadir re-estimated at each detection; self-termination disabled",
+  "surrogates": [
+    {"family": "extratrees", "seed": 0, "bootstrap": false},
+    {"family": "extratrees", "seed": 1, "bootstrap": true},
+    {"family": "extratrees", "seed": 2, "bootstrap": true},
+    {"family": "randomforest", "seed": 0, "bootstrap": false},
+    {"family": "hgb", "seed": 0, "bootstrap": false}
+  ],
+  "seeds_per_surrogate": 7,
+  "indicators": "exact hypervolume (moocore) in scaled space with reference 1: archive HV (all evaluated) for every algorithm and final-population HV for population-based ones",
+  "statistics": "per algorithm pair: two-sided Wilcoxon signed-rank on the 35 (surrogate, seed) cells, Holm-corrected over pairs; a ranking is claimed only if the median difference has the same sign under every one of the 5 surrogates",
+  "sanity_check": "at 150 evaluations NSGA-II vs random should roughly reproduce the real searches (no consistent difference)",
+  "confirmation": "for M6 and each algorithm, the run on surrogate 0 with the median final archive HV; from its archive points inside the reference box take the 4-objective-style rule of lock_nas_finalists (best on each objective, then farthest-point) up to 5 points; evaluate them for real on the calibration split in one allocation with a reference run; report surrogate error on these points"
+}
