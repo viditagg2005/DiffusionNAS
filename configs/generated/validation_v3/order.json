@@ -1,0 +1,260 @@
+[
+  {
+    "file": "00_ref_a.json",
+    "label": "ref_a",
+    "role": "reference",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "01_nas_03.json",
+    "label": "nas_03",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "02_nas_05.json",
+    "label": "nas_05",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "03_nas_05_twin_int8.json",
+    "label": "nas_05_twin_int8",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "04_dpm10.json",
+    "label": "dpm10",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "05_nas_08_twin_fp16.json",
+    "label": "nas_08_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "06_ddim25.json",
+    "label": "ddim25",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "07_bksdm_small.json",
+    "label": "bksdm_small",
+    "role": "external",
+    "model": "nota-ai/bk-sdm-small"
+  },
+  {
+    "file": "08_flex_n11_b6_i2.json",
+    "label": "flex_n11_b6_i2",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "09_nas_07.json",
+    "label": "nas_07",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "10_nas_08_twin_int8.json",
+    "label": "nas_08_twin_int8",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "11_nas_00_twin_fp16.json",
+    "label": "nas_00_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "12_nas_09_twin_fp16.json",
+    "label": "nas_09_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "13_nas_04_twin_fp16.json",
+    "label": "nas_04_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "14_nas_05_twin_fp16.json",
+    "label": "nas_05_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "15_dpm8.json",
+    "label": "dpm8",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "16_nas_02.json",
+    "label": "nas_02",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "17_dpm6.json",
+    "label": "dpm6",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "18_nas_09.json",
+    "label": "nas_09",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "19_nas_01.json",
+    "label": "nas_01",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "20_nas_04_twin_int8.json",
+    "label": "nas_04_twin_int8",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "21_ref_b.json",
+    "label": "ref_b",
+    "role": "reference",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "22_nas_07_twin_int8.json",
+    "label": "nas_07_twin_int8",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "23_nas_00.json",
+    "label": "nas_00",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "24_ddim8.json",
+    "label": "ddim8",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "25_bksdm_base.json",
+    "label": "bksdm_base",
+    "role": "external",
+    "model": "nota-ai/bk-sdm-base"
+  },
+  {
+    "file": "26_dpm4.json",
+    "label": "dpm4",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "27_int8_ddim20.json",
+    "label": "int8_ddim20",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "28_nas_03_twin_int8.json",
+    "label": "nas_03_twin_int8",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "29_nas_08.json",
+    "label": "nas_08",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "30_deepcache_i3b0.json",
+    "label": "deepcache_i3b0",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "31_ddim15.json",
+    "label": "ddim15",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "32_nas_03_twin_fp16.json",
+    "label": "nas_03_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "33_ddim6.json",
+    "label": "ddim6",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "34_ddim50.json",
+    "label": "ddim50",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "35_flex_n7_b1_i2.json",
+    "label": "flex_n7_b1_i2",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "36_nas_04.json",
+    "label": "nas_04",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "37_nas_07_twin_fp16.json",
+    "label": "nas_07_twin_fp16",
+    "role": "twin",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "38_ddim10.json",
+    "label": "ddim10",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "39_bksdm_tiny.json",
+    "label": "bksdm_tiny",
+    "role": "external",
+    "model": "nota-ai/bk-sdm-tiny"
+  },
+  {
+    "file": "40_dpm15.json",
+    "label": "dpm15",
+    "role": "baseline",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "41_nas_06.json",
+    "label": "nas_06",
+    "role": "finalist",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  },
+  {
+    "file": "42_ref_c.json",
+    "label": "ref_c",
+    "role": "reference",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+  }
+]
