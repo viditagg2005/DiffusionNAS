@@ -99,9 +99,32 @@ Protocol fixed in advance (`configs/nas/surrogate_benchmark.json`); 5 independen
 - LHFiD's stabilization-timed nadir estimation fired in 134 of 140 runs (median first detection at generation 45–49).
 - These conclusions are conditional on the surrogates; §5.5 reports real measurements of points each optimizer selected.
 
-### 5.5 Pending (follow-up GPU session)
+### 5.5 Surrogate-assisted LHFiD at the real budget (preliminary, simulation) — `scripts/sa_simulation.py`
 
-- KID/FID vs real COCO and vs the reference for all validation runs (the validation job's final scoring step failed; generation and CLIP/fidelity scoring completed).
+The real-budget failure of every optimizer (§5.2, §5.4) motivates a surrogate-assisted search: spend 50 real evaluations on random configurations, then 5 rounds of (refit an internal surrogate on the noisy observations → run a many-objective optimizer for 1,680 virtual evaluations → evaluate 20 novel candidates, spread across the predicted front). Protocol fixed in `configs/nas/sa_simulation.json` before any run: the "truth" is a different model family (HistGradientBoosting or RandomForest) fitted on all 900 real evaluations; CLIP and fidelity observations carry Gaussian noise calibrated to the measured reliabilities (0.50 and 0.90); hypervolume is computed on the noise-free truth; 31 seeds per arm and truth; Mann–Whitney U with Holm correction.
+
+| Arm (150 evaluations) | HV, HGB truth | HV, RF truth |
+| --- | ---: | ---: |
+| **SA-LHFiD** | **0.415** | **0.338** |
+| SA-LHFiD, noise-aware ties | 0.395 | 0.329 |
+| SA-MOEA/D (extension) | 0.374 | 0.320 |
+| SA-RVEA (extension) | 0.369 | 0.314 |
+| LHFiD | 0.333 | 0.263 |
+| SA-NSGA-II | 0.303 | 0.257 |
+| Random | 0.292 | 0.268 |
+| NSGA-II | 0.260 | 0.208 |
+
+- SA-LHFiD beats random (+26–42%), NSGA-II, LHFiD and SA-NSGA-II under both truths (Holm p ≤ 1.6 × 10⁻⁵), beats SA-RVEA under both truths (p ≤ 0.011), and beats SA-MOEA/D under one truth (p = 0.006; +0.017, n.s., under the other).
+- Surrogate assistance only pays off with a many-objective-capable selector: SA-NSGA-II is no better than random, while SA-RVEA, SA-MOEA/D and SA-LHFiD all beat their direct versions; LHFiD is the best inner optimizer.
+- The noise-aware tie rule does not help (ablation).
+- RVEA and MOEA/D were added after the pre-registered comparisons, as labelled extensions on the same truths and seeds. On the surrogate benchmark (§5.4) they are close to LHFiD: LHFiD keeps the best 6-objective archive HV (+0.008, consistent across surrogates) but ties on final-population HV, so LHFiD's large lead is over Pareto-dominance methods (NSGA-II/III).
+- This is a simulation calibrated to the real problem; the pre-registered real confirmation (C2, `configs/nas/c2_protocol.json`, 6 seeds per arm) is running.
+
+### 5.6 Pending (cluster)
+
+- KID/FID vs real COCO and vs the reference for all validation runs (the validation job's final scoring step failed on newer SciPy; fixed, rescoring).
+- C1: pre-registered non-inferiority test on a fresh 500-prompt split (`configs/nas/c1_protocol.json`, margin 0.5 CLIP).
+- C2: real SA-LHFiD vs SA-NSGA-II, random and NSGA-II, 6 seeds each.
 - Real calibration measurements of 25 surrogate-selected points (surrogate error on optimizer-chosen points).
 - Post-hoc BK-SDM at 10-step DDIM, fp16 and int8.
 
