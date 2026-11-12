@@ -236,7 +236,67 @@ def select_lhfid(f: np.ndarray, n: int, state: dict, rng: random.Random) -> list
     return selected[:n]
 
 
-SELECTORS = {"nsga2": select_nsga2, "nsga3": select_nsga3, "lhfid": select_lhfid, "lhfid_equal": select_lhfid}
+def select_rvea(f: np.ndarray, n: int, state: dict, rng: random.Random) -> list[int]:
+    """RVEA (Cheng et al., 2016): angle-penalized distance per reference vector, alpha = 2.
+
+    Vectors are adapted to the population's objective ranges every 10% of the run.
+    Vectors that win no solution are filled by the nearest unselected solutions so the
+    population size stays fixed (the original RVEA lets it shrink).
+    """
+    base = state["vectors"] / np.linalg.norm(state["vectors"], axis=1, keepdims=True)
+    progress = state.get("progress", 0.0)
+    if "adapted" not in state or progress - state.get("adapted_at", -1.0) >= 0.1:
+        span = np.maximum(f.max(axis=0) - f.min(axis=0), 1e-12)
+        adapted = base * span
+        state["adapted"] = adapted / np.linalg.norm(adapted, axis=1, keepdims=True)
+        state["adapted_at"] = progress
+    vectors = state["adapted"]
+    translated = f - f.min(axis=0)
+    norms = np.maximum(np.linalg.norm(translated, axis=1), 1e-12)
+    cosine = np.clip((translated / norms[:, None]) @ vectors.T, -1.0, 1.0)
+    angle = np.arccos(cosine)
+    nearest = cosine.argmax(axis=1)
+    gamma = np.array([np.sort(np.arccos(np.clip(vectors @ v, -1, 1)))[1] if len(vectors) > 1 else 1.0 for v in vectors])
+    m = f.shape[1]
+    chosen: list[int] = []
+    taken: set[int] = set()
+    for j in range(len(vectors)):
+        members = np.nonzero(nearest == j)[0]
+        if len(members) == 0:
+            continue
+        penalty = m * (progress ** 2) * angle[members, j] / max(gamma[j], 1e-12)
+        apd = (1 + penalty) * norms[members]
+        pick = int(members[np.argmin(apd)])
+        chosen.append(pick)
+        taken.add(pick)
+    leftovers = [i for i in range(len(f)) if i not in taken]
+    fronts = nondominated_sort(f[leftovers]) if leftovers else []
+    for front in fronts:
+        for k in front:
+            if len(chosen) >= n:
+                break
+            chosen.append(leftovers[k])
+    return chosen[:n]
+
+
+def select_decomposition(f: np.ndarray, n: int, state: dict, rng: random.Random) -> list[int]:
+    """Generational decomposition selection (MOEA/D-style, Tchebycheff): each weight vector keeps
+    the not-yet-chosen solution with the best Tchebycheff value w.r.t. the current ideal point."""
+    vectors = np.maximum(state["vectors"], 1e-6)
+    ideal = f.min(axis=0)
+    tcheby = ((f[:, None, :] - ideal) * vectors[None, :, :]).max(axis=2)  # solutions x vectors
+    chosen: list[int] = []
+    taken: set[int] = set()
+    for j in rng.sample(range(len(vectors)), len(vectors)):
+        order = np.argsort(tcheby[:, j])
+        pick = next(int(i) for i in order if int(i) not in taken)
+        chosen.append(pick)
+        taken.add(pick)
+    return chosen[:n]
+
+
+SELECTORS = {"nsga2": select_nsga2, "nsga3": select_nsga3, "lhfid": select_lhfid, "lhfid_equal": select_lhfid,
+             "rvea": select_rvea, "moead": select_decomposition}
 
 
 # ---- stabilization tracking (LHFiD nadir timing) ----------------------------
@@ -328,6 +388,7 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
         offspring = novel_batch(mate, min(population, budget - len(archive_f)))
         child_f = evaluate_genomes(offspring)
         union_g, union_f = genomes + offspring, np.vstack([f, child_f])
+        state["progress"] = len(archive_f) / budget
         keep = select(union_f, population, state, rng)
         if algorithm.startswith("lhfid"):
             scale = lambda x: x - state["ideal"] if state.get("nadir") is None else (x - state["ideal"]) / np.maximum(state["nadir"] - state["ideal"], 1e-12)

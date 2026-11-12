@@ -64,7 +64,7 @@ class RunTests(unittest.TestCase):
             return np.array([[len(p["architecture"]["removed_units"]), -p["num_inference_steps"],
                               p["guidance_scale"], float(p["architecture"]["weight_precision"] == "fp16")]
                              for p in policies], dtype=float)
-        for algorithm in ("random", "nsga2", "nsga3", "lhfid", "lhfid_equal"):
+        for algorithm in ("random", "nsga2", "nsga3", "lhfid", "lhfid_equal", "rvea", "moead"):
             result = moea.run(algorithm, evaluate, 300, 56, moea.das_dennis(4, 5), seed=0)
             self.assertEqual(len(result["objectives"]), 300, algorithm)
 

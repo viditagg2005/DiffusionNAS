@@ -71,11 +71,11 @@ def task(args):
 
     tolerance = truth["sigma_raw"] / (hi - lo)
     budget = PROTOCOL["budget"]
-    if arm in ("random", "nsga2", "lhfid"):
+    if not arm.startswith("sa_"):
         result = moea.run(arm, observe, budget, 20, moea.das_dennis(4, 3), seed=seed)
         policies = result["policies"]
     else:
-        inner = "nsga2" if arm == "sa_nsga2" else "lhfid"
+        inner = "lhfid" if arm == "sa_lhfid_noise" else arm[3:]
         result = run_sa(inner, observe, budget, seed, moea.das_dennis(4, 5),
                         tie_tolerance=tolerance if arm == "sa_lhfid_noise" else None)
         policies = result["policies"]
@@ -95,6 +95,7 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--seeds", type=int, default=PROTOCOL["seeds_per_truth"])
     parser.add_argument("--output", type=Path, default=ROOT / "artifacts/sa_simulation")
+    parser.add_argument("--arms", help="comma-separated override; labelled extension written to results_extension_*.json")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     rows = load_archive(ROOT / "artifacts/nas")
@@ -103,7 +104,7 @@ def main() -> int:
         print(f"truth {t['family']}: noise SD raw {dict(zip(NAMES, np.round(t['sigma_raw'], 3)))}")
     state_path = args.output / "truths.pkl"
     state_path.write_bytes(pickle.dumps(state))
-    arms = list(PROTOCOL["arms"])
+    arms = args.arms.split(",") if args.arms else list(PROTOCOL["arms"])
     tasks = [(t, s, a) for t in range(len(state["truths"])) for s in range(args.seeds) for a in arms]
     print(f"{len(tasks)} runs on {args.workers} workers", flush=True)
     records = []
@@ -130,7 +131,8 @@ def main() -> int:
             "pairs": pairs}
     out = {"protocol": PROTOCOL, "noise_sd_raw": {t["family"]: dict(zip(NAMES, t["sigma_raw"].tolist())) for t in state["truths"]},
            "statistics": statistics_out, "runs": records}
-    (args.output / "results.json").write_text(json.dumps(out, indent=2) + "\n")
+    name = f"results_extension_{'_'.join(arms)}.json" if args.arms else "results.json"
+    (args.output / name).write_text(json.dumps(out, indent=2) + "\n")
     for family, block in statistics_out.items():
         print(f"\ntruth {family}: " + "  ".join(f"{a} {v['median']:.4f}" for a, v in block["summary"].items()))
         for pair, v in block["pairs"].items():

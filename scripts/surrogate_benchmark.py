@@ -102,7 +102,7 @@ def holm(pvalues: dict) -> dict:
 def statistics_for(records, key, indicator):
     from scipy.stats import wilcoxon
 
-    algorithms = PROTOCOL["algorithms"]
+    algorithms = sorted({r["algorithm"] for r in records}, key=lambda a: (PROTOCOL["algorithms"] + ["rvea", "moead"]).index(a))
     cells = sorted({(r["surrogate"], r["seed"]) for r in records})
     value = {(r["algorithm"], r["surrogate"], r["seed"]): indicator(r) for r in records if r["objective_set"] == key}
     summary = {a: {"median": statistics.median(value[(a, s, d)] for s, d in cells),
@@ -147,6 +147,8 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--output", type=Path, default=ROOT / "artifacts" / "surrogate_benchmark")
     parser.add_argument("--quick", action="store_true", help="pilot: 1 seed, surrogate 0 only, budget unchanged")
+    parser.add_argument("--algorithms", help="comma-separated override; runs as a labelled extension (separate output, "
+                                             "no accuracy report or confirmation configs)")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
 
@@ -154,8 +156,10 @@ def main() -> int:
     ref = PROTOCOL["reference_point"]
     in_box = lambda r: all((r["objectives"][n] >= ref[n]) if DIRECTION[n] == "max" else (r["objectives"][n] <= ref[n])
                            for n in PROTOCOL["objective_sets"]["M4"])
+    extension = bool(args.algorithms)
+    algorithms = args.algorithms.split(",") if extension else PROTOCOL["algorithms"]
     accuracy = {}
-    if not args.quick:
+    if not args.quick and not extension:
         for family in ("extratrees", "randomforest", "hgb"):
             accuracy[family] = {"all": cross_validate(rows, OBJECTIVES, family=family),
                                 "reference_box": cross_validate(rows, OBJECTIVES, family=family, region=in_box)}
@@ -168,7 +172,7 @@ def main() -> int:
     surrogates = [0] if args.quick else range(len(PROTOCOL["surrogates"]))
     seeds = [0] if args.quick else range(PROTOCOL["seeds_per_surrogate"])
     tasks = [(key, s, seed, a) for key in PROTOCOL["objective_sets"] for s in surrogates for seed in seeds
-             for a in PROTOCOL["algorithms"]]
+             for a in algorithms]
     print(f"{len(tasks)} runs on {args.workers} workers")
     # Spawned workers fit their own surrogates: forking after OpenMP-backed models ran in the
     # parent (HistGradientBoosting) deadlocks the children.
@@ -189,9 +193,10 @@ def main() -> int:
             for c in PROTOCOL["checkpoints"]}
         results["statistics"][key]["final_population_hv"] = statistics_for(
             [r for r in subset if r["algorithm"] != "random"], key, lambda r: r["final_population_hv"])
-    (args.output / ("pilot.json" if args.quick else "results.json")).write_text(json.dumps(results, indent=2) + "\n")
+    name = "pilot.json" if args.quick else (f"results_extension_{'_'.join(algorithms)}.json" if extension else "results.json")
+    (args.output / name).write_text(json.dumps(results, indent=2) + "\n")
 
-    if not args.quick:
+    if not args.quick and not extension:
         prompts = load_prompts(ROOT / "data" / "prompts" / "calibration.json")
         runtime = {"device": "cuda", "precision": "float16", "warmup_runs": 3, "repetitions": 1, "count_flops": True}
         out = ROOT / "configs" / "generated" / "confirmation"
