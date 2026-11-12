@@ -37,9 +37,10 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | 0 | Harness, baselines (DDIM, DeepCache, AutoDiffusion timestep adaptation), calibration + hold-out benchmark, v1 searches, Flexiffusion reimplementation, v2 policy search, validation split, finalist rule | — | ✅ Done (exploratory; see CLAUDE.md) |
 | 0b | Control benchmark (native DPM++, 18 Flexiffusion schedules) | cluster, Oct 10 | ✅ see Results |
 | 1 | Single-unit sensitivity probe (24 units, 6 groups, int8) | `scripts/run_probe.sh` (srun) | ✅ see Results; 15 units kept (`configs/nas/units.json`) |
-| 2 | v3 search: random vs NSGA-II, 150 unique candidates each, seeds 1–3 | `nas_search.sbatch` × 3 (one seed per job, ~6–9 h) | ⏳ ready to submit |
-| 3 | Lock finalists (`scripts/lock_nas_finalists.py`, committed before searches ran) | CPU | ☐ |
-| 4 | Validation: finalists + baselines (DDIM step sweep, native DPM++, DeepCache, Flexiffusion, BK-SDM external) in one allocation | sbatch | ☐ |
+| 2 | v3 search: random vs NSGA-II, 150 unique candidates each, seeds 1–3 | `nas_search.sbatch` × 3 (~3.7 h each) | ✅ see Results |
+| 3 | Lock finalists (`scripts/lock_nas_finalists.py`, committed before searches ran) | CPU | ✅ 10 finalists (`configs/generated/validation_v3/locked_finalists.json`) |
+| 3b | Many-objective optimizer benchmark on surrogates (LHFiD, NSGA-III, NSGA-II, random; protocol `configs/nas/surrogate_benchmark.json`) + real confirmation | CPU + srun | ⏳ running |
+| 4 | Validation: 43 runs (10 finalists, 12 architecture-ablation twins, DDIM/DPM++ sweeps, DeepCache, int8, 2 Flexiffusion, BK-SDM ×3, reference ×3) in one allocation | `validation_v3.sbatch` | ⏳ submitted 2026-11-12 |
 | 5 | Final report, Pareto/HV figures, docs, Notion | local | ☐ |
 
 ## Cluster run log
@@ -51,6 +52,8 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | 2026-10-10 | control benchmark | `controls_benchmark.sbatch` | results pending copy-back |
 | — | v2 search (`search_v2.sbatch`) | — | **superseded by v3; do not run** |
 | 2026-11-10 | sensitivity probe | `scripts/run_probe.sh` (srun) | ✅ RTX 6000 Ada |
+| 2026-11-10/11 | v3 searches, seeds 1–3 | `nas_search.sbatch` | ✅ RTX 6000 Ada, 900 candidates |
+| 2026-11-12 | validation | `validation_v3.sbatch` | submitted |
 
 ## Local smoke evidence (RTX 3070 Ti laptop, 2 prompts, not a result)
 
@@ -68,3 +71,7 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 - Latency responds weakly to removing low-resolution units on this GPU (batch 1 is not compute-bound there): −22% FLOPs from all 64-px attentions gives −18% latency, while deep-unit removals change latency by ±3%.
 
 **Decision D021 (search objectives).** Search on 4 objectives (CLIP, fidelity, latency, U-Net MB); measure and report GFLOPs and peak VRAM for every candidate. With 6 objectives nearly every candidate is nondominated and NSGA-II selection degenerates; GFLOPs tracks latency and peak VRAM tracks weight bytes plus a cache term. Pre-registered hypervolume reference: CLIP 25.2 (reference − 1.0), fidelity 75, 600 ms, 1,700 MB. NSGA-II starts from random novel genomes (no hand-picked seeds), so its hypervolume gap over random search measures the optimizer only.
+
+**v3 searches (Nov 10–11).** 6 searches × 150 unique candidates, all on the RTX 6000 Ada; job references 485 / 491 / 511 ms (5% between-job drift, so latency is normalized by each job's reference). 233 of 900 candidates pass CLIP ≥ 25.2 and fidelity ≥ 75. Hypervolume (pre-registered 4-D reference, latency normalized), NSGA-II minus random per seed: −0.78, +0.71, +2.64 (×10⁶); drift-free variant with GFLOPs in place of latency gives the same 2-of-3 pattern, and the seed where NSGA-II ran first is not the outlier, so job order does not explain it. **No consistent optimizer advantage at 150 real evaluations** (`scripts/analyze_search.py`, `docs/figures/search_hypervolume.png`). Speed comes mostly from fewer steps (6-step DPM-Solver++ with no edits: 180 ms, CLIP 26.29); the architecture genes mainly buy bytes (U-Net down to 696 MB, −58%, with int8 + 7 removed units at CLIP 25.39).
+
+**Finalist lock (Nov 12).** 839 unique policies, 186 eligible, 82 on the 4-objective front, 10 locked; validation design (`scripts/prepare_validation_v3.py`) committed before the lock.

@@ -23,3 +23,5 @@ artifacts/validation
 artifacts/probe
 artifacts/nas
 artifacts/validation_v3
+artifacts/surrogate_benchmark
+artifacts/confirmation

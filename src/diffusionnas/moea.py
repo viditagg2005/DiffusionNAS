@@ -263,6 +263,7 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
     rng = random.Random(seed)
     seen: set[str] = set()
     archive_f: list[np.ndarray] = []
+    archive_p: list[dict] = []
 
     def novel_batch(propose, count):
         genomes = []
@@ -273,15 +274,18 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
         return genomes
 
     def evaluate_genomes(genomes):
-        f = evaluate([nas_space.decode(g) for g in genomes])
+        policies = [nas_space.decode(g) for g in genomes]
+        f = evaluate(policies)
         archive_f.extend(f)
+        archive_p.extend(policies)
         return f
 
     if algorithm == "random":
         while len(archive_f) < budget:
             batch = min(population, budget - len(archive_f))
             evaluate_genomes(novel_batch(lambda: nas_space.random_genome(rng), batch))
-        return {"objectives": np.array(archive_f), "population": np.array(archive_f), "nadir_generations": []}
+        return {"objectives": np.array(archive_f), "policies": archive_p, "population": np.array(archive_f),
+                "nadir_generations": []}
 
     select = SELECTORS[algorithm]
     state: dict = {"vectors": vectors, "preference_mode": "equal" if algorithm == "lhfid_equal" else "inverse_w"}
@@ -325,7 +329,8 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
         genomes, f = [union_g[i] for i in keep], union_f[keep]
         if algorithm == "nsga2":
             select(f, population, state, rng)  # refresh rank/crowding for tournament on survivors
-    return {"objectives": np.array(archive_f), "population": f, "nadir_generations": nadir_generations}
+    return {"objectives": np.array(archive_f), "policies": archive_p, "population": f,
+            "nadir_generations": nadir_generations}
 
 
 # ---- indicators ----------------------------------------------------------------
