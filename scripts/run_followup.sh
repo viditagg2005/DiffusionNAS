@@ -39,8 +39,10 @@ run_configs() {  # $1 config dir, $2 runs dir
 
 echo "== 1/3 validation KID/FID"
 VAL="${REPO_ROOT}/artifacts/validation_v3/runs"
+# Non-fatal: if KID/FID fails, steps 2-3 still run; the log keeps the error for diagnosis.
 python scripts/evaluate_runs.py --runs-root "${VAL}" --reference-run "$(run_dir_for "${VAL}" ref_a)" \
-  --distribution --real-dir "${REPO_ROOT}/data/coco_real" 2>&1 | tee "${REPO_ROOT}/artifacts/validation_v3/rescore.log"
+  --distribution --real-dir "${REPO_ROOT}/data/coco_real" 2>&1 | tee "${REPO_ROOT}/artifacts/validation_v3/rescore.log" \
+  || echo "WARNING: validation KID/FID failed; see artifacts/validation_v3/rescore.log"
 
 echo "== 2/3 confirmation runs (calibration)"
 CONF="${REPO_ROOT}/artifacts/confirmation/runs"
@@ -51,5 +53,6 @@ echo "== 3/3 post-hoc BK-SDM controls (validation)"
 POST="${REPO_ROOT}/artifacts/posthoc_bksdm/runs"
 run_configs "${REPO_ROOT}/configs/generated/posthoc_bksdm" "${POST}"
 python scripts/evaluate_runs.py --runs-root "${POST}" --reference-run "$(run_dir_for "${POST}" posthoc_ref)" \
-  --distribution --real-dir "${REPO_ROOT}/data/coco_real"
+  --distribution --real-dir "${REPO_ROOT}/data/coco_real" 2>&1 | tee "${REPO_ROOT}/artifacts/posthoc_bksdm/score.log" \
+  || echo "WARNING: post-hoc KID/FID failed; CLIP and fidelity are still in place"
 echo "Follow-up done. Copy back artifacts/{validation_v3,confirmation,posthoc_bksdm} (json, jsonl, npy, log)."

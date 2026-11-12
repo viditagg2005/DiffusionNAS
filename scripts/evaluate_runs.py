@@ -73,6 +73,17 @@ def real_features(real_dir: Path, device: str) -> np.ndarray:
     if cache.exists():
         return np.load(cache)
     paths = sorted(p for p in real_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
+    from PIL import Image
+
+    readable = []
+    for path in paths:  # drop truncated downloads instead of failing the whole scoring step
+        try:
+            with Image.open(path) as image:
+                image.load()
+            readable.append(path)
+        except Exception as exc:
+            print(f"skipping unreadable real image {path.name}: {exc}", flush=True)
+    paths = readable
     if len(paths) < 1000:
         raise SystemExit(f"only {len(paths)} real images in {real_dir}; run scripts/fetch_coco_real.py first")
     print(f"real images: {len(paths)}", flush=True)
