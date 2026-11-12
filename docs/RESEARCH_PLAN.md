@@ -39,9 +39,9 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | 1 | Single-unit sensitivity probe (24 units, 6 groups, int8) | `scripts/run_probe.sh` (srun) | ✅ see Results; 15 units kept (`configs/nas/units.json`) |
 | 2 | v3 search: random vs NSGA-II, 150 unique candidates each, seeds 1–3 | `nas_search.sbatch` × 3 (~3.7 h each) | ✅ see Results |
 | 3 | Lock finalists (`scripts/lock_nas_finalists.py`, committed before searches ran) | CPU | ✅ 10 finalists (`configs/generated/validation_v3/locked_finalists.json`) |
-| 3b | Many-objective optimizer benchmark on surrogates (LHFiD, NSGA-III, NSGA-II, random; protocol `configs/nas/surrogate_benchmark.json`) + real confirmation | CPU + srun | ⏳ running |
-| 4 | Validation: 43 runs (10 finalists, 12 architecture-ablation twins, DDIM/DPM++ sweeps, DeepCache, int8, 2 Flexiffusion, BK-SDM ×3, reference ×3) in one allocation | `validation_v3.sbatch` | ⏳ submitted 2026-11-12 |
-| 5 | Final report, Pareto/HV figures, docs, Notion | local | ☐ |
+| 3b | Many-objective optimizer benchmark on surrogates (LHFiD, NSGA-III, NSGA-II, random; protocol `configs/nas/surrogate_benchmark.json`) + real confirmation | CPU + srun | ✅ benchmark (report §5.4); ⏳ confirmation in `run_followup.sh` |
+| 4 | Validation: 43 runs (10 finalists, 12 architecture-ablation twins, DDIM/DPM++ sweeps, DeepCache, int8, 2 Flexiffusion, BK-SDM ×3, reference ×3) in one allocation | `validation_v3.sbatch` (job 9827) | ✅ generation, CLIP, fidelity (report §5.3); ⏳ KID/FID (job's final scoring step failed) and post-hoc BK-SDM in `run_followup.sh` |
+| 5 | Final report, Pareto/HV figures, docs, Notion | local | ⏳ `docs/final_report.md` drafted with all results except §5.5 |
 
 ## Cluster run log
 
@@ -53,7 +53,8 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | — | v2 search (`search_v2.sbatch`) | — | **superseded by v3; do not run** |
 | 2026-11-10 | sensitivity probe | `scripts/run_probe.sh` (srun) | ✅ RTX 6000 Ada |
 | 2026-11-10/11 | v3 searches, seeds 1–3 | `nas_search.sbatch` | ✅ RTX 6000 Ada, 900 candidates |
-| 2026-11-12 | validation | `validation_v3.sbatch` | submitted |
+| 2026-11-12 | validation | `validation_v3.sbatch` (job 9827) | FAILED in the final KID/FID step after 1h46m; 43 runs generated and CLIP/fidelity scored |
+| 2026-11-13 | follow-up session | `scripts/run_followup.sh` (srun) | running |
 
 ## Local smoke evidence (RTX 3070 Ti laptop, 2 prompts, not a result)
 
