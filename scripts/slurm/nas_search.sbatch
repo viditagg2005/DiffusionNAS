@@ -7,14 +7,16 @@
 #SBATCH --mem=48G
 #SBATCH --time=23:50:00
 #SBATCH --output=slurm-%j.out
-# One optimizer seed per job: reference run, then random and NSGA-II (150 unique candidates each).
+# One optimizer seed per job: reference run, then each arm (150 unique candidates each).
 # Submit with: sbatch --export=ALL,DIFFUSIONNAS_ROOT="$PWD",NAS_SEED=1 scripts/slurm/nas_search.sbatch
+# C2 (surrogate-assisted): add NAS_ARMS="sa_lhfid sa_nsga2" (plus "random nsga2" for seeds 4-6), NAS_OUT=artifacts/nas_c2
 set -euo pipefail
 
 REPO_ROOT="${DIFFUSIONNAS_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 source "${REPO_ROOT}/scripts/slurm/job_env.sh"
 SEED="${NAS_SEED:?set NAS_SEED to 1, 2 or 3}"
-OUT="${REPO_ROOT}/artifacts/nas/seed${SEED}"
+OUT="${REPO_ROOT}/${NAS_OUT:-artifacts/nas}/seed${SEED}"
+read -r -a ARMS <<< "${NAS_ARMS:-random nsga2}"
 CONFIGS="${REPO_ROOT}/configs/generated/nas"
 DEADLINE=$(( $(date +%s) + ${SEARCH_MAX_WALLTIME_SECONDS:-84600} ))
 nvidia-smi --query-gpu=name,memory.total --format=csv
@@ -35,8 +37,10 @@ PY
 fi
 echo "reference run: ${REF_RUN}"
 
-# 2. Both optimizers; alternate their order by seed so slow drift does not favour one.
-if (( SEED % 2 == 1 )); then ORDER=(random nsga2); else ORDER=(nsga2 random); fi
+# 2. Arms in an order rotated by seed, so slow drift does not favour one arm.
+ORDER=()
+for (( i = 0; i < ${#ARMS[@]}; i++ )); do ORDER+=("${ARMS[$(( (i + SEED - 1) % ${#ARMS[@]} ))]}"); done
+echo "arm order: ${ORDER[*]}"
 for method in "${ORDER[@]}"; do
   remaining=$(( DEADLINE - $(date +%s) ))
   status=0

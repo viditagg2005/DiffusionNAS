@@ -12,6 +12,7 @@ data/prompts/*
 !data/prompts/calibration.json
 !data/prompts/holdout.json
 !data/prompts/validation.json
+!data/prompts/test.json
 .env
 .cache/
 artifacts/search
@@ -27,3 +28,5 @@ artifacts/surrogate_benchmark
 artifacts/confirmation
 artifacts/posthoc_bksdm
 artifacts/sa_simulation
+artifacts/c1
+artifacts/nas_c2

@@ -1,0 +1,15 @@
+{
+  "purpose": "Real-evaluation confirmation of surrogate-assisted LHFiD at the 150-evaluation budget. Fixed before any C2 job ran; launched because the pre-registered simulation (configs/nas/sa_simulation.json) met its decision rule.",
+  "arms": ["sa_lhfid", "sa_nsga2", "random", "nsga2"],
+  "seeds": {"sa_lhfid": [1, 2, 3, 4, 5, 6], "sa_nsga2": [1, 2, 3, 4, 5, 6],
+            "random": [1, 2, 3, 4, 5, 6], "nsga2": [1, 2, 3, 4, 5, 6]},
+  "existing_runs": "random and nsga2 seeds 1-3 are the completed v3 searches in artifacts/nas (same code, protocol and calibration split)",
+  "new_runs": "artifacts/nas_c2/seed{1..6}: each job measures its own reference first; seeds 1-3 run sa_lhfid and sa_nsga2, seeds 4-6 run all four arms; arm order rotated by seed",
+  "warm_start": "none: every run starts from scratch",
+  "budget": 150,
+  "primary_indicator": "exact 4-D hypervolume of all evaluated candidates with the pre-registered reference (CLIP 25.2, fidelity 75, 600 ms, 1,700 MB); latency normalized by the run's own job reference times the median reference over all jobs",
+  "robustness_indicators": ["same with GFLOPs in place of latency (reference 36,000 GFLOPs; drift-free)", "3-D without CLIP: fidelity, latency, U-Net MB"],
+  "test": "two-sided Mann-Whitney U, sa_lhfid vs each other arm (6 vs 6 runs), Holm over the three comparisons on the primary indicator",
+  "claim_rule": "sa_lhfid is claimed better than an arm if the primary test is Holm-significant and the median difference has the same sign on both robustness indicators",
+  "gpu": "record each job's GPU model; latency enters only after per-job normalization"
+}

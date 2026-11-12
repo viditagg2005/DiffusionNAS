@@ -90,3 +90,28 @@ class NasSearchTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SurrogateAssistedSearchTests(unittest.TestCase):
+    def sa_config(self, method: str, budget: int = 40) -> dict:
+        base = json.loads((ROOT / "configs" / "nas" / f"v3_{method}.json").read_text())
+        base.update({"budget": budget, "seed": 2, "prompts": ["a cat"], "seeds": [1], "initial": 16, "batch": 8})
+        return base
+
+    def test_sa_arms_spend_budget_on_unique_policies(self):
+        with tempfile.TemporaryDirectory() as temp:
+            for method in ("sa_lhfid", "sa_nsga2"):
+                result = run_nas_search(self.sa_config(method), ROOT, Path(temp) / method, None, dry_run=True)
+                self.assertEqual(result["evaluated_count"], 40)
+                signatures = [nas_space.signature(c["policy"]) for c in result["candidates"]]
+                self.assertEqual(len(signatures), len(set(signatures)))
+
+    def test_sa_resume_matches_uninterrupted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            full = run_nas_search(self.sa_config("sa_lhfid"), ROOT, Path(temp) / "full", None, dry_run=True)
+            with self.assertRaises(SearchPaused):
+                run_nas_search(self.sa_config("sa_lhfid"), ROOT, Path(temp) / "resumed", None, dry_run=True,
+                               max_new_evaluations=21)
+            resumed = run_nas_search(self.sa_config("sa_lhfid"), ROOT, Path(temp) / "resumed", None, dry_run=True)
+            self.assertEqual([nas_space.signature(c["policy"]) for c in resumed["candidates"]],
+                             [nas_space.signature(c["policy"]) for c in full["candidates"]])

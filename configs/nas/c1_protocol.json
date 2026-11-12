@@ -1,0 +1,28 @@
+{
+  "purpose": "Confirmatory test of the compression results on a fresh split. Fixed before any C1 data exists.",
+  "split": "data/prompts/test.json (500 COCO prompts, selection seed 20261113, image- and caption-disjoint from calibration, hold-out and validation)",
+  "image_seed": 505,
+  "allocation": "all runs in one allocation, reference first; 10 warm-ups each",
+  "policies": {
+    "reference": "20-step DDIM, guidance 7.5, fp16",
+    "nas_04": "locked finalist: 10-step DDIM, guidance 10.5, int8, up2.attn2 removed",
+    "nas_04_twin_int8": "same without unit removal",
+    "nas_01": "locked finalist: 6-step DPM-Solver++, guidance 6.5, fp16",
+    "int8_ddim20": "20-step DDIM, guidance 7.5, int8",
+    "dpm8": "8-step DPM-Solver++, guidance 7.5, fp16 (strongest training-free baseline on validation)",
+    "deepcache_i3b0": "DeepCache, 20-step DDIM, interval 3, branch 0",
+    "bksdm_small_ddim10_int8": "BK-SDM-small at nas_04's sampler and precision (10-step DDIM, guidance 10.5, int8)",
+    "bksdm_base_ddim10_int8": "BK-SDM-base at nas_04's sampler and precision"
+  },
+  "margin_clip": 0.5,
+  "hypotheses": {
+    "H1": "nas_04 is non-inferior to the reference in CLIP: lower bound of the one-sided 97.5% paired bootstrap interval of (nas_04 - reference) > -0.5",
+    "H2": "nas_01 is non-inferior to the reference in CLIP (same test)",
+    "H3": "int8_ddim20 is non-inferior to the reference in CLIP (same test)",
+    "H4": "nas_04 has higher CLIP than bksdm_small_ddim10_int8 (two-sided paired bootstrap, mean difference > 0)",
+    "H5": "nas_04 has higher CLIP than bksdm_base_ddim10_int8 (same test)"
+  },
+  "multiplicity": "Holm over H1-H5 using bootstrap p-values (non-inferiority p = P(mean difference <= -margin) under the bootstrap)",
+  "bootstrap": "10,000 resamples of prompts, seed 0",
+  "secondary": "descriptive with 95% intervals: CLIP image fidelity to the reference, black images, KID/FID vs the reference and vs 5,000 real COCO images, latency, GFLOPs, peak VRAM, U-Net parameters and bytes; nas_04 vs nas_04_twin_int8 isolates the unit removal"
+}

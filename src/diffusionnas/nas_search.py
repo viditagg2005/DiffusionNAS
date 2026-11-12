@@ -80,8 +80,9 @@ class Evaluator:
         self.hv_history: list[dict[str, Any]] = []
         self.reference_point = config["reference_point"]
 
-    def __call__(self, candidate_id: int, genome: list[int], generation: int) -> dict[str, Any]:
-        policy = nas_space.decode(genome)
+    def __call__(self, candidate_id: int, genome: list, generation: int, policy: dict[str, Any] | None = None) -> dict[str, Any]:
+        """``genome`` is the checkpoint identity: a v3 genome, or ``[signature]`` when a policy is given directly."""
+        policy = policy if policy is not None else nas_space.decode(genome)
         run_config = policy_to_config(policy, self.config["prompts"], self.config["seeds"], dict(self.config["runtime"]),
                                       self.output_root, save_images=True)
 
@@ -165,10 +166,42 @@ def _nsga2(config: dict[str, Any], rng: random.Random, evaluate: Callable, seen:
         log.append({"generation": generation, "population": [ind.candidate_id for ind in population]})
 
 
+def _surrogate_assisted(config: dict[str, Any], evaluate: Callable) -> None:
+    """Real-evaluation surrogate-assisted search (sa_moea.run_sa) with LHFiD or NSGA-II inside."""
+    import numpy as np
+
+    from . import moea
+    from .sa_moea import run_sa
+
+    names = [name for name, _ in SEARCH_OBJECTIVES]
+    sign = np.array([-1.0 if direction == "max" else 1.0 for _, direction in SEARCH_OBJECTIVES])
+    low = sign * np.array([config["scaling_low"][n] for n in names])
+    high = sign * np.array([config["reference_point"][n] for n in names])
+    state = {"count": 0, "round": 0}
+
+    def observe(policies: list[dict[str, Any]]):
+        rows = []
+        for policy in policies:
+            record = evaluate(state["count"], [nas_space.signature(policy)], state["round"], policy=policy)
+            state["count"] += 1
+            raw = sign * np.array([record["objectives"][n] for n in names])
+            rows.append((raw - low) / (high - low))
+        state["round"] += 1
+        return np.array(rows)
+
+    inner = "lhfid" if config["search_method"] == "sa_lhfid" else "nsga2"
+    run_sa(inner, observe, config["budget"], config["seed"], moea.das_dennis(4, 5),
+           initial=config.get("initial", 50), batch=config.get("batch", 20))
+
+
 def validate_nas_config(config: dict[str, Any]) -> None:
     errors = []
-    if config.get("search_method") not in {"random", "nsga2"}:
-        errors.append("search_method must be 'random' or 'nsga2'")
+    if config.get("search_method") not in {"random", "nsga2", "sa_lhfid", "sa_nsga2"}:
+        errors.append("search_method must be 'random', 'nsga2', 'sa_lhfid' or 'sa_nsga2'")
+    if str(config.get("search_method", "")).startswith("sa_"):
+        low = config.get("scaling_low", {})
+        if set(low) != {name for name, _ in SEARCH_OBJECTIVES}:
+            errors.append("surrogate-assisted search needs scaling_low for every search objective")
     if config.get("search_space") != "v3":
         errors.append("search_space must be 'v3'")
     if not isinstance(config.get("budget"), int) or config["budget"] < 2:
@@ -209,8 +242,10 @@ def run_nas_search(config: dict[str, Any], project_root: Path, output_dir: Path,
     generations: list[dict[str, Any]] = []
     if config["search_method"] == "random":
         _random(config, rng, evaluate, seen)
-    else:
+    elif config["search_method"] == "nsga2":
         _nsga2(config, rng, evaluate, seen, generations)
+    else:
+        _surrogate_assisted(config, evaluate)
 
     front = sorted(nondominated(evaluate.archive, SEARCH_OBJECTIVES), key=lambda p: p["objectives"]["latency_p50_ms"])
     result = {

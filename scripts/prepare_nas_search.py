@@ -22,13 +22,14 @@ def main() -> int:
     parser.add_argument("--prompts", type=Path, default=ROOT / "data" / "prompts" / "calibration.json")
     parser.add_argument("--seeds", default="42,123")
     parser.add_argument("--search-seeds", default="1,2,3")
+    parser.add_argument("--methods", default="random,nsga2", help="any of random, nsga2, sa_lhfid, sa_nsga2")
     parser.add_argument("--budget", type=int, default=150)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "configs" / "generated" / "nas")
     args = parser.parse_args()
 
     prompts, seeds = load_prompts(args.prompts), parse_seeds(args.seeds)
     for search_seed in parse_seeds(args.search_seeds):
-        for method in ("random", "nsga2"):
+        for method in args.methods.split(","):
             config = deepcopy(json.loads((ROOT / "configs" / "nas" / f"v3_{method}.json").read_text(encoding="utf-8")))
             config.update({"prompts": prompts, "seeds": seeds, "seed": search_seed, "budget": args.budget})
             validate_nas_config(config)
