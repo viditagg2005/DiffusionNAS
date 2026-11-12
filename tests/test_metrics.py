@@ -35,6 +35,12 @@ class BootstrapTests(unittest.TestCase):
         self.assertAlmostEqual(result["ci95_low"], -1.0)
         self.assertAlmostEqual(result["ci95_high"], -1.0)
 
+    def test_bootstrap_p_value_is_one_for_identical_runs_and_small_for_a_shift(self):
+        scores = {i: float(i % 7) for i in range(60)}
+        self.assertEqual(paired_bootstrap(scores, scores, draws=500)["p_value"], 1.0)
+        shifted = {i: v + 1.0 + 0.1 * (i % 3) for i, v in scores.items()}
+        self.assertLess(paired_bootstrap(shifted, scores, draws=500)["p_value"], 0.01)
+
     def test_per_prompt_scores_average_seeds(self):
         with tempfile.TemporaryDirectory() as temporary:
             rows = [{"prompt_index": 0, "seed": 1, "clip_score": 20.0}, {"prompt_index": 0, "seed": 2, "clip_score": 22.0}]

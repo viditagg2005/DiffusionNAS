@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from diffusionnas.pareto import nondominated  # noqa: E402
-from diffusionnas.stats import paired_bootstrap, per_prompt_scores  # noqa: E402
+from diffusionnas.stats import holm, paired_bootstrap, per_prompt_scores  # noqa: E402
 
 RUNS = ROOT / "artifacts" / "validation_v3" / "runs"
 FIG = ROOT / "docs" / "figures"
@@ -94,6 +94,45 @@ def main() -> int:
                 "fidelity_vs_twin": paired_bootstrap(per_prompt_scores(runs[label][0], "clip_image_fidelity"),
                                                      per_prompt_scores(runs[label + suffix][0], "clip_image_fidelity")),
             }
+    # Family-wise correction over every quality comparison against the reference.
+    for metric in ("clip_vs_reference", "fidelity_vs_reference"):
+        adjusted = holm({k: r[metric]["p_value"] for k, r in table.items() if metric in r})
+        for k, p in adjusted.items():
+            table[k][metric]["p_holm"] = p
+
+    # Does the searched set extend the training-free frontier? Validation HV with the
+    # pre-registered 4-D reference point, CLIP floor relative to the validation reference.
+    import moocore
+    import numpy as np
+
+    floor = table["ref_a"]["clip_score"] - 1.0
+    spec = (("clip_score", -1, floor), ("clip_image_fidelity", -1, 75.0), ("latency_p50_ms", 1, 600.0), ("unet_weight_mb", 1, 1700.0))
+
+    def hv(rows):
+        f = np.array([[sign * r[name] for name, sign, _ in spec] for r in rows])
+        ref = np.array([sign * value for _, sign, value in spec])
+        inside = f[(f < ref).all(axis=1)] if len(f) else f
+        return float(moocore.hypervolume(inside, ref=ref)) if len(inside) else 0.0
+
+    finalist_rows = [r for r in table.values() if r["role"] == "finalist"]
+    baseline_rows = [r for r in table.values() if r["role"] in ("baseline", "reference")]
+    twin_rows = [r for r in table.values() if r["role"] == "twin"]
+    hypervolume = {"clip_floor": floor, "finalists": hv(finalist_rows), "training_free_baselines": hv(baseline_rows),
+                   "baselines_plus_twins": hv(baseline_rows + twin_rows), "union_all_sd15": hv(finalist_rows + baseline_rows + twin_rows)}
+
+    # Retention and calibration-to-validation agreement for the locked finalists.
+    from scipy.stats import spearmanr
+
+    locked = {f["name"]: f for f in json.loads((ROOT / "configs/generated/validation_v3/locked_finalists.json").read_text())["finalists"]}
+    retained = [k for k, r in table.items() if r["role"] == "finalist"
+                and r["clip_score"] >= floor and r["clip_image_fidelity"] >= 75.0 and r["latency_p50_ms"] <= 600 and r["unet_weight_mb"] <= 1700]
+    names = sorted(k for k in locked if k in table)
+    agreement = {
+        "clip_spearman": float(spearmanr([locked[k]["objectives"]["clip_score"] for k in names], [table[k]["clip_score"] for k in names]).statistic),
+        "fidelity_spearman": float(spearmanr([locked[k]["objectives"]["clip_image_fidelity"] for k in names], [table[k]["clip_image_fidelity"] for k in names]).statistic),
+        "latency_spearman": float(spearmanr([locked[k]["objectives"]["latency_p50_ms"] for k in names], [table[k]["latency_p50_ms"] for k in names]).statistic),
+    }
+
     sd15 = [r for r in table.values() if r["model"].startswith("stable-diffusion") and r["label"] not in ("ref_b", "ref_c")]
     front = nondominated([{"label": r["label"], "objectives": r} for r in sd15], FRONT_OBJECTIVES)
     result = {
@@ -103,6 +142,9 @@ def main() -> int:
         "runs": table,
         "finalist_vs_twin": twins,
         "validation_front_6obj": sorted(p["label"] for p in front),
+        "hypervolume_4d": hypervolume,
+        "finalists_retained_in_reference_box": retained,
+        "calibration_to_validation_agreement": agreement,
     }
     out = ROOT / "artifacts" / "analysis"
     out.mkdir(parents=True, exist_ok=True)
@@ -117,7 +159,11 @@ def main() -> int:
         print(f"{row['label']:22s} {row['latency_p50_ms']:6.0f} {row['speedup']:5.2f} {row['unet_weight_mb']:6.0f} "
               f"{row['peak_allocated_mb']:6.0f} {row['clip_score']:6.2f} {dclip:>22s} {row['clip_image_fidelity']:5.1f} "
               f"{row['black_images']:3d} {fmt(row['kid_relative_x1000'], '6.2f'):>6s} {fmt(row['kid_real_x1000'], '7.2f'):>7s}")
-    print("front:", result["validation_front_6obj"])
+    print("HV:", {k: round(v, 1) if isinstance(v, float) else v for k, v in hypervolume.items()})
+    print("retained:", len(retained), "/", len(finalist_rows), retained)
+    print("agreement:", {k: round(v, 2) for k, v in agreement.items()})
+    print("Holm-significant CLIP differences:", {k: round(r["clip_vs_reference"]["mean_difference"], 2) for k, r in table.items()
+          if "clip_vs_reference" in r and r["clip_vs_reference"]["p_holm"] < 0.05})
 
     import matplotlib
 

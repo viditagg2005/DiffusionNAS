@@ -30,8 +30,11 @@ def inception_features(paths: list[Path], device: str = "cuda", batch_size: int 
     for start in range(0, len(paths), batch_size):
         batch = []
         for path in paths[start : start + batch_size]:
-            with Image.open(path) as image:
-                array = np.asarray(image.convert("RGB"), dtype=np.float32) / 255.0
+            try:
+                with Image.open(path) as image:
+                    array = np.asarray(image.convert("RGB"), dtype=np.float32) / 255.0
+            except Exception as exc:  # report the exact file instead of a bare decoder error
+                raise RuntimeError(f"cannot read image {path}: {exc}") from exc
             batch.append(torch.from_numpy(array).permute(2, 0, 1))
         # pytorch-fid resizes to 299x299 internally and expects inputs in [0, 1].
         pixels = torch.stack(batch).to(device)

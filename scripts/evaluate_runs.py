@@ -73,6 +73,9 @@ def real_features(real_dir: Path, device: str) -> np.ndarray:
     if cache.exists():
         return np.load(cache)
     paths = sorted(p for p in real_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
+    if len(paths) < 1000:
+        raise SystemExit(f"only {len(paths)} real images in {real_dir}; run scripts/fetch_coco_real.py first")
+    print(f"real images: {len(paths)}", flush=True)
     features = inception_features(paths, device=device)
     np.save(cache, features)
     return features
@@ -114,7 +117,8 @@ def main() -> int:
 
         reference_features = cached_features(reference, args.device)
         real = real_features(args.real_dir, args.device) if args.real_dir else None
-        for run in runs:
+        for index, run in enumerate(runs, 1):
+            print(f"distribution {index}/{len(runs)}: {run.name}", flush=True)
             features = cached_features(run, args.device)
             summary = read(run / "summary.json")
             metrics = summary.setdefault("quality_metrics", {})

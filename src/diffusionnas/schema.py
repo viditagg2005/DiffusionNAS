@@ -36,8 +36,9 @@ def validate_config(config: dict[str, Any]) -> None:
 
     model = config.get("model", {})
     if model.get("id") in EXTERNAL_MODELS:
-        if method != "baseline" or config.get("architecture"):
-            errors.append("external models run only as plain baselines without architecture edits")
+        # Unit names address SD1.5 positions; int8 weight storage is model-agnostic and allowed.
+        if method != "baseline" or (config.get("architecture") or {}).get("removed_units"):
+            errors.append("external models run only as plain baselines without unit removal")
     elif model.get("id") != SD15_MODEL:
         errors.append(f"model.id must be the locked SD1.5 repository: {SD15_MODEL}")
     if model.get("height") != 512 or model.get("width") != 512:
