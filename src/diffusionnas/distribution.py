@@ -44,15 +44,23 @@ def inception_features(paths: list[Path], device: str = "cuda", batch_size: int 
     return np.concatenate(features)
 
 
+def _sqrtm(matrix: np.ndarray) -> np.ndarray:
+    """Matrix square root across SciPy versions (newer releases removed ``disp`` and return only the root)."""
+    from scipy import linalg
+
+    result = linalg.sqrtm(matrix)
+    return result[0] if isinstance(result, tuple) else result
+
+
 def fid(left: np.ndarray, right: np.ndarray) -> float:
     from scipy import linalg
 
     mu1, mu2 = left.mean(axis=0), right.mean(axis=0)
     sigma1, sigma2 = np.cov(left, rowvar=False), np.cov(right, rowvar=False)
-    covmean, _ = linalg.sqrtm(sigma1 @ sigma2, disp=False)
+    covmean = _sqrtm(sigma1 @ sigma2)
     if not np.isfinite(covmean).all():
         offset = np.eye(sigma1.shape[0]) * 1e-6
-        covmean = linalg.sqrtm((sigma1 + offset) @ (sigma2 + offset))
+        covmean = _sqrtm((sigma1 + offset) @ (sigma2 + offset))
     covmean = covmean.real
     return float(((mu1 - mu2) ** 2).sum() + np.trace(sigma1 + sigma2 - 2.0 * covmean))
 
