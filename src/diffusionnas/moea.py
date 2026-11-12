@@ -84,9 +84,16 @@ def nondominated_sort(f: np.ndarray) -> list[list[int]]:
     return fronts
 
 
-def hf_dominates(x: np.ndarray, y: np.ndarray, preference: np.ndarray) -> bool:
-    """High-fidelity dominance: x better in at least as many objectives and smaller weighted change."""
-    return bool((x < y).sum() >= (y < x).sum() and (preference * (x - y)).sum() < 0)
+def hf_dominates(x: np.ndarray, y: np.ndarray, preference: np.ndarray, tolerance: np.ndarray | None = None) -> bool:
+    """High-fidelity dominance: x better in at least as many objectives and smaller weighted change.
+
+    With ``tolerance`` (noise-aware variant), differences smaller than the per-objective
+    measurement noise count as ties in both the better-count and the weighted sum.
+    """
+    delta = x - y
+    if tolerance is not None:
+        delta = np.where(np.abs(delta) < tolerance, 0.0, delta)
+    return bool((delta < 0).sum() >= (delta > 0).sum() and (preference * delta).sum() < 0)
 
 
 def nsga3_normalize(f: np.ndarray, ideal: np.ndarray, front0: list[int]) -> np.ndarray:
@@ -213,7 +220,8 @@ def select_lhfid(f: np.ndarray, n: int, state: dict, rng: random.Random) -> list
         cluster = [i for i in cluster if not any(dominates(scaled[k], scaled[i]) for k in cluster if k != i)]
         alpha = min(cluster, key=lambda i: distance[i, j])
         if not axis_vector[j]:
-            beta = [i for i in cluster if i != alpha and hf_dominates(scaled[i], scaled[alpha], preferences[j])]
+            beta = [i for i in cluster if i != alpha
+                    and hf_dominates(scaled[i], scaled[alpha], preferences[j], state.get("tie_tolerance"))]
             if beta:
                 alpha = min(beta, key=lambda i: distance[i, j])
         selected.append(alpha)
@@ -254,14 +262,15 @@ class Stabilization:
 # ---- optimization loop -------------------------------------------------------
 
 def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vectors: np.ndarray | None,
-        seed: int, crossover_rate: float = 0.9, mutation_rate: float = 1.0) -> dict:
+        seed: int, crossover_rate: float = 0.9, mutation_rate: float = 1.0,
+        tie_tolerance: np.ndarray | None = None, exclude: set[str] | None = None) -> dict:
     """Return every evaluated objective vector in evaluation order, the final population and metadata.
 
     ``evaluate`` must return objectives already on a common, fixed scale (LHFiD's
     pre-nadir translation and hf weighted sums are not scale-invariant).
     """
     rng = random.Random(seed)
-    seen: set[str] = set()
+    seen: set[str] = set(exclude or ())
     archive_f: list[np.ndarray] = []
     archive_p: list[dict] = []
 
@@ -285,10 +294,11 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
             batch = min(population, budget - len(archive_f))
             evaluate_genomes(novel_batch(lambda: nas_space.random_genome(rng), batch))
         return {"objectives": np.array(archive_f), "policies": archive_p, "population": np.array(archive_f),
-                "nadir_generations": []}
+                "population_policies": archive_p, "nadir_generations": []}
 
     select = SELECTORS[algorithm]
-    state: dict = {"vectors": vectors, "preference_mode": "equal" if algorithm == "lhfid_equal" else "inverse_w"}
+    state: dict = {"vectors": vectors, "preference_mode": "equal" if algorithm == "lhfid_equal" else "inverse_w",
+                   "tie_tolerance": tie_tolerance}
     genomes = novel_batch(lambda: nas_space.random_genome(rng), population)
     f = evaluate_genomes(genomes)
     stabilization = Stabilization()
@@ -330,7 +340,7 @@ def run(algorithm: str, evaluate: Evaluate, budget: int, population: int, vector
         if algorithm == "nsga2":
             select(f, population, state, rng)  # refresh rank/crowding for tournament on survivors
     return {"objectives": np.array(archive_f), "policies": archive_p, "population": f,
-            "nadir_generations": nadir_generations}
+            "population_policies": [nas_space.decode(g) for g in genomes], "nadir_generations": nadir_generations}
 
 
 # ---- indicators ----------------------------------------------------------------

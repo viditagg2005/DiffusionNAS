@@ -1,0 +1,25 @@
+{
+  "purpose": "Preliminary, CPU-only test of surrogate-assisted LHFiD at the real budget of 150 evaluations on a simulated problem calibrated to the 900 real v3 evaluations. Fixed before any simulation run. Decides whether the real C2 jobs are launched.",
+  "objectives": ["clip_score", "clip_image_fidelity", "latency_p50_ms", "unet_weight_mb"],
+  "reference_point": {"clip_score": 25.2, "clip_image_fidelity": 75.0, "latency_p50_ms": 600.0, "unet_weight_mb": 1700.0},
+  "scaling": "minimization form; 0 = best value among the 900 real candidates, 1 = reference point (same as configs/nas/surrogate_benchmark.json)",
+  "truths": [
+    {"family": "hgb", "seed": 0, "note": "HistGradientBoosting fitted on all 900 real evaluations"},
+    {"family": "randomforest", "seed": 0, "note": "RandomForest fitted on all 900 real evaluations"}
+  ],
+  "internal_surrogate": "ExtraTrees (a different family from both truths), refitted each round on the points the run itself has evaluated (noisy values only)",
+  "noise": "Gaussian noise added to observed CLIP and fidelity only; sigma set per truth so that the reliability of a 96-image measurement among in-box real candidates matches 0.50 for CLIP (measured split-half Spearman-Brown) and 0.90 for fidelity (its calibration-to-validation rank agreement was 0.96); cost objectives are observed without noise",
+  "budget": 150,
+  "arms": {
+    "random": "150 novel random genomes",
+    "nsga2": "direct NSGA-II, population 20 (as in the real searches)",
+    "lhfid": "direct LHFiD, population 20 (Das-Dennis M=4, p=3)",
+    "sa_nsga2": "50 random, then 5 rounds of 20: refit surrogate, run NSGA-II on it (population 56, 30 generations), pick 20 novel candidates spread across reference vectors",
+    "sa_lhfid": "same as sa_nsga2 with LHFiD (p = 1/w) as the inner optimizer",
+    "sa_lhfid_noise": "sa_lhfid with noise-aware hf-dominance: quality differences smaller than the measured noise SD (in scaled units) count as ties in both the better-count and the weighted sum"
+  },
+  "seeds_per_truth": 31,
+  "indicator": "exact 4-D hypervolume (moocore) of all evaluated points, computed on the noise-free truth, scaled space, reference 1",
+  "statistics": "Mann-Whitney U (two-sided) per arm pair within each truth, Holm-corrected over pairs; a ranking is claimed only if it holds under both truths",
+  "decision_rule": "launch real C2 jobs only if sa_lhfid (or sa_lhfid_noise) beats random and nsga2 with Holm p < 0.05 under both truths and is not significantly worse than sa_nsga2"
+}

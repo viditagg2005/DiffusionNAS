@@ -26,3 +26,4 @@ artifacts/validation_v3
 artifacts/surrogate_benchmark
 artifacts/confirmation
 artifacts/posthoc_bksdm
+artifacts/sa_simulation
