@@ -221,6 +221,8 @@ def run_nas_search(config: dict[str, Any], project_root: Path, output_dir: Path,
                    batch_size: int = 16, max_walltime_seconds: float | None = None,
                    max_new_evaluations: int | None = None) -> dict[str, Any]:
     validate_nas_config(config)
+    if config["search_method"].startswith("sa_"):
+        import sklearn  # noqa: F401  (fail before any GPU work; the surrogate rounds need it)
     if not dry_run and reference_run is None:
         raise ValueError("a real search needs a reference run for fidelity")
     output_dir.mkdir(parents=True, exist_ok=True)
