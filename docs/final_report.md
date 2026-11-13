@@ -120,10 +120,39 @@ The real-budget failure of every optimizer (§5.2, §5.4) motivates a surrogate-
 - RVEA and MOEA/D were added after the pre-registered comparisons, as labelled extensions on the same truths and seeds. On the surrogate benchmark (§5.4) they are close to LHFiD: LHFiD keeps the best 6-objective archive HV (+0.008, consistent across surrogates) but ties on final-population HV, so LHFiD's large lead is over Pareto-dominance methods (NSGA-II/III).
 - This is a simulation calibrated to the real problem; the pre-registered real confirmation (C2, `configs/nas/c2_protocol.json`, 6 seeds per arm) is running.
 
-### 5.6 Pending (cluster)
+### 5.6 Confirmatory test on a fresh 500-prompt split (C1) — `scripts/analyze_c1.py`
+
+Protocol fixed before any data (`configs/nas/c1_protocol.json`): 500 COCO prompts disjoint from every other split, one image seed, all nine policies in one allocation, CLIP non-inferiority margin 0.5, Holm over H1–H5.
+
+| Hypothesis | Difference in CLIP | Test | Holm p | Result |
+| --- | --- | --- | ---: | --- |
+| H1 nas_04 non-inferior to the reference | −0.000 (lower 97.5% bound −0.25) | margin 0.5 | 0.0012 | **supported** |
+| H2 nas_01 non-inferior to the reference | −0.39 (lower bound −0.61) | margin 0.5 | 0.25 | not supported |
+| H3 int8 weights non-inferior to the reference | −0.03 (lower bound −0.16) | margin 0.5 | 0.0005 | **supported** |
+| H4 nas_04 better than BK-SDM-small at the same sampler and int8 | +1.31 [+0.99, +1.63] | two-sided | 0.0008 | **supported** |
+| H5 nas_04 better than BK-SDM-base at the same sampler and int8 | +0.23 [−0.07, +0.51] | two-sided | 0.25 | not supported |
+
+| Policy | Latency | GFLOPs | Peak VRAM | U-Net | Params | CLIP | Fidelity | Black /500 | KID×10³ vs real | FID vs real |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Reference (DDIM 20, fp16) | 512 ms | 34,672 | 3,271 MB | 1,639 MB | 860 M | 26.89 | 100 | 1 | 4.52 | 83.6 |
+| int8 weights (DDIM 20) | 631 ms | 34,672 | 2,448 MB | 821 MB | 860 M | 26.87 | 96.1 | 1 | 4.50 | 84.0 |
+| **nas_04** (DDIM 10, g 10.5, int8, −1 unit) | 325 ms | 18,210 | 2,439 MB | 812 MB | 851 M | 26.89 | 86.9 | 8 | 5.67 | 90.0 |
+| nas_04 twin (same, no removal) | 334 ms | 18,607 | 2,443 MB | 821 MB | 860 M | 26.99 | 89.0 | 1 | 4.79 | 85.4 |
+| nas_01 (DPM++ 6, g 6.5) | 183 ms | 12,180 | 3,260 MB | 1,639 MB | 860 M | 26.50 | 86.6 | 2 | 6.89 | 88.6 |
+| DPM++ 8 | 230 ms | 15,393 | 3,269 MB | 1,639 MB | 860 M | 26.72 | 88.0 | 3 | 7.26 | 88.3 |
+| DeepCache (DDIM 20) | 235 ms | 15,431 | 3,380 MB | 1,639 MB | 860 M | 26.76 | 88.7 | 0 | 3.83 | 84.6 |
+| BK-SDM-small (DDIM 10, g 10.5, int8) | 220 ms | 12,759 | 2,075 MB | 461 MB | 483 M | 25.58 | 80.2 | 3 | 6.55 | 92.5 |
+| BK-SDM-base (DDIM 10, g 10.5, int8) | 233 ms | 13,001 | 2,169 MB | 553 MB | 580 M | 26.67 | 82.3 | 3 | 7.17 | 90.7 |
+
+- **Confirmed:** training-free int8 plus a 10-step sampler halves U-Net bytes, cuts peak VRAM by 0.83 GB and FLOPs by 47%, and runs 1.58× faster with prompt alignment non-inferior to the full model (difference −0.000). int8 alone is non-inferior too.
+- **Against distillation:** the training-free configuration beats distilled BK-SDM-small at the same sampler and precision by 1.31 CLIP; BK-SDM-base (distilled, 33% fewer parameters) is smaller and faster than nas_04 at statistically indistinguishable CLIP but lower fidelity and similar FID. Training-free search reaches the quality of the larger distilled model, not its cost.
+- **Unit removal hurts on the larger split too.** nas_04's single removed unit saves 9 MB but raises black images from 1 to 8 of 500 and FID from 85.4 to 90.0 relative to its twin; the twin (DDIM 10, g 10.5, int8, no removal) is the configuration to deploy.
+- nas_01 (2.8×) loses 0.39 CLIP and fails the 0.5 margin's confidence requirement; aggressive step reduction costs measurable alignment on a large prompt set.
+- KID/FID vs real images rank the policies differently from CLIP (e.g. DeepCache has the best KID, BK-SDM and the 6–8-step samplers the worst); FID on 500 images is reported for completeness only.
+
+### 5.7 Pending (cluster)
 
 - KID/FID vs real COCO and vs the reference for all validation runs (the validation job's final scoring step failed on newer SciPy; fixed, rescoring).
-- C1: pre-registered non-inferiority test on a fresh 500-prompt split (`configs/nas/c1_protocol.json`, margin 0.5 CLIP).
 - C2: real SA-LHFiD vs SA-NSGA-II, random and NSGA-II, 6 seeds each.
 - Real calibration measurements of 25 surrogate-selected points (surrogate error on optimizer-chosen points).
 - Post-hoc BK-SDM at 10-step DDIM, fp16 and int8.
