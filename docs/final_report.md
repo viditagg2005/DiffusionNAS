@@ -85,6 +85,8 @@ Reference latency at the start, middle and end of the job: 507.1 / 508.0 / 507.3
 - Unit removal never significantly improved CLIP over its twin and always cost fidelity: −1.0 to −12.1 points (e.g. nas_07 vs its int8 twin: −1.43 CLIP, −12.0 fidelity; nas_04 vs its int8 twin: +0.09 CLIP, −2.2 fidelity, −9 MB).
 - On the validation 4-D hypervolume (pre-registered reference, CLIP floor = validation reference − 1.0), the finalists reach 4.26 × 10⁶ against 0.52 × 10⁶ for the plain training-free baselines; but the baselines *plus* twins reach 4.42 × 10⁶, more than the finalists. The finalists' advantage comes from int8 and the sampler choice the search found, not from removing units.
 
+**Distribution shift from the original model (KID vs the reference's own images, ×10³, 256 images).** Every configuration with removed units drifts away from the original model (nas_07 +6.6, nas_03 +5.2, nas_00 +4.5, nas_04 +0.4 against −1.3 for its int8 twin), while every configuration without removals is indistinguishable from it (−0.5 to −2.5; the unbiased estimator scatters around zero). KID against real COCO images on 256 images is too noisy to rank policies and is reported only in the 500-prompt test (§5.6).
+
 **Comparison with BK-SDM (distilled from SD-v1.4, external).** At 20-step DDIM, BK-SDM base / small / tiny run at 1.51× / 1.58× / 1.74× with U-Nets of 1,105 / 920 / 617 MB and lose 0.44 / 1.55* / 1.71* CLIP. nas_04 is smaller, uses less VRAM and has higher alignment than BK-SDM base and small at equal or better latency, but the comparison is confounded: nas_04 uses 10 steps and int8, both of which apply to BK-SDM too, and BK-SDM has far fewer parameters (482–579 M vs 851 M). Matched post-hoc BK-SDM runs (10-step DDIM, fp16 and int8) are in §5.5.
 
 ### 5.4 Many-objective optimizer benchmark (surrogates) — `scripts/surrogate_benchmark.py`, `docs/figures/optimizer_benchmark.png`
@@ -152,7 +154,6 @@ Protocol fixed before any data (`configs/nas/c1_protocol.json`): 500 COCO prompt
 
 ### 5.7 Pending (cluster)
 
-- KID/FID vs real COCO and vs the reference for all validation runs (the validation job's final scoring step failed on newer SciPy; fixed, rescoring).
 - C2: real SA-LHFiD vs SA-NSGA-II, random and NSGA-II, 6 seeds each.
 - Post-hoc BK-SDM at 10-step DDIM, fp16 and int8.
 
