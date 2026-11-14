@@ -16,6 +16,7 @@ Deploying text-to-image diffusion models under latency and memory limits require
 - Objectives and how each is measured; reference point; scaling.
 - Data: [839 → ~2,700] configurations from random search, NSGA-II, and surrogate-assisted LHFiD/NSGA-II runs [C2]; per-image CLIP, fidelity, black-image flags; provenance (GPU, commits).
 - Surrogate mode: ExtraTrees per objective; accuracy overall and inside the reference box (CLIP 0.61–0.69 in-box, near the 0.71 reliability ceiling).
+- Real measurement of 25 optimizer-chosen points: MAE CLIP 0.32 (bias +0.16, not over-optimistic), fidelity 1.5, latency ~3%, GFLOPs ~2%, VRAM 15 MB, bytes 7 MB; 24/25 truly inside the reference box.
 - Splits: calibration, hold-out, validation (128), test (500), all image- and caption-disjoint.
 
 ## 3. Findings

@@ -48,6 +48,7 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 - 3,360 evaluations, M = 6, archive HV: LHFiD 0.258 > RVEA 0.252 ≈ MOEA/D 0.250 > NSGA-III 0.232 > NSGA-II 0.213 ≈ random 0.215.
 - Final-population HV, M = 6: RVEA 0.209 ≈ MOEA/D 0.200 ≈ LHFiD 0.199 ≫ NSGA-III 0.139 > NSGA-II 0.105. LHFiD's lead over NSGA-III grows from +0.022 (M = 4) to +0.064 (M = 6).
 - At 150 evaluations random search is ahead of every MOEA; the crossover is 336–840 evaluations.
+- Real measurement of 25 optimizer-chosen points: MAE CLIP 0.32 (bias +0.16, not over-optimistic), fidelity 1.5, latency ~3%, GFLOPs ~2%, VRAM 15 MB, bytes 7 MB; 24/25 truly inside the reference box.
 
 ### 5.3 SA-LHFiD, simulation (pre-registered, `configs/nas/sa_simulation.json`)
 - Truth = HGB or RF fitted on the 900 real evaluations (a family different from the internal surrogate); noise calibrated to reliabilities 0.50 / 0.90; HV on noise-free truth; 31 seeds; Mann–Whitney + Holm.

@@ -97,7 +97,7 @@ Protocol fixed in advance (`configs/nas/surrogate_benchmark.json`); 5 independen
 - **LHFiD's lead over NSGA-III grows with the number of objectives** (final-population HV: +0.022 at 4 objectives, +0.064 at 6), the regime its hf-dominance targets. LHFiD's two preference rules (p = 1/w and p = 1/M) are indistinguishable here.
 - **Crossover.** The many-objective algorithms overtake random between about 336 and 840 evaluations; LHFiD leads from 336. A real search would need roughly 2–6× our budget (about 4–10 GPU-hours per search on this GPU instead of 1.8) to benefit, and a larger calibration set to make CLIP rankable.
 - LHFiD's stabilization-timed nadir estimation fired in 134 of 140 runs (median first detection at generation 45–49).
-- These conclusions are conditional on the surrogates; §5.5 reports real measurements of points each optimizer selected.
+- **Real check of the surrogate on optimizer-chosen points** (`scripts/summarize_confirmation.py`): 25 points (5 per optimizer, from the median run on surrogate 0) measured for real on the calibration split. Mean absolute error: CLIP 0.32, fidelity 1.5, latency 8.8 ms (~3%), GFLOPs 429 (~2%), peak VRAM 15 MB, U-Net 7 MB; CLIP bias +0.16 (real results slightly better than predicted), so the optimizers did not exploit surrogate errors. 24 of 25 points are inside the reference box for real.
 
 ### 5.5 Surrogate-assisted LHFiD at the real budget (preliminary, simulation) — `scripts/sa_simulation.py`
 
@@ -154,7 +154,6 @@ Protocol fixed before any data (`configs/nas/c1_protocol.json`): 500 COCO prompt
 
 - KID/FID vs real COCO and vs the reference for all validation runs (the validation job's final scoring step failed on newer SciPy; fixed, rescoring).
 - C2: real SA-LHFiD vs SA-NSGA-II, random and NSGA-II, 6 seeds each.
-- Real calibration measurements of 25 surrogate-selected points (surrogate error on optimizer-chosen points).
 - Post-hoc BK-SDM at 10-step DDIM, fp16 and int8.
 
 ## 6. Conclusions so far
