@@ -36,8 +36,13 @@ def main() -> int:
     if missing:
         raise SystemExit(f"missing runs: {missing}")
     prompts = sorted(per_prompt_scores(runs["ref_a"]))
-    clip = {label: np.array([per_prompt_scores(runs[label])[i] for i in prompts]) for label in labels + ["ref_a"]}
-    fidelity = {label: np.array([per_prompt_scores(runs[label], "clip_image_fidelity")[i] for i in prompts]) for label in labels}
+    clip, fidelity = {}, {}
+    for label in labels + ["ref_a"]:
+        scores = per_prompt_scores(runs[label])
+        clip[label] = np.array([scores[i] for i in prompts])
+    for label in labels:
+        scores = per_prompt_scores(runs[label], "clip_image_fidelity")
+        fidelity[label] = np.array([scores[i] for i in prompts])
     summary = {label: json.loads((runs[label] / "summary.json").read_text()) for label in labels + ["ref_a"]}
     latency = {label: summary[label]["latency_ms"]["p50"] for label in labels}
     weights = {label: summary[label]["architecture"]["unet_weight_bytes"] / 2**20 for label in labels}
@@ -82,7 +87,7 @@ def main() -> int:
             raw_ni[label] = (sum(m <= -margin for m in means) + 1) / (draws + 1)
             q = summary[label]["quality_metrics"]
             secondary.setdefault(arm, {})[label] = {
-                "clip": float(clip[label].mean()), "clip_difference": float(np.mean(diffs)), "lower_97_5": means[250],
+                "clip": float(clip[label].mean()), "clip_difference": float(np.mean(diffs)), "lower_97_5": means[int(0.025 * draws)],
                 "fidelity": float(fidelity[label].mean()), "latency_p50_ms": latency[label], "unet_weight_mb": weights[label],
                 "gflops_per_image": summary[label].get("gflops_per_image"), "peak_allocated_mb": summary[label]["peak_allocated_mb"],
                 "black_images": q.get("black_images"), "kid_real_x1000": q.get("real_distribution", {}).get("kid", {}).get("mean_x1000"),
@@ -93,6 +98,7 @@ def main() -> int:
               "reference_latency_ms": {k: json.loads((runs[k] / "summary.json").read_text())["latency_ms"]["p50"]
                                        for k in ("ref_a", "ref_b", "ref_c") if k in runs}}
     out = ROOT / "artifacts/analysis/c3.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2) + "\n")
     for arm, value in point.items():
         print(f"{arm:9s} HV {value:.4g}")
