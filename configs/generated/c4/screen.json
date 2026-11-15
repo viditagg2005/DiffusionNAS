@@ -1,0 +1,2994 @@
+{
+  "arms": {
+    "sa_lhfid": {
+      "box": [
+        -25.214831451574963,
+        -75.0,
+        604.6835724900001,
+        1700.0
+      ],
+      "reference_latency_ms": 512.4437055000001,
+      "reference_clip": 26.214831451574963,
+      "reference_black_median": 0.0,
+      "pool_unique": 893,
+      "eligible": 504,
+      "front": 132,
+      "front_in_box": 129,
+      "calibration_hv_naive5": 8066072.257728296,
+      "screened": [
+        {
+          "rank": 0,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 12.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 85.72026654084523,
+            "clip_score": 26.83659964799881,
+            "gflops_per_image": 15588.374749184,
+            "latency_p50_ms": 276.5449746780807,
+            "peak_allocated_mb": 2555.91259765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_lhfid/121"
+          ],
+          "label": "r00"
+        },
+        {
+          "rank": 1,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"P3\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 91.1301372051239,
+            "clip_score": 26.51487598816554,
+            "gflops_per_image": 21986.536464384,
+            "latency_p50_ms": 404.6237197552994,
+            "peak_allocated_mb": 2550.30322265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed1/sa_lhfid/126"
+          ],
+          "label": "r01"
+        },
+        {
+          "rank": 2,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [\"down3.res0\", \"up3.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up3.attn0",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 6.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 84.25109811623891,
+            "clip_score": 26.592151403427124,
+            "gflops_per_image": 11205.504671744,
+            "latency_p50_ms": 206.6899303147972,
+            "peak_allocated_mb": 2408.50146484375,
+            "unet_weight_mb": 786.1291656494141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/148"
+          ],
+          "label": "r02"
+        },
+        {
+          "rank": 3,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 15,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 82.87631984551747,
+            "clip_score": 27.206837217013042,
+            "gflops_per_image": 24951.881867264,
+            "latency_p50_ms": 444.3336278376925,
+            "peak_allocated_mb": 2402.64892578125,
+            "unet_weight_mb": 785.0647125244141
+          },
+          "sources": [
+            "nas_c2/seed2/sa_lhfid/143"
+          ],
+          "label": "r03"
+        },
+        {
+          "rank": 4,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.67878822485606,
+            "clip_score": 26.46255491177241,
+            "gflops_per_image": 15588.374749184,
+            "latency_p50_ms": 277.08306854351054,
+            "peak_allocated_mb": 2550.85009765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_lhfid/103"
+          ],
+          "label": "r04"
+        },
+        {
+          "rank": 5,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up2.attn2"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 10.5,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 86.22260693709056,
+            "clip_score": 26.914253155390423,
+            "gflops_per_image": 18210.288574464,
+            "latency_p50_ms": 315.68404212144713,
+            "peak_allocated_mb": 2431.61572265625,
+            "unet_weight_mb": 811.9348297119141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_lhfid/50"
+          ],
+          "label": "r05"
+        },
+        {
+          "rank": 6,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"down2.attn0\", \"down3.res0\", \"down3.res1\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "down3.res0",
+                "down3.res1",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 10.5,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 81.97812473773956,
+            "clip_score": 26.527272482713062,
+            "gflops_per_image": 17330.500542464,
+            "latency_p50_ms": 314.8360749090459,
+            "peak_allocated_mb": 2342.81103515625,
+            "unet_weight_mb": 725.6408843994141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/139"
+          ],
+          "label": "r06"
+        },
+        {
+          "rank": 7,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\", \"up2.attn2\"], \"scheduler\": \"dpm_solver++\", \"steps\": 4, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up2.attn2"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 4,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 79.23772140343983,
+            "clip_score": 25.92327888806661,
+            "gflops_per_image": 8778.559791104,
+            "latency_p50_ms": 161.06333326414554,
+            "peak_allocated_mb": 2402.67724609375,
+            "unet_weight_mb": 782.2229156494141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/114"
+          ],
+          "label": "r07"
+        },
+        {
+          "rank": 8,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"ddim\", \"steps\": 18, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 18,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 86.45409437020619,
+            "clip_score": 26.36171503861745,
+            "gflops_per_image": 13576.203935744,
+            "latency_p50_ms": 241.6392562972318,
+            "peak_allocated_mb": 2522.84130859375,
+            "unet_weight_mb": 791.0217437744141
+          },
+          "sources": [
+            "nas_c2/seed6/sa_lhfid/88"
+          ],
+          "label": "r08"
+        },
+        {
+          "rank": 9,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 9.0, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.11097538471222,
+            "clip_score": 26.700975557168324,
+            "gflops_per_image": 19540.837146624,
+            "latency_p50_ms": 366.5877733654067,
+            "peak_allocated_mb": 2550.80126953125,
+            "unet_weight_mb": 818.2873687744141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/131"
+          ],
+          "label": "r09"
+        },
+        {
+          "rank": 10,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 6.5,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 89.65286978085835,
+            "clip_score": 26.383838494618733,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 331.8170255827152,
+            "peak_allocated_mb": 2436.85009765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed2/sa_lhfid/71"
+          ],
+          "label": "r10"
+        },
+        {
+          "rank": 11,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 9.0, \"removed_units\": [\"down3.res0\", \"down3.res1\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 27, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "down3.res1",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 27,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 85.95856114228566,
+            "clip_score": 26.618917385737102,
+            "gflops_per_image": 16449.681629184,
+            "latency_p50_ms": 307.2306046963648,
+            "peak_allocated_mb": 2482.49462890625,
+            "unet_weight_mb": 758.8635406494141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/109"
+          ],
+          "label": "r11"
+        },
+        {
+          "rank": 12,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [\"up3.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn0",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 9.0,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 82.3362186352412,
+            "clip_score": 26.6221591035525,
+            "gflops_per_image": 11250.842476544,
+            "latency_p50_ms": 200.65778036851498,
+            "peak_allocated_mb": 2442.58056640625,
+            "unet_weight_mb": 815.8410797119141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_lhfid/136"
+          ],
+          "label": "r12"
+        },
+        {
+          "rank": 13,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"up2.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "up2.attn0",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 81.00873776276906,
+            "clip_score": 26.834628621737163,
+            "gflops_per_image": 14176.487481344,
+            "latency_p50_ms": 250.81055905054785,
+            "peak_allocated_mb": 2401.84423828125,
+            "unet_weight_mb": 776.2658843994141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_lhfid/137"
+          ],
+          "label": "r13"
+        },
+        {
+          "rank": 14,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 88.05770885944366,
+            "clip_score": 26.274157186349232,
+            "gflops_per_image": 14147.230244864,
+            "latency_p50_ms": 251.18921481275984,
+            "peak_allocated_mb": 2551.58447265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed3/sa_lhfid/98"
+          ],
+          "label": "r14"
+        },
+        {
+          "rank": 15,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [\"down3.res0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up3.attn1"
+              ],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 86.27959855397542,
+            "clip_score": 26.36468635002772,
+            "gflops_per_image": 11670.282051584,
+            "latency_p50_ms": 180.9417045521709,
+            "peak_allocated_mb": 3204.52294921875,
+            "unet_weight_mb": 1575.1574783325195
+          },
+          "sources": [
+            "nas_c2/seed4/sa_lhfid/127"
+          ],
+          "label": "r15"
+        }
+      ],
+      "naive": [
+        "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"P3\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [\"down3.res0\", \"up3.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}"
+      ]
+    },
+    "sa_nsga2": {
+      "box": [
+        -25.214831451574963,
+        -75.0,
+        604.6835724900001,
+        1700.0
+      ],
+      "reference_latency_ms": 512.4437055000001,
+      "reference_clip": 26.214831451574963,
+      "reference_black_median": 0.0,
+      "pool_unique": 900,
+      "eligible": 194,
+      "front": 66,
+      "front_in_box": 61,
+      "calibration_hv_naive5": 7563945.150164232,
+      "screened": [
+        {
+          "rank": 0,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res1\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res1",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 84.92245745658875,
+            "clip_score": 26.488358517487843,
+            "gflops_per_image": 11670.282051584,
+            "latency_p50_ms": 204.1377939242529,
+            "peak_allocated_mb": 2410.96435546875,
+            "unet_weight_mb": 788.5754547119141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_nsga2/148"
+          ],
+          "label": "r16"
+        },
+        {
+          "rank": 1,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                }
+              ]
+            },
+            "guidance_scale": 12.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 86.76400868097942,
+            "clip_score": 26.943532665570576,
+            "gflops_per_image": 19897.426386944,
+            "latency_p50_ms": 350.11633024550366,
+            "peak_allocated_mb": 2550.63916015625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed1/sa_nsga2/51"
+          ],
+          "label": "r17"
+        },
+        {
+          "rank": 2,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.93368335564931,
+            "clip_score": 26.488249202569325,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 326.75163675956736,
+            "peak_allocated_mb": 2447.35009765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_nsga2/110"
+          ],
+          "label": "r18"
+        },
+        {
+          "rank": 3,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"down3.res0\", \"up3.attn0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "down3.res0",
+                "up3.attn0"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 82.21326533953349,
+            "clip_score": 26.720542589823406,
+            "gflops_per_image": 14433.074028544,
+            "latency_p50_ms": 250.87856891423095,
+            "peak_allocated_mb": 2378.69482421875,
+            "unet_weight_mb": 755.3527984619141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_nsga2/107"
+          ],
+          "label": "r19"
+        },
+        {
+          "rank": 4,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 33, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 33,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 90.57304390271504,
+            "clip_score": 26.34710603952408,
+            "gflops_per_image": 27652.269809664,
+            "latency_p50_ms": 475.3725662310209,
+            "peak_allocated_mb": 2557.90478515625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed3/sa_nsga2/71"
+          ],
+          "label": "r20"
+        },
+        {
+          "rank": 5,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "deepcache_branch_id": 3,
+            "deepcache_interval": 2,
+            "guidance_scale": 6.5,
+            "method": "deepcache",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 86.55016493797302,
+            "clip_score": 26.31225649515788,
+            "gflops_per_image": 13573.803352064,
+            "latency_p50_ms": 234.75822362886757,
+            "peak_allocated_mb": 2554.07470703125,
+            "unet_weight_mb": 818.2873687744141
+          },
+          "sources": [
+            "nas_c2/seed6/sa_nsga2/19"
+          ],
+          "label": "r21"
+        },
+        {
+          "rank": 6,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P1\", \"N\"], \"guidance\": 12.0, \"removed_units\": [\"down0.attn1\", \"down2.attn0\", \"down3.res0\", \"down3.res1\", \"up2.attn1\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 33, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn1",
+                "down2.attn0",
+                "down3.res0",
+                "down3.res1",
+                "up2.attn1",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 12.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 33,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 80.37900193532307,
+            "clip_score": 26.38951486349106,
+            "gflops_per_image": 23244.456075264,
+            "latency_p50_ms": 414.2594855961244,
+            "peak_allocated_mb": 2432.98876953125,
+            "unet_weight_mb": 714.3957672119141
+          },
+          "sources": [
+            "nas_c2/seed4/sa_nsga2/145"
+          ],
+          "label": "r22"
+        },
+        {
+          "rank": 7,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 10.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 10.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 88.54857854048412,
+            "clip_score": 26.60516854127248,
+            "gflops_per_image": 22209.446027264,
+            "latency_p50_ms": 382.0390301472954,
+            "peak_allocated_mb": 2549.92822265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed3/sa_nsga2/130"
+          ],
+          "label": "r23"
+        },
+        {
+          "rank": 8,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"P6\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P6\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P1\", \"N\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 6.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 90.9422873655955,
+            "clip_score": 25.882243275642395,
+            "gflops_per_image": 29136.539623424,
+            "latency_p50_ms": 485.8617598544389,
+            "peak_allocated_mb": 2549.92822265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed3/sa_nsga2/51"
+          ],
+          "label": "r24"
+        },
+        {
+          "rank": 9,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [\"down3.res1\", \"up3.attn0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 12, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res1",
+                "up3.attn0"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 6.5,
+            "method": "baseline",
+            "num_inference_steps": 12,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 87.93678140640259,
+            "clip_score": 26.2468003431956,
+            "gflops_per_image": 20799.448162304,
+            "latency_p50_ms": 362.23491798530307,
+            "peak_allocated_mb": 2412.37060546875,
+            "unet_weight_mb": 788.5754547119141
+          },
+          "sources": [
+            "nas_c2/seed5/sa_nsga2/96"
+          ],
+          "label": "r25"
+        },
+        {
+          "rank": 10,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [\"down0.attn1\", \"down3.res1\", \"up2.attn0\", \"up2.attn2\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn1",
+                "down3.res1",
+                "up2.attn0",
+                "up2.attn2"
+              ],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 80.33982078234355,
+            "clip_score": 25.80166592200597,
+            "gflops_per_image": 11194.726621184,
+            "latency_p50_ms": 164.14634129028136,
+            "peak_allocated_mb": 3162.04345703125,
+            "unet_weight_mb": 1540.1062088012695
+          },
+          "sources": [
+            "nas_c2/seed5/sa_nsga2/141"
+          ],
+          "label": "r26"
+        },
+        {
+          "rank": 11,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 89.14294397830963,
+            "clip_score": 25.800179580847423,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 334.62329316304863,
+            "peak_allocated_mb": 2438.32666015625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed2/sa_nsga2/12"
+          ],
+          "label": "r27"
+        },
+        {
+          "rank": 12,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 15, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 15,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 91.73907399177551,
+            "clip_score": 26.000599245230358,
+            "gflops_per_image": 26639.319179264,
+            "latency_p50_ms": 408.9561444887719,
+            "peak_allocated_mb": 3269.5263671875,
+            "unet_weight_mb": 1639.406135559082
+          },
+          "sources": [
+            "nas_c2/seed1/sa_nsga2/111"
+          ],
+          "label": "r28"
+        },
+        {
+          "rank": 13,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 6.5, \"removed_units\": [\"down0.attn0\", \"down2.attn0\", \"down3.res1\", \"mid.res1\"], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn0",
+                "down2.attn0",
+                "down3.res1",
+                "mid.res1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 6.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 79.32903345425923,
+            "clip_score": 25.777679403622944,
+            "gflops_per_image": 14307.801309184,
+            "latency_p50_ms": 253.88940456111447,
+            "peak_allocated_mb": 2449.17041015625,
+            "unet_weight_mb": 725.6408843994141
+          },
+          "sources": [
+            "nas_c2/seed2/sa_nsga2/75"
+          ],
+          "label": "r29"
+        },
+        {
+          "rank": 14,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.24502595265706,
+            "clip_score": 26.356294949849445,
+            "gflops_per_image": 15393.491001344,
+            "latency_p50_ms": 236.61996677071411,
+            "peak_allocated_mb": 3271.4013671875,
+            "unet_weight_mb": 1639.406135559082
+          },
+          "sources": [
+            "nas_c2/seed1/sa_nsga2/81"
+          ],
+          "label": "r30"
+        },
+        {
+          "rank": 15,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down3.res1\", \"mid.res1\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 8, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res1",
+                "mid.res1",
+                "up3.attn1"
+              ],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 83.19678775469463,
+            "clip_score": 26.631056547164917,
+            "gflops_per_image": 14652.887015424,
+            "latency_p50_ms": 216.3114937033986,
+            "peak_allocated_mb": 3133.615234375,
+            "unet_weight_mb": 1515.7653884887695
+          },
+          "sources": [
+            "nas_c2/seed2/sa_nsga2/78"
+          ],
+          "label": "r31"
+        }
+      ],
+      "naive": [
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res1\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"down3.res0\", \"up3.attn0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 33, \"weight_precision\": \"int8\"}"
+      ]
+    },
+    "random": {
+      "box": [
+        -25.214831451574963,
+        -75.0,
+        594.565523545,
+        1700.0
+      ],
+      "reference_latency_ms": 503.86908775,
+      "reference_clip": 26.214831451574963,
+      "reference_black_median": 0.0,
+      "pool_unique": 895,
+      "eligible": 186,
+      "front": 78,
+      "front_in_box": 72,
+      "calibration_hv_naive5": 5836066.0947689675,
+      "screened": [
+        {
+          "rank": 0,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "deepcache_branch_id": 3,
+            "deepcache_interval": 2,
+            "guidance_scale": 6.5,
+            "method": "deepcache",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 86.55016493797302,
+            "clip_score": 26.31225649515788,
+            "gflops_per_image": 13573.803352064,
+            "latency_p50_ms": 234.32954389341842,
+            "peak_allocated_mb": 2552.31689453125,
+            "unet_weight_mb": 818.2873687744141
+          },
+          "sources": [
+            "nas_c2/seed6/random/19"
+          ],
+          "label": "r21"
+        },
+        {
+          "rank": 1,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 85.91937883694966,
+            "clip_score": 26.6268310546875,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 323.28465810325724,
+            "peak_allocated_mb": 2447.63134765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed5/random/43"
+          ],
+          "label": "r32"
+        },
+        {
+          "rank": 2,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 9.0,
+            "method": "baseline",
+            "num_inference_steps": 15,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 91.54054935773213,
+            "clip_score": 26.184323171774547,
+            "gflops_per_image": 26639.319179264,
+            "latency_p50_ms": 464.28251031664234,
+            "peak_allocated_mb": 2447.28759765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed5/random/52"
+          ],
+          "label": "r33"
+        },
+        {
+          "rank": 3,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 7.5,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 88.04176676273346,
+            "clip_score": 26.27079935868581,
+            "gflops_per_image": 15393.491001344,
+            "latency_p50_ms": 276.6156875757213,
+            "peak_allocated_mb": 2438.32666015625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed1/random/142"
+          ],
+          "label": "r34"
+        },
+        {
+          "rank": 4,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"down3.res1\"], \"scheduler\": \"ddim\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 10.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 81.52668329079945,
+            "clip_score": 26.221417009830475,
+            "gflops_per_image": 12135.059431424,
+            "latency_p50_ms": 218.0413659595537,
+            "peak_allocated_mb": 2409.18505859375,
+            "unet_weight_mb": 791.0217437744141
+          },
+          "sources": [
+            "nas_c2/seed6/random/67"
+          ],
+          "label": "r35"
+        },
+        {
+          "rank": 5,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\"], \"guidance\": 10.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 27, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 10.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 27,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.55676647027333,
+            "clip_score": 26.482194582621258,
+            "gflops_per_image": 24833.806311424,
+            "latency_p50_ms": 416.4599671474422,
+            "peak_allocated_mb": 2560.20947265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed3/random/6"
+          ],
+          "label": "r36"
+        },
+        {
+          "rank": 6,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down2.attn0\", \"down3.res1\", \"up2.attn1\"], \"scheduler\": \"ddim\", \"steps\": 24, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "down3.res1",
+                "up2.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 24,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 81.48924052715302,
+            "clip_score": 26.56539934873581,
+            "gflops_per_image": 20543.693922304,
+            "latency_p50_ms": 355.976656375409,
+            "peak_allocated_mb": 2478.88427734375,
+            "unet_weight_mb": 749.0002593994141
+          },
+          "sources": [
+            "nas/seed1/random/132"
+          ],
+          "label": "r37"
+        },
+        {
+          "rank": 7,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 89.14294397830963,
+            "clip_score": 25.800179580847423,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 326.8209217724121,
+            "peak_allocated_mb": 2438.32666015625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed2/random/12",
+            "nas_c2/seed5/random/137"
+          ],
+          "label": "r27"
+        },
+        {
+          "rank": 8,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 10.5, \"removed_units\": [\"down3.res0\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up3.attn1"
+              ],
+              "weight_precision": "fp16"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 10.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 21,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 85.62266484896342,
+            "clip_score": 26.65713405609131,
+            "gflops_per_image": 17398.832963584,
+            "latency_p50_ms": 256.32145471003884,
+            "peak_allocated_mb": 3302.76513671875,
+            "unet_weight_mb": 1575.1574783325195
+          },
+          "sources": [
+            "nas/seed2/random/22"
+          ],
+          "label": "r38"
+        },
+        {
+          "rank": 9,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\", \"up3.attn0\"], \"scheduler\": \"ddim\", \"steps\": 18, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up3.attn0"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 18,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 85.96292567253113,
+            "clip_score": 26.18948366244634,
+            "gflops_per_image": 18741.363482624,
+            "latency_p50_ms": 310.67623018544896,
+            "peak_allocated_mb": 2511.88623046875,
+            "unet_weight_mb": 788.5754547119141
+          },
+          "sources": [
+            "nas_c2/seed6/random/0"
+          ],
+          "label": "r39"
+        },
+        {
+          "rank": 10,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [\"down0.attn1\", \"down2.attn0\", \"down3.res0\", \"down3.res1\", \"up2.attn0\", \"up2.attn1\", \"up3.attn0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn1",
+                "down2.attn0",
+                "down3.res0",
+                "down3.res1",
+                "up2.attn0",
+                "up2.attn1",
+                "up3.attn0"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 9.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 78.14722466468811,
+            "clip_score": 25.893372575441997,
+            "gflops_per_image": 15763.279192064,
+            "latency_p50_ms": 280.06924160320824,
+            "peak_allocated_mb": 2328.56689453125,
+            "unet_weight_mb": 705.5969390869141
+          },
+          "sources": [
+            "nas_c2/seed4/random/108"
+          ],
+          "label": "r40"
+        },
+        {
+          "rank": 11,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 6.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 87.13366484642029,
+            "clip_score": 26.29495197534561,
+            "gflops_per_image": 12180.397236224,
+            "latency_p50_ms": 184.99561625671802,
+            "peak_allocated_mb": 3269.5263671875,
+            "unet_weight_mb": 1639.406135559082
+          },
+          "sources": [
+            "nas/seed1/random/148"
+          ],
+          "label": "r41"
+        },
+        {
+          "rank": 12,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down3.res0\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 82.02067641417186,
+            "clip_score": 25.80873453617096,
+            "gflops_per_image": 11670.282051584,
+            "latency_p50_ms": 212.32243283957382,
+            "peak_allocated_mb": 2406.69091796875,
+            "unet_weight_mb": 788.5754547119141
+          },
+          "sources": [
+            "nas_c2/seed4/random/44"
+          ],
+          "label": "r42"
+        },
+        {
+          "rank": 13,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down0.attn1\", \"down2.attn0\", \"down3.res0\", \"up2.attn1\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn1",
+                "down2.attn0",
+                "down3.res0",
+                "up2.attn1",
+                "up3.attn1"
+              ],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 12.0,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 77.67662235101064,
+            "clip_score": 25.96912831068039,
+            "gflops_per_image": 10757.529411584,
+            "latency_p50_ms": 155.9775062198547,
+            "peak_allocated_mb": 3114.39404296875,
+            "unet_weight_mb": 1486.474006652832
+          },
+          "sources": [
+            "nas_c2/seed5/random/136"
+          ],
+          "label": "r43"
+        },
+        {
+          "rank": 14,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"N\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "fp16"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 9.0,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 90.59419325987498,
+            "clip_score": 26.473615050315857,
+            "gflops_per_image": 26298.050945024,
+            "latency_p50_ms": 384.89311974682147,
+            "peak_allocated_mb": 3371.7451171875,
+            "unet_weight_mb": 1639.406135559082
+          },
+          "sources": [
+            "nas_c2/seed6/random/100"
+          ],
+          "label": "r44"
+        },
+        {
+          "rank": 15,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\"], \"guidance\": 6.5, \"removed_units\": [\"down3.res1\"], \"scheduler\": \"ddim\", \"steps\": 33, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 6.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 33,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 89.1274133125941,
+            "clip_score": 26.125555058320362,
+            "gflops_per_image": 25522.385199104,
+            "latency_p50_ms": 450.2059414563153,
+            "peak_allocated_mb": 2528.23193359375,
+            "unet_weight_mb": 791.0217437744141
+          },
+          "sources": [
+            "nas_c2/seed4/random/137"
+          ],
+          "label": "r45"
+        }
+      ],
+      "naive": [
+        "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"down3.res1\"], \"scheduler\": \"ddim\", \"steps\": 6, \"weight_precision\": \"int8\"}"
+      ]
+    },
+    "nsga2": {
+      "box": [
+        -25.214831451574963,
+        -75.0,
+        594.565523545,
+        1700.0
+      ],
+      "reference_latency_ms": 503.86908775,
+      "reference_clip": 26.214831451574963,
+      "reference_black_median": 0.0,
+      "pool_unique": 900,
+      "eligible": 198,
+      "front": 76,
+      "front_in_box": 74,
+      "calibration_hv_naive5": 6744607.544684373,
+      "screened": [
+        {
+          "rank": 0,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up2.attn2"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 10.5,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 86.22260693709056,
+            "clip_score": 26.914253155390423,
+            "gflops_per_image": 18210.288574464,
+            "latency_p50_ms": 312.58810988380765,
+            "peak_allocated_mb": 2437.21728515625,
+            "unet_weight_mb": 811.9348297119141
+          },
+          "sources": [
+            "nas/seed3/nsga2/65"
+          ],
+          "label": "r05"
+        },
+        {
+          "rank": 1,
+          "signature": "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "deepcache_branch_id": 3,
+            "deepcache_interval": 2,
+            "guidance_scale": 6.5,
+            "method": "deepcache",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 86.55016493797302,
+            "clip_score": 26.31225649515788,
+            "gflops_per_image": 13573.803352064,
+            "latency_p50_ms": 231.48685088564596,
+            "peak_allocated_mb": 2543.03564453125,
+            "unet_weight_mb": 818.2873687744141
+          },
+          "sources": [
+            "nas_c2/seed6/nsga2/19"
+          ],
+          "label": "r21"
+        },
+        {
+          "rank": 2,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 89.09258039792378,
+            "clip_score": 26.156791925430298,
+            "gflops_per_image": 18531.021758464,
+            "latency_p50_ms": 324.37158961291954,
+            "peak_allocated_mb": 2407.66943359375,
+            "unet_weight_mb": 791.0217437744141
+          },
+          "sources": [
+            "nas/seed2/nsga2/28"
+          ],
+          "label": "r46"
+        },
+        {
+          "rank": 3,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 89.2544697523117,
+            "clip_score": 26.514330248037975,
+            "gflops_per_image": 25072.941277184,
+            "latency_p50_ms": 433.2840419084052,
+            "peak_allocated_mb": 2522.48193359375,
+            "unet_weight_mb": 791.0217437744141
+          },
+          "sources": [
+            "nas/seed2/nsga2/50"
+          ],
+          "label": "r47"
+        },
+        {
+          "rank": 4,
+          "signature": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 6.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up2.attn2"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 6.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 15,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 83.07371946175893,
+            "clip_score": 26.038857916990917,
+            "gflops_per_image": 11451.275157504,
+            "latency_p50_ms": 209.18325435072876,
+            "peak_allocated_mb": 2536.71337890625,
+            "unet_weight_mb": 811.9348297119141
+          },
+          "sources": [
+            "nas/seed2/nsga2/73"
+          ],
+          "label": "r48"
+        },
+        {
+          "rank": 5,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 12, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 12,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 90.49085772037506,
+            "clip_score": 25.73374076684316,
+            "gflops_per_image": 21819.678531584,
+            "latency_p50_ms": 371.62015055907426,
+            "peak_allocated_mb": 2437.97509765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed3/nsga2/79"
+          ],
+          "label": "r49"
+        },
+        {
+          "rank": 6,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [\"down3.res0\", \"up1.attn2\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down3.res0",
+                "up1.attn2",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 9.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 82.58735227584839,
+            "clip_score": 26.1556582848231,
+            "gflops_per_image": 17406.063550464,
+            "latency_p50_ms": 308.00939987819066,
+            "peak_allocated_mb": 2367.49169921875,
+            "unet_weight_mb": 755.3527984619141
+          },
+          "sources": [
+            "nas/seed2/nsga2/144"
+          ],
+          "label": "r50"
+        },
+        {
+          "rank": 7,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\"], \"guidance\": 10.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 24, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 10.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 24,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 88.38620571295421,
+            "clip_score": 26.587323884169262,
+            "gflops_per_image": 23621.889695744,
+            "latency_p50_ms": 400.82039046576807,
+            "peak_allocated_mb": 2550.51416015625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed6/nsga2/32"
+          ],
+          "label": "r51"
+        },
+        {
+          "rank": 8,
+          "signature": "{\"actions\": [\"F\", \"P0\", \"P0\", \"P0\", \"F\", \"P0\", \"P0\", \"P0\", \"F\", \"P0\", \"P0\", \"P0\", \"F\", \"P0\", \"P0\"], \"guidance\": 5.0, \"removed_units\": [\"up2.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up2.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "deepcache_branch_id": 0,
+            "deepcache_interval": 4,
+            "guidance_scale": 5.0,
+            "method": "deepcache",
+            "num_inference_steps": 15,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 82.1227666536967,
+            "clip_score": 25.545009742180508,
+            "gflops_per_image": 10200.330543104,
+            "latency_p50_ms": 188.54931646918354,
+            "peak_allocated_mb": 2540.70166015625,
+            "unet_weight_mb": 811.9348297119141
+          },
+          "sources": [
+            "nas/seed1/nsga2/26"
+          ],
+          "label": "r52"
+        },
+        {
+          "rank": 9,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 8,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 88.37837266921997,
+            "clip_score": 25.663187940915424,
+            "gflops_per_image": 15393.491001344,
+            "latency_p50_ms": 266.80868486734676,
+            "peak_allocated_mb": 2447.35009765625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas_c2/seed6/nsga2/83"
+          ],
+          "label": "r53"
+        },
+        {
+          "rank": 10,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 5.0,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 86.35101203123729,
+            "clip_score": 25.67749677101771,
+            "gflops_per_image": 12180.397236224,
+            "latency_p50_ms": 208.739511588585,
+            "peak_allocated_mb": 2439.92822265625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed3/nsga2/119"
+          ],
+          "label": "r54"
+        },
+        {
+          "rank": 11,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "fp16"
+            },
+            "guidance_scale": 6.5,
+            "method": "baseline",
+            "num_inference_steps": 6,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 87.13366484642029,
+            "clip_score": 26.29495197534561,
+            "gflops_per_image": 12180.397236224,
+            "latency_p50_ms": 184.08377318224808,
+            "peak_allocated_mb": 3260.3935546875,
+            "unet_weight_mb": 1639.406135559082
+          },
+          "sources": [
+            "nas/seed1/nsga2/130"
+          ],
+          "label": "r41"
+        },
+        {
+          "rank": 12,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\"], \"guidance\": 10.5, \"removed_units\": [\"down2.attn0\", \"down3.res0\", \"mid.res1\"], \"scheduler\": \"ddim\", \"steps\": 24, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down2.attn0",
+                "down3.res0",
+                "mid.res1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 3
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 2
+                }
+              ]
+            },
+            "guidance_scale": 10.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 24,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 2.0,
+            "clip_image_fidelity": 80.08096444606781,
+            "clip_score": 26.04766454299291,
+            "gflops_per_image": 23220.725489664,
+            "latency_p50_ms": 381.90991336094845,
+            "peak_allocated_mb": 2460.87548828125,
+            "unet_weight_mb": 728.0871734619141
+          },
+          "sources": [
+            "nas_c2/seed6/nsga2/139"
+          ],
+          "label": "r55"
+        },
+        {
+          "rank": 13,
+          "signature": "{\"actions\": [\"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P1\", \"P1\"], \"guidance\": 7.5, \"removed_units\": [\"up3.attn0\"], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "up3.attn0"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                },
+                {
+                  "branch": 6,
+                  "interval": 3
+                },
+                {
+                  "branch": 1,
+                  "interval": 3
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 30,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 89.79352537790935,
+            "clip_score": 26.103842973709106,
+            "gflops_per_image": 28375.860649984,
+            "latency_p50_ms": 460.24126125555193,
+            "peak_allocated_mb": 2552.69970703125,
+            "unet_weight_mb": 818.2873687744141
+          },
+          "sources": [
+            "nas/seed3/nsga2/45"
+          ],
+          "label": "r56"
+        },
+        {
+          "rank": 14,
+          "signature": "{\"actions\": [\"F\", \"P1\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down0.attn0\", \"down3.res0\", \"up2.attn2\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [
+                "down0.attn0",
+                "down3.res0",
+                "up2.attn2",
+                "up3.attn1"
+              ],
+              "weight_precision": "int8"
+            },
+            "flexiffusion": {
+              "segment_length": 3,
+              "segments": [
+                {
+                  "branch": 1,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 3,
+                  "interval": 2
+                },
+                {
+                  "branch": 6,
+                  "interval": 2
+                },
+                {
+                  "branch": 1,
+                  "interval": 1
+                }
+              ]
+            },
+            "guidance_scale": 7.5,
+            "method": "flexiffusion",
+            "num_inference_steps": 15,
+            "scheduler": "ddim"
+          },
+          "calibration_objectives": {
+            "black_images": 1.0,
+            "clip_image_fidelity": 80.97244091828664,
+            "clip_score": 25.86433643102646,
+            "gflops_per_image": 11915.516452864,
+            "latency_p50_ms": 206.0448702224857,
+            "peak_allocated_mb": 2499.06396484375,
+            "unet_weight_mb": 777.3303375244141
+          },
+          "sources": [
+            "nas_c2/seed6/nsga2/69"
+          ],
+          "label": "r57"
+        },
+        {
+          "rank": 15,
+          "signature": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+          "policy": {
+            "architecture": {
+              "removed_units": [],
+              "weight_precision": "int8"
+            },
+            "guidance_scale": 9.0,
+            "method": "baseline",
+            "num_inference_steps": 10,
+            "scheduler": "dpm_solver++"
+          },
+          "calibration_objectives": {
+            "black_images": 0.0,
+            "clip_image_fidelity": 87.77698969841003,
+            "clip_score": 26.379966755708057,
+            "gflops_per_image": 18606.584766464,
+            "latency_p50_ms": 329.970024324618,
+            "peak_allocated_mb": 2440.43603515625,
+            "unet_weight_mb": 820.7336578369141
+          },
+          "sources": [
+            "nas/seed2/nsga2/25"
+          ],
+          "label": "r58"
+        }
+      ],
+      "naive": [
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+        "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 6.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}"
+      ]
+    }
+  },
+  "remeasure_order": [
+    "ref_a",
+    "r41",
+    "r50",
+    "r24",
+    "r55",
+    "r31",
+    "r39",
+    "r46",
+    "r40",
+    "r58",
+    "r38",
+    "r33",
+    "r37",
+    "r16",
+    "r57",
+    "r56",
+    "r05",
+    "r27",
+    "r23",
+    "r20",
+    "r26",
+    "r48",
+    "r02",
+    "r04",
+    "r47",
+    "r17",
+    "r06",
+    "r52",
+    "r28",
+    "r45",
+    "ref_b",
+    "r35",
+    "r43",
+    "r10",
+    "r15",
+    "r36",
+    "r34",
+    "r51",
+    "r08",
+    "r11",
+    "r42",
+    "r25",
+    "r32",
+    "r07",
+    "r30",
+    "r44",
+    "r18",
+    "r49",
+    "r00",
+    "r03",
+    "r29",
+    "r22",
+    "r53",
+    "r19",
+    "r21",
+    "r13",
+    "r12",
+    "r14",
+    "r01",
+    "r09",
+    "r54",
+    "ref_c"
+  ]
+}
