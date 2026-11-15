@@ -1,0 +1,3025 @@
+{
+  "split": "test3",
+  "source": "MS-COCO 2014 validation captions",
+  "source_url": "https://raw.githubusercontent.com/tylin/coco-caption/3a9afb2682141a03e1cdc02b0df6770d2c884f6f/annotations/captions_val2014.json",
+  "source_sha256": "ee4c7a657443714cc448e12e6193c4d4616de8ad2382a07b8f702ee5e3c46d2b",
+  "license": "CC BY 4.0 (COCO Consortium)",
+  "license_url": "https://cocodataset.org/#termsofuse",
+  "selection_seed": 20261118,
+  "selection_rule": "Same strata as calibration/holdout; images and captions disjoint from both.",
+  "excluded_splits": [
+    "calibration.json",
+    "holdout.json",
+    "validation.json",
+    "test.json",
+    "test2.json",
+    "calibration2.json"
+  ],
+  "stratum_counts": {
+    "simple": 166,
+    "relational": 167,
+    "detailed": 167
+  },
+  "prompts": [
+    {
+      "prompt": "A man is using a toothbrush to clean his teeth.",
+      "image_id": 226542,
+      "annotation_id": 612389,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Young man on skate board balancing on concrete barrier near sidewalk with small park area near by.",
+      "image_id": 13546,
+      "annotation_id": 127883,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A black and white picture of two men playing a tennis match with the umpire and spectators look on",
+      "image_id": 345211,
+      "annotation_id": 669762,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a couple of chairs are in a room",
+      "image_id": 248014,
+      "annotation_id": 594745,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a bunch of peoples feet sit in front of frisbe",
+      "image_id": 250113,
+      "annotation_id": 792485,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Several chunks of breat on a cutting board and a plate with a lemon, some vegetables and a grater on it.",
+      "image_id": 238062,
+      "annotation_id": 351109,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The freight train is passing underneath the bridge.",
+      "image_id": 110389,
+      "annotation_id": 748123,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a motorcycle with a boot on the back wheel",
+      "image_id": 144300,
+      "annotation_id": 630197,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A restroom with a toilet and sink and a brown object hanging off the side of the toilet.",
+      "image_id": 383601,
+      "annotation_id": 33989,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The people fly a kite by the tall stone building.",
+      "image_id": 447314,
+      "annotation_id": 320661,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A black cat in a tie laying on a carpet next to bookshelf.",
+      "image_id": 337180,
+      "annotation_id": 388415,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two people are sitting in a chair lift with their feet on a snow board and skis dangling",
+      "image_id": 368459,
+      "annotation_id": 528055,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "People sitting in a car going down the road",
+      "image_id": 193875,
+      "annotation_id": 821884,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "An empty refrigerator with freezer with both doors open.",
+      "image_id": 59710,
+      "annotation_id": 53789,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A small infant standing next to a bathtub that has running water and the infant has a toothbrush in it's mouth.",
+      "image_id": 114790,
+      "annotation_id": 464921,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two trains moves past a factory emitting smoke.",
+      "image_id": 211054,
+      "annotation_id": 290294,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man and woman loading a surfboard on a motorcycle outside with other riders nearby",
+      "image_id": 269254,
+      "annotation_id": 331043,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A sandwich on a plate with a side of fruit in a bowl and a fork lying next to it.",
+      "image_id": 304984,
+      "annotation_id": 666611,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A woman holding a knife in the kitchen.",
+      "image_id": 535506,
+      "annotation_id": 579856,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A couple of people in a room with a Frisbee.",
+      "image_id": 118966,
+      "annotation_id": 633195,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a safety vest holds him arms up as he stands in front of an airplane.",
+      "image_id": 513681,
+      "annotation_id": 311795,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A dog is herding a large number of sheep",
+      "image_id": 138083,
+      "annotation_id": 102205,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A little girl sitting in front of a table full of dishes.",
+      "image_id": 352495,
+      "annotation_id": 450020,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Close up of a traffic light with three lights, the top illuminated red with a person image, the second down not illuminated, and the bottom on hanging down.",
+      "image_id": 227125,
+      "annotation_id": 542314,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A little girl smiling widely for the camera",
+      "image_id": 312216,
+      "annotation_id": 116757,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "The railroad crossing is protected by lights and barriers.",
+      "image_id": 172924,
+      "annotation_id": 764593,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A room set up for taking pictures with a chair, a black backdrop and a lighting umbrella in it.",
+      "image_id": 104683,
+      "annotation_id": 575223,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Four dogs are following a man into a store.",
+      "image_id": 496897,
+      "annotation_id": 177207,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Birds flying over a sandy beach and landing on a platform.",
+      "image_id": 170849,
+      "annotation_id": 96825,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Woman standing in the kitchen while wearing a black sleeveless cocktail dress and open-toe high heel pumps.",
+      "image_id": 509192,
+      "annotation_id": 345230,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Several bunches of bananas in a wicker basket.",
+      "image_id": 127535,
+      "annotation_id": 444714,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Laptop on a desk with an external mouse attached",
+      "image_id": 43417,
+      "annotation_id": 2324,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A handicapped man in a wheelchair is being helped to hold the bat by another man on a tee ball",
+      "image_id": 259690,
+      "annotation_id": 682169,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a green painted parking meter called a donation station",
+      "image_id": 503252,
+      "annotation_id": 678894,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A stuffed bear and a doll on a bed.",
+      "image_id": 191812,
+      "annotation_id": 542094,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A glass bowl of raw broccoli, a ceramic bowl of raw green chili peppers, and steel bowl of raw daikon.",
+      "image_id": 238708,
+      "annotation_id": 153723,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Several bunches of bananas are on a table.",
+      "image_id": 473427,
+      "annotation_id": 381109,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a refrigerator in a kitchen with video game stickers",
+      "image_id": 38238,
+      "annotation_id": 441517,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A group of people in a circle, while holding tennis rackets and standing on a hard surface tennis court.",
+      "image_id": 558510,
+      "annotation_id": 183427,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two planes are close together in the sky.",
+      "image_id": 135673,
+      "annotation_id": 374914,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Desk sits in corner next to the couch with a computer monitor and keyboard on top.",
+      "image_id": 169562,
+      "annotation_id": 373252,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A large chapel facing towards the alter with pews on either side and beautiful glass and marble adornments.",
+      "image_id": 471991,
+      "annotation_id": 727033,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a little bird taking a bath in a bird bath",
+      "image_id": 161470,
+      "annotation_id": 288150,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A stop sign with a green street sign posted above it.",
+      "image_id": 268396,
+      "annotation_id": 169062,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two gray colored horses grazing in a field of short cut grass, with trees and a white fence in the background.",
+      "image_id": 74460,
+      "annotation_id": 743326,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A pizza sits on a plate on a dark surface.",
+      "image_id": 280734,
+      "annotation_id": 315972,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A small laptop with a cat laying behind the screen.",
+      "image_id": 423742,
+      "annotation_id": 461917,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two sets of hands are each holding a cell phone while another hand in the background is holding a glass.",
+      "image_id": 213035,
+      "annotation_id": 74612,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "small pots of plants are being transplanted",
+      "image_id": 562030,
+      "annotation_id": 810623,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a person feeding seagulls on a beach near a lighthouse",
+      "image_id": 19783,
+      "annotation_id": 92161,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A hand holding a piece of cake with a bite out of it in front of a black and white cat.",
+      "image_id": 109612,
+      "annotation_id": 121280,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "an orange bucket sitting on a stool in a bathroom",
+      "image_id": 537812,
+      "annotation_id": 114024,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a long table with people drinks and a red and white table cloth",
+      "image_id": 151521,
+      "annotation_id": 152258,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A dog with his head out of the window and tongue hanging as seen in a car mirror.",
+      "image_id": 406932,
+      "annotation_id": 361660,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man dressed in red riding on a boat.",
+      "image_id": 359864,
+      "annotation_id": 83319,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Man with skateboard poised to start a stunt in front of a crowd of onlookers.",
+      "image_id": 187822,
+      "annotation_id": 555034,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person covered with an orange sleeping bag rests his head on a blue back pack as he sleeps on a park bench.",
+      "image_id": 30828,
+      "annotation_id": 161119,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Small cat resting on a light brown shelves.",
+      "image_id": 317822,
+      "annotation_id": 160262,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bus traveling down the street in front of a large building with a clock tower.",
+      "image_id": 520009,
+      "annotation_id": 72082,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A mirror shows the inside view of a room while a large window shows a worldly view of the terrain.",
+      "image_id": 15918,
+      "annotation_id": 56148,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A person is having some fun in the snow.",
+      "image_id": 491215,
+      "annotation_id": 592951,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A white toilet sitting next to a white bath tub.",
+      "image_id": 357475,
+      "annotation_id": 109424,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man with blue pants is on a snowy hillside a couple feet off the ground on a snowboard.",
+      "image_id": 402410,
+      "annotation_id": 330247,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Three women are walking along a building by the beach.",
+      "image_id": 35076,
+      "annotation_id": 599947,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man sitting at a computer desk with two desktop computer monitors sitting on it.",
+      "image_id": 233483,
+      "annotation_id": 76533,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "People on surfboards in the blue sea, a woman lying down and a man paddling with an oar.",
+      "image_id": 62363,
+      "annotation_id": 780093,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a woman is looking at a cat on a bike",
+      "image_id": 9801,
+      "annotation_id": 433123,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman is pointing and holding a hair dryer.",
+      "image_id": 384136,
+      "annotation_id": 192184,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A table with an open laptop, text book, cell phone and a bottle of beer, tv on in the background.",
+      "image_id": 277440,
+      "annotation_id": 740084,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "An empty street intersection during the night time.",
+      "image_id": 541631,
+      "annotation_id": 193964,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Sleeping teddy bear with nightcap on a work table with tools and cords.",
+      "image_id": 314388,
+      "annotation_id": 61062,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A boy grabs something from a hand reaching across a table at a restaurant while another child looks at the camera.",
+      "image_id": 502979,
+      "annotation_id": 500995,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A floral arrangement designed in a water can.",
+      "image_id": 222304,
+      "annotation_id": 71639,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "The young child is playing with a frisbee in the park.",
+      "image_id": 160607,
+      "annotation_id": 523540,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a man wearing a hat and glasses with a tie on featuring a man with a hat and glasses",
+      "image_id": 267625,
+      "annotation_id": 475358,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A turkey or chicken cooks inside a kitchen oven.",
+      "image_id": 168512,
+      "annotation_id": 119360,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a surfer in a wet suit is riding a white and black board",
+      "image_id": 482172,
+      "annotation_id": 371637,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "two boys at a dinner table look at a console in one of the boys' hands as a woman sits behind them",
+      "image_id": 243891,
+      "annotation_id": 682133,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Some very cute giraffes in a big field.",
+      "image_id": 47071,
+      "annotation_id": 717232,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Three giraffes tower above trees and brush as they feed.",
+      "image_id": 99913,
+      "annotation_id": 789300,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in boots and jeans walking over a small walkway bridge with two dogs next to him.",
+      "image_id": 270744,
+      "annotation_id": 165748,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two surfers swimming out into the white waves",
+      "image_id": 500434,
+      "annotation_id": 598557,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A small gazebo surrounded by a garden of flowers",
+      "image_id": 157067,
+      "annotation_id": 105349,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "this is a photo of a large crowd of young adults sitting on a long row of park benches",
+      "image_id": 216581,
+      "annotation_id": 677619,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A couple of people skateboarding in a graffiti filled area.",
+      "image_id": 176799,
+      "annotation_id": 735608,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two children are eating while sitting at a table.",
+      "image_id": 559550,
+      "annotation_id": 755282,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A bear in the top of a tree holding on so he does not fall out of it.",
+      "image_id": 347529,
+      "annotation_id": 737319,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The animal is standing by the booth at the event.",
+      "image_id": 182784,
+      "annotation_id": 397272,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A modern living room space containing a couch, and several chairs.",
+      "image_id": 545564,
+      "annotation_id": 183923,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The young man is sitting on his skateboard in the middle of the field with a pensive expression.",
+      "image_id": 118965,
+      "annotation_id": 45719,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A gray cat wearing a colorful neck tie.",
+      "image_id": 453369,
+      "annotation_id": 733028,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a plate with some cake and ice cream on the plate",
+      "image_id": 403333,
+      "annotation_id": 630106,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A bus drives along a narrow street and people are walking on the sidewalks on either side of the road.",
+      "image_id": 256852,
+      "annotation_id": 181829,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "two zebras are standing together in the woods",
+      "image_id": 122969,
+      "annotation_id": 648732,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A dinner table with salad, pizza and wine on it",
+      "image_id": 150208,
+      "annotation_id": 14865,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person on an orange compute while another is on her cell phone and the third one is staring out in space.",
+      "image_id": 541687,
+      "annotation_id": 241238,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a pink toilet in a small flower patterned bathroom stall",
+      "image_id": 213309,
+      "annotation_id": 659842,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Yellow and white locomotive pulling train cars on tracks.",
+      "image_id": 434022,
+      "annotation_id": 481470,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A beach area with a bicycle that has a blender attached to the front, parked on the sand.",
+      "image_id": 456695,
+      "annotation_id": 692093,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A bird sitting on a picnic table in the park.",
+      "image_id": 503660,
+      "annotation_id": 204071,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A hotdog wrapped in tinfoil, with toppings all over it.",
+      "image_id": 215565,
+      "annotation_id": 646649,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person sitting on a horse in air over gate in grass with people and trees in background.",
+      "image_id": 260106,
+      "annotation_id": 421933,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Three men are standing around looking at sports motorcycles.",
+      "image_id": 217181,
+      "annotation_id": 444674,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "People standing on a sidewalk near a parked bus at night.",
+      "image_id": 258350,
+      "annotation_id": 286389,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man is drenched by the spray from the crest of a wave as he attempts to stand up on his surfboard.",
+      "image_id": 417911,
+      "annotation_id": 56119,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "This is a picture of a persons garage sale.",
+      "image_id": 516805,
+      "annotation_id": 617868,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two older men having a drink at a table outside, while one looks at his phone",
+      "image_id": 210374,
+      "annotation_id": 387371,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a person looking at a large amount of bananas on sale sitting on the back of a truck",
+      "image_id": 454762,
+      "annotation_id": 728585,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The man on the surfboard is riding the waves.",
+      "image_id": 486774,
+      "annotation_id": 339910,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "People at the beach enjoying the day and surfing",
+      "image_id": 312237,
+      "annotation_id": 75046,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A line of boats is moored in the placid waters that blue skies and the buildings on the shoreline.",
+      "image_id": 420791,
+      "annotation_id": 77746,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A strong woman is playing tennis on a court.",
+      "image_id": 449579,
+      "annotation_id": 405340,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Black and white dog sitting on a futon near a TV.",
+      "image_id": 549109,
+      "annotation_id": 418892,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Several people seated in chairs in a waiting room with a Snapple vending machine in the far corner of the room.",
+      "image_id": 424683,
+      "annotation_id": 167616,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A family sitting together enjoying a meal.",
+      "image_id": 216449,
+      "annotation_id": 670852,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bike parked on a sidewalk near a street.",
+      "image_id": 203912,
+      "annotation_id": 712829,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A plate topped with a piece of food sitting net to a paper plate with a knife on it.",
+      "image_id": 393864,
+      "annotation_id": 697055,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Many men from the armed services are gathered.",
+      "image_id": 325157,
+      "annotation_id": 683448,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A empty living room area with a mat on the floor, and balloons.",
+      "image_id": 54358,
+      "annotation_id": 439628,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A baseball player in red and white contorts his body as a ball hovers in the air above him.",
+      "image_id": 420357,
+      "annotation_id": 314393,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A light brown horse's face is shown at close range.",
+      "image_id": 238431,
+      "annotation_id": 260914,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A person with a giraffe costume greets people coming through the gate.",
+      "image_id": 288584,
+      "annotation_id": 49130,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A mixer is pictured on a wood counter top and a tile back splash can be seen in the background.",
+      "image_id": 321603,
+      "annotation_id": 581789,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two men at separate tables using laptop computers.",
+      "image_id": 86011,
+      "annotation_id": 262128,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A girl sitting on a bench in front of a stone wall.",
+      "image_id": 391375,
+      "annotation_id": 30345,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A kitchen counter with a tea kettle, bowls, a knife, a cutting board, pots and pans, and sliced meat on a board.",
+      "image_id": 87567,
+      "annotation_id": 547977,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A woman dressed in military uniform speaks to a child.",
+      "image_id": 6579,
+      "annotation_id": 553662,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A herd of elephants play in a puddle in a black and white photo.",
+      "image_id": 330511,
+      "annotation_id": 157169,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A tennis player wearing an orange skirt and white shirt holds a racket and looks toward a tennis ball that is in the air on a tennis court.",
+      "image_id": 530337,
+      "annotation_id": 191556,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A person that is drinking some beer on a table.",
+      "image_id": 371216,
+      "annotation_id": 160492,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A cat sits on top of a black car.",
+      "image_id": 124462,
+      "annotation_id": 317807,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman is laying on a couch with a boy laying his head on her belly, and a cat between her legs.",
+      "image_id": 15140,
+      "annotation_id": 492500,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two giraffes in an outdoor setting eating grass.",
+      "image_id": 417876,
+      "annotation_id": 290747,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A herd of cattle grazing in a dry field with snow off in the distance.",
+      "image_id": 139455,
+      "annotation_id": 38585,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A young boy standing in the rain holding an umbrella next to a boy wearing a baseball cap.",
+      "image_id": 581245,
+      "annotation_id": 230725,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A chair is sitting in the corner of a room.",
+      "image_id": 143247,
+      "annotation_id": 676935,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a bed sits under neath a glass fish tank",
+      "image_id": 313428,
+      "annotation_id": 443853,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman in a short red dress is holding her skateboard while getting food from a take out window.",
+      "image_id": 304180,
+      "annotation_id": 642625,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man in green shirt catching a white frisbee.",
+      "image_id": 372258,
+      "annotation_id": 216708,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A fire hydrant next to a street sign with a cactus on it.",
+      "image_id": 479727,
+      "annotation_id": 312159,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The beach with a young boy standing on the sand and holding a paddle, and people in the distance at the water area.",
+      "image_id": 440189,
+      "annotation_id": 727133,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Some people are sitting on a wooden bench.",
+      "image_id": 198079,
+      "annotation_id": 384759,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a street sign on a city street near some tall bushes",
+      "image_id": 431026,
+      "annotation_id": 242997,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Four rams are standing in a line on top of a hill with a town in the background.",
+      "image_id": 157170,
+      "annotation_id": 226241,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two people walking on a beach each carrying a surfboard.",
+      "image_id": 130320,
+      "annotation_id": 229834,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A close up view of foof including broccoli, peppers and onions.",
+      "image_id": 259233,
+      "annotation_id": 432716,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "One picture shows Andy Warhol with a banana to his face, the other image shows a woman holding a banana to her ear.",
+      "image_id": 469467,
+      "annotation_id": 183482,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A bathroom sink wit a blue light shining on it.",
+      "image_id": 107340,
+      "annotation_id": 539543,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A boxer dog sitting in the grass with a chew toy in its mouth.",
+      "image_id": 206831,
+      "annotation_id": 727152,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A skateboarder with his board on the edge of a concrete divider while another boy chases the skateboarder with a camera.",
+      "image_id": 256868,
+      "annotation_id": 686837,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A young boy playing Wii fit in the living room",
+      "image_id": 370279,
+      "annotation_id": 229584,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A grey and black cat next to keyboard and monitor.",
+      "image_id": 60792,
+      "annotation_id": 392846,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A 1950's photo showing a two young men, one in military uniform, flanking a young woman on a bench",
+      "image_id": 463783,
+      "annotation_id": 25343,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A colorful object is flying through the blue sky",
+      "image_id": 24027,
+      "annotation_id": 777620,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A vase sitting next to a mirror filled with flowers",
+      "image_id": 569700,
+      "annotation_id": 622389,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A large dog stands on the back of a sofa, sniffing at it, while another dog rests on the sofa itself.",
+      "image_id": 183199,
+      "annotation_id": 36387,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A small pizza sits in the middle of a table.",
+      "image_id": 535933,
+      "annotation_id": 701285,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man taking a picture of himself with a goatee.",
+      "image_id": 422375,
+      "annotation_id": 87905,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A traffic light is standing in the middle of the street as buses are driving in the background.",
+      "image_id": 371139,
+      "annotation_id": 358700,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A close up of a plate of food containing broccoli.",
+      "image_id": 1064,
+      "annotation_id": 286945,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman with a tie and a bag on the street.",
+      "image_id": 187791,
+      "annotation_id": 563703,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a red and black robe handing something to a little girl in front of a bunch of people.",
+      "image_id": 482784,
+      "annotation_id": 808480,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Skier on slope in alpine mountain area on sunny day.",
+      "image_id": 229889,
+      "annotation_id": 777442,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Brown and black horse laying down in the mud.",
+      "image_id": 334760,
+      "annotation_id": 417336,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A long desk area with a desktop computer at one end and a laptop computer and Wii video game system on the other end.",
+      "image_id": 410576,
+      "annotation_id": 155683,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A very tall room has a clock on the wall.",
+      "image_id": 176034,
+      "annotation_id": 572186,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A lady in a shop with a piece of cake with lit candles.",
+      "image_id": 134386,
+      "annotation_id": 34090,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A night shot of a clock on a stone building that looks like a station of some kind",
+      "image_id": 323888,
+      "annotation_id": 538978,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A catcher throws the ball during a baseball game",
+      "image_id": 316189,
+      "annotation_id": 430657,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A school bus with a stop sign is filled with dogs.",
+      "image_id": 70493,
+      "annotation_id": 271572,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Three light sheep are grazing on grass in a ring and a dark sheep is eating by himself.",
+      "image_id": 14743,
+      "annotation_id": 79194,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A red bench sitting below tall neon lit buildings.",
+      "image_id": 403907,
+      "annotation_id": 170265,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a man is feeding a giraffe with its tongue out",
+      "image_id": 330065,
+      "annotation_id": 234960,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A banana sitting on a yellow beach chair next to a small umbrella looking out a window at the blue water.",
+      "image_id": 185802,
+      "annotation_id": 282386,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A herd of Zebras on a grassy plain.",
+      "image_id": 201676,
+      "annotation_id": 50050,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "very many sheep on the field near some houses",
+      "image_id": 64116,
+      "annotation_id": 546624,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man and a woman sleep on a bench outside with a bag on the ground in between them.",
+      "image_id": 217009,
+      "annotation_id": 569018,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of men sitting around a wooden table.",
+      "image_id": 170975,
+      "annotation_id": 667840,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man has yellow tennis shoes with orange laces.",
+      "image_id": 3466,
+      "annotation_id": 78692,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A large clock on top of the face of a building with statue adorned on top of it.",
+      "image_id": 243189,
+      "annotation_id": 37516,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A very cute black cat laying by a keyboard.",
+      "image_id": 438628,
+      "annotation_id": 573348,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Boy doing a trick on skateboard in front of cement steps",
+      "image_id": 14167,
+      "annotation_id": 370613,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A kitchen and dining area in a house with an open floor plan that looks out over the landscape from a large set of windows.",
+      "image_id": 472046,
+      "annotation_id": 497775,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man holding a autographed laptop computer in his hands.",
+      "image_id": 75655,
+      "annotation_id": 790817,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a white living room with blue furniture and decorations",
+      "image_id": 96402,
+      "annotation_id": 147381,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A group of farm animals grazing in a field next to a river with a boat traveling on it.",
+      "image_id": 393840,
+      "annotation_id": 243856,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A pedestrian crossing sign sitting on a street corner.",
+      "image_id": 254283,
+      "annotation_id": 706210,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A train traveling past a water tower next to a forest.",
+      "image_id": 226315,
+      "annotation_id": 69715,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person is in the distance while a brown dog is in midair and is running after a frisbee.",
+      "image_id": 307531,
+      "annotation_id": 499635,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A person on a cell phone in a room.",
+      "image_id": 410337,
+      "annotation_id": 581543,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A city street with many signs including street signs, no parking signs and traffic lights.",
+      "image_id": 15566,
+      "annotation_id": 27231,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman in evening wear holds a knife and carves a blue and white cake that has red stars.",
+      "image_id": 410484,
+      "annotation_id": 143834,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A hand holds an iphone playing a video of 2 men.",
+      "image_id": 521669,
+      "annotation_id": 255851,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a couple of scissors resting next to each other on a mouse pad",
+      "image_id": 526827,
+      "annotation_id": 599190,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A sandwich wrapped in a bag, a to-go coffee cup and a drink sits on top of a white table.",
+      "image_id": 292301,
+      "annotation_id": 110740,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Baseball batter watching pitch go by him at plate.",
+      "image_id": 73749,
+      "annotation_id": 90704,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two trains parked on the tracks near a platform.",
+      "image_id": 482585,
+      "annotation_id": 648663,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a black suit and a woman in a black dress with a coat stand under an umbrella holding signs.",
+      "image_id": 239351,
+      "annotation_id": 82405,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A batter is swinging the bat in a baseball game.",
+      "image_id": 235082,
+      "annotation_id": 758737,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A display window with glasses that look like cup cakes.",
+      "image_id": 322125,
+      "annotation_id": 787385,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A truck with a back full of items that has the president and a flag painted on the back.",
+      "image_id": 508087,
+      "annotation_id": 568284,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Mom cuts the birthday cake for her daugher",
+      "image_id": 455720,
+      "annotation_id": 526259,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two zebra standing on a dirty road next to a grass covered field.",
+      "image_id": 384258,
+      "annotation_id": 105810,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An exotic bird with a piece of fruit in its mouth from he tree it is perched in.",
+      "image_id": 238292,
+      "annotation_id": 133394,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Four fighter jets are flying across the clear sky.",
+      "image_id": 139168,
+      "annotation_id": 211276,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A sandwich in a container and apple on a blanket.",
+      "image_id": 307683,
+      "annotation_id": 457877,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A glass desk with labels placed beside a cordless mouse, an mp3 player, a keyboard, and a webcam.",
+      "image_id": 45406,
+      "annotation_id": 617967,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A dog standing on the side of a road.",
+      "image_id": 558127,
+      "annotation_id": 351652,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A vase filled with red and white flowers on top of a table.",
+      "image_id": 550426,
+      "annotation_id": 565895,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A child sitting at a table of homemade donuts with bowls of frosting and a Crisco oil container.",
+      "image_id": 208566,
+      "annotation_id": 340292,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The street signs are clearly marked for us to see.",
+      "image_id": 262987,
+      "annotation_id": 254539,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bike sitting next to a cup filled with coffee.",
+      "image_id": 158708,
+      "annotation_id": 480358,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A view of the bathroom with the toilet on the left and the edge of the bathtub and curtain visible.",
+      "image_id": 568150,
+      "annotation_id": 686611,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man is protecting his herd from danger.",
+      "image_id": 62167,
+      "annotation_id": 225238,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A moped parked in front of a yellow wall and traffic sign.",
+      "image_id": 343692,
+      "annotation_id": 198735,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a man sitting back from his plate of food to take a picture of his meal with his phone",
+      "image_id": 217397,
+      "annotation_id": 680487,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A cat getting up off on a brown desk.",
+      "image_id": 38938,
+      "annotation_id": 166022,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man holding a tv remote and wii controller.",
+      "image_id": 109313,
+      "annotation_id": 608796,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man sitting on a park bench reading while a dog lays on the ground in front of him.",
+      "image_id": 497674,
+      "annotation_id": 257017,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A hand holding a piece of meat filled pastry.",
+      "image_id": 105951,
+      "annotation_id": 218323,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Broccoli with corn, nuts, and a gravy on top.",
+      "image_id": 110200,
+      "annotation_id": 631123,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A wall of four urinals are hanging on a wall with a marble floor that has a drain.",
+      "image_id": 564657,
+      "annotation_id": 501508,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The young kids are playing Frisbee in the field.",
+      "image_id": 428263,
+      "annotation_id": 296623,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bride and groom holding a knife to a three tier wedding cake.",
+      "image_id": 468784,
+      "annotation_id": 469042,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A teenage girl with black hair and black makeup wearing kandi bracelets on her hand and holding up a sandwich.",
+      "image_id": 368844,
+      "annotation_id": 557797,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "an image of a man wearing a tie",
+      "image_id": 428554,
+      "annotation_id": 277526,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Chicken and broccoli garnished with tomatoes and sliced lemons.",
+      "image_id": 542922,
+      "annotation_id": 312383,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "people seated in a picnic setting with various types of food in the middle of them, including a chocolate bar.",
+      "image_id": 134133,
+      "annotation_id": 255652,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The large city bus is painted bright yellow.",
+      "image_id": 449031,
+      "annotation_id": 377369,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A person jumping with a snowboard holding the edge.",
+      "image_id": 57172,
+      "annotation_id": 635461,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An eye level counter-view shows blue tile, a faucet, dish scrubbers, bowls, a squirt bottle and similar kitchen items.",
+      "image_id": 316008,
+      "annotation_id": 707329,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A young giraffe peers inquisitively at the photographer.",
+      "image_id": 29484,
+      "annotation_id": 876,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A large decorative chocolate cake sit on top of a table.",
+      "image_id": 544421,
+      "annotation_id": 5802,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man with a blue and white striped shirt playing with a Wii in front of his TV set.",
+      "image_id": 303971,
+      "annotation_id": 427120,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of young children walking around a street.",
+      "image_id": 552273,
+      "annotation_id": 226239,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A boy in helmet playing a game with a Nintendo Wii controller.",
+      "image_id": 369310,
+      "annotation_id": 233629,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A group of people viewing a house with a double bed with a Crucifix hanging in a room.",
+      "image_id": 228867,
+      "annotation_id": 336110,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two cows that are together in a field.",
+      "image_id": 513809,
+      "annotation_id": 685731,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bench in some grass that is next to a building.",
+      "image_id": 83557,
+      "annotation_id": 319082,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A little boy in a black baseball helmet and a red and white uniform with a blue baseball bat.",
+      "image_id": 548339,
+      "annotation_id": 422910,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Several white vases have puffy flowers in it.",
+      "image_id": 502854,
+      "annotation_id": 619624,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A brown bear walking over a hill near a tree.",
+      "image_id": 278175,
+      "annotation_id": 39242,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A dark green and yellow striped train that says \"Duke of Edinburgh\" on a train track while a lady takes a photo with her camera.",
+      "image_id": 179218,
+      "annotation_id": 460387,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A bus travels down a road in a city.",
+      "image_id": 40620,
+      "annotation_id": 585958,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A red fire hydrant that has overgrowing grass and weeds around it.",
+      "image_id": 430583,
+      "annotation_id": 333582,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The dork with the earring stands next to the Asian beauty who is way out of his league.",
+      "image_id": 482275,
+      "annotation_id": 386648,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A woman stands hugging the leg of a giraffe sculpture.",
+      "image_id": 418109,
+      "annotation_id": 827868,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A boat floating along a river next to small walk way.",
+      "image_id": 321026,
+      "annotation_id": 152365,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A dining table with a glass, a basket of round balls and a book sitting on the table.",
+      "image_id": 308702,
+      "annotation_id": 310142,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Deep bathtub displayed in area of large tiled bathroom.",
+      "image_id": 383443,
+      "annotation_id": 259555,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A round mirror is on a wall with a reflection in it.",
+      "image_id": 264957,
+      "annotation_id": 78243,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a school bus with a sign that says short bus with a rack of shirts and potted plants in front of it",
+      "image_id": 128168,
+      "annotation_id": 412698,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of young men kicking around a soccer ball.",
+      "image_id": 477655,
+      "annotation_id": 540071,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man flying through the air while riding a snowboard.",
+      "image_id": 208342,
+      "annotation_id": 642234,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A young girl sitting in a wicker chair with her legs crossed and holding an item in one of her hands.",
+      "image_id": 166551,
+      "annotation_id": 473564,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A black horse is wondering about in the woods.",
+      "image_id": 414664,
+      "annotation_id": 817479,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A red bird with a long beak standing on top of a stick.",
+      "image_id": 323810,
+      "annotation_id": 403329,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A girl wearing a white tennis outfit and white shoes holds up a tennis racket on a tennis court while a woman wearing blue is seen on the side.",
+      "image_id": 513389,
+      "annotation_id": 107969,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "this woman is getting juice from a fruit",
+      "image_id": 162454,
+      "annotation_id": 697600,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "The man is on the horse and is racing to jump over the barrier.",
+      "image_id": 131612,
+      "annotation_id": 264313,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a white baseball uniform and a black cap stands on a baseball field as the stands are full of people.",
+      "image_id": 295589,
+      "annotation_id": 245815,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "THERE IS A CITY BUS ON THE STREET",
+      "image_id": 104734,
+      "annotation_id": 172988,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A teddy bear sitting in a vase with flowers.",
+      "image_id": 380299,
+      "annotation_id": 495291,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An illuminate sign of a clock showing 9:34 at nighttime with illuminate Colgate sign underneath and sky with clouds behind.",
+      "image_id": 461759,
+      "annotation_id": 783751,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A male tennis player in action on the court.",
+      "image_id": 443313,
+      "annotation_id": 280740,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman standing next to a desk and holding a case.",
+      "image_id": 441995,
+      "annotation_id": 269472,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A female tennis player standing at the baseline of the tennis court and holding her racquet with two hands.",
+      "image_id": 544351,
+      "annotation_id": 157929,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a steam locomotive on a narrow gauge track",
+      "image_id": 453029,
+      "annotation_id": 562556,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "people standing on the beach while one grabs for a frisbee",
+      "image_id": 244999,
+      "annotation_id": 12311,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "In a four player game of tennis the back court player takes a high twist to return the ball.",
+      "image_id": 183338,
+      "annotation_id": 162808,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A broken stop sign leaning into the street",
+      "image_id": 326428,
+      "annotation_id": 25658,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Three images of a motorcycle with a custom windshield.",
+      "image_id": 381482,
+      "annotation_id": 417325,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a close up of a door with two dogs in the glass of either side of the door",
+      "image_id": 423410,
+      "annotation_id": 192577,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two laptop computers sitting side by side on a table.",
+      "image_id": 183364,
+      "annotation_id": 321904,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A train with several cars is on a train track.",
+      "image_id": 365386,
+      "annotation_id": 432119,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two men hold up a man holding a soccer ball and all the men have on orange shirts.",
+      "image_id": 398742,
+      "annotation_id": 193125,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two bunches of bananas at a market stand.",
+      "image_id": 188752,
+      "annotation_id": 288503,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Skateboarders riding down the street on boards next to cars.",
+      "image_id": 278705,
+      "annotation_id": 31925,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A tennis player is standing at the out of bounds line looking up, poised to swing at the ball.",
+      "image_id": 509786,
+      "annotation_id": 53651,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A large white city bus stopped at a bus stop.",
+      "image_id": 239997,
+      "annotation_id": 124100,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a bear walking in the woods next to some trees",
+      "image_id": 11552,
+      "annotation_id": 300552,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A black and tan dog sits in an easy chair near a window with a polka dot shade.",
+      "image_id": 367082,
+      "annotation_id": 791834,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two baseball players are walking on the field.",
+      "image_id": 526800,
+      "annotation_id": 158841,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A women in a sunhat and sunglasses posing beside a bilingual English-Arabic stop sign.",
+      "image_id": 327665,
+      "annotation_id": 672240,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A young boy with a wide smile showing off his white suit, lavender shirt and purple striped tie.",
+      "image_id": 150677,
+      "annotation_id": 373261,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of young men sitting at a computer desk.",
+      "image_id": 235597,
+      "annotation_id": 307870,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A brown chicken standing on top of a lush green field.",
+      "image_id": 221017,
+      "annotation_id": 600861,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A stack of pancakes on a plate in front of a person holding a fork with a bite of pancake on it.",
+      "image_id": 260150,
+      "annotation_id": 728410,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A woman holding an umbrella stands as people walk past.",
+      "image_id": 322610,
+      "annotation_id": 40109,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A blue motorcycle parked on a sidewalk next to a street.",
+      "image_id": 578099,
+      "annotation_id": 167554,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two people wearing helmets on a yellow motorbike in front of a brown gate, beside a wooded area with trees.",
+      "image_id": 313733,
+      "annotation_id": 771819,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Gaily-decorated doughuts are on paper on a table",
+      "image_id": 457584,
+      "annotation_id": 302726,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of trains sitting on top of train tracks.",
+      "image_id": 180982,
+      "annotation_id": 521880,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a view from overhead of a person using a mouse at a computer on a desk covered with various electronics",
+      "image_id": 557321,
+      "annotation_id": 681236,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A grizzly bear is walking in a stream of water.",
+      "image_id": 330262,
+      "annotation_id": 487358,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of boats riding under a train bridge in a river.",
+      "image_id": 136595,
+      "annotation_id": 809843,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman is using a laptop on the couch as a black and white cat lays on the keyboard.",
+      "image_id": 198658,
+      "annotation_id": 68537,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Three little boys attempt to play baseball together outside.",
+      "image_id": 232160,
+      "annotation_id": 657824,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A young boy practicing hitting a baseball with a baseball bat.",
+      "image_id": 516415,
+      "annotation_id": 109593,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two birds preparing to eat food off of a plate that was left on a table outside by the ocean.",
+      "image_id": 210032,
+      "annotation_id": 455204,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a family wawtching a kite hign in the air",
+      "image_id": 68204,
+      "annotation_id": 810089,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "An old green pickup truck on a flatbed truck behind a fence.",
+      "image_id": 23774,
+      "annotation_id": 148002,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two surfers are standing on the beach, and their faces have been changed to Barack Obama and Ron Paul.",
+      "image_id": 580248,
+      "annotation_id": 150155,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man is kite surfing in the ocean.",
+      "image_id": 82718,
+      "annotation_id": 363170,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Fire hydrant in a field of grass next to a road.",
+      "image_id": 129592,
+      "annotation_id": 790771,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A waffled surface shows a glass with ice, an aging orange and a plate with a muffin, berries, cream cheese and spoon.",
+      "image_id": 221911,
+      "annotation_id": 805484,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a lady that is on her cell phone outsid",
+      "image_id": 452776,
+      "annotation_id": 551489,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "An adult elephant and two baby elephants are in a lake.",
+      "image_id": 114398,
+      "annotation_id": 602642,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman tennis player in a blue skirt holding a tennis racquet in one hand and touching the wall with her other hand.",
+      "image_id": 143119,
+      "annotation_id": 166153,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A red teddy bear on a pole wears a crown.",
+      "image_id": 539224,
+      "annotation_id": 751171,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A public bathroom sits outside next to the street.",
+      "image_id": 383065,
+      "annotation_id": 63990,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A cup of starbucks tea sitting on top of a table next to scissors and a pile of books.",
+      "image_id": 137227,
+      "annotation_id": 88443,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The pot on the stove has chopped vegetables in it.",
+      "image_id": 393838,
+      "annotation_id": 556062,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A bride and a groom are cutting a wedding cake.",
+      "image_id": 312289,
+      "annotation_id": 728750,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a trench coat, hat, and carrying an umbrella pointing to the shirt collar of another man.",
+      "image_id": 147346,
+      "annotation_id": 659282,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man playing tennis going high for the ball.",
+      "image_id": 335201,
+      "annotation_id": 577477,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "An old, rusty fire hydrant, in front of the pole.",
+      "image_id": 218751,
+      "annotation_id": 439895,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man reaches into the air with a tennis racket, in an attempt to hit a flying tennis ball.",
+      "image_id": 388215,
+      "annotation_id": 829359,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man in white shirt grinding a skateboard on rail.",
+      "image_id": 572725,
+      "annotation_id": 384067,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two men in dress clothes standing on grassy area next to trees.",
+      "image_id": 11655,
+      "annotation_id": 257348,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person laying on a couch with a cat laying in their arms, covering part of the face.",
+      "image_id": 436676,
+      "annotation_id": 558587,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a train sitting on a train track at a stop.",
+      "image_id": 145862,
+      "annotation_id": 16143,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "four scenes with each showing a smiley face doll",
+      "image_id": 428125,
+      "annotation_id": 379620,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A picture of some street signs, mainly the camera is view a sign that states \"Sun Valley Market\".",
+      "image_id": 115927,
+      "annotation_id": 547449,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A large two sided clock by a building",
+      "image_id": 406959,
+      "annotation_id": 223056,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman swinging a video game remote near a lamp.",
+      "image_id": 551974,
+      "annotation_id": 525680,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man holding the unpeeled end of a partially peeled banana to his lips as though playing a horn",
+      "image_id": 581496,
+      "annotation_id": 24814,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man is looking into a disgusting toilet",
+      "image_id": 154718,
+      "annotation_id": 469945,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A couple of people sitting on top of a brown couch in front of a TV.",
+      "image_id": 552832,
+      "annotation_id": 423559,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Looking out from a vehicle onto the street at a man on a motor bike and a car stopped in front of him.",
+      "image_id": 508302,
+      "annotation_id": 599194,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A young girl pretending to be a pirate",
+      "image_id": 208283,
+      "annotation_id": 380112,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Women and children are gathered around a blue cake.",
+      "image_id": 334483,
+      "annotation_id": 430084,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A jet airplane is flying through the sky just above the highway as a group of cars stay to the left side of the road.",
+      "image_id": 175942,
+      "annotation_id": 45166,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A stainless steel refrigerator in a kitchen corner.",
+      "image_id": 190395,
+      "annotation_id": 49318,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man holding onto a kite with one hand and spool on the other.",
+      "image_id": 124442,
+      "annotation_id": 92051,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A person holds a digital camera in front of a seated woman brushing her teeth, while another woman also brushes in the background.",
+      "image_id": 349590,
+      "annotation_id": 28905,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a number of motorcycles in a lot",
+      "image_id": 106661,
+      "annotation_id": 418219,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "there is a man and a woman standing in a kitchen",
+      "image_id": 87052,
+      "annotation_id": 693800,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A kid in jeans holds the lip of his skateboard on a ledge as he stands on it.",
+      "image_id": 481115,
+      "annotation_id": 409912,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of people dressed in an elephant costume.",
+      "image_id": 59815,
+      "annotation_id": 461307,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of adults from behind holding umbrellas at night.",
+      "image_id": 573209,
+      "annotation_id": 246624,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A boy with a green stuffed animal and a girl with a pink stuffed animal at a park.",
+      "image_id": 407042,
+      "annotation_id": 98830,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Group of people flying a kite on a plateau outdoors",
+      "image_id": 246124,
+      "annotation_id": 800392,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A broken bathroom with a white sink and toilet.",
+      "image_id": 47632,
+      "annotation_id": 519943,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two cats are sleeping in suspended beds and another cat is perched on top of one of the beds.",
+      "image_id": 515585,
+      "annotation_id": 412506,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of surfers dressed in black riding small waves.",
+      "image_id": 143320,
+      "annotation_id": 120627,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A black table topped with food and a smart phone.",
+      "image_id": 17366,
+      "annotation_id": 589422,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A roped off section of a street with people walking by and a child running towards a net.",
+      "image_id": 534734,
+      "annotation_id": 722824,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "An older man on skis in the snow.",
+      "image_id": 285583,
+      "annotation_id": 59836,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a man wearing a silly mask while using a cell phone",
+      "image_id": 74332,
+      "annotation_id": 519254,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Two little boys are wearing helmets, goggles and snow gear as they stand and sit in the middle of the snowy terrain.",
+      "image_id": 88552,
+      "annotation_id": 300405,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A surfboard is being displayed in an office.",
+      "image_id": 309341,
+      "annotation_id": 357735,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A vase with flowers and water in it sitting near blinds.",
+      "image_id": 458941,
+      "annotation_id": 574379,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A grouping of a watering can, potted plant, vase with flowers, a decanter and a crystal bowl on a table.",
+      "image_id": 352480,
+      "annotation_id": 283015,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two street signs on a post beneath power lines.",
+      "image_id": 301765,
+      "annotation_id": 99777,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man smiling while standing in the snow with one foot on his snowboard.",
+      "image_id": 238074,
+      "annotation_id": 728395,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A group of elephants with one elephant raising it's trunk and dust and dirt coming up behind it.",
+      "image_id": 483275,
+      "annotation_id": 175913,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A ship traveling along a body of water.",
+      "image_id": 551692,
+      "annotation_id": 663617,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Magenta and clear colored glass bottles are growing onion.",
+      "image_id": 538204,
+      "annotation_id": 238721,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The rider, clothed in camoflague and ski boots, is sure to blend into the grassy area on his motorbike.",
+      "image_id": 504498,
+      "annotation_id": 154885,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Young woman carrying an opened umbrella in a city neighborhood.",
+      "image_id": 486194,
+      "annotation_id": 7777,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "The dinner plate has asparagus, carrots and some kind of meat.",
+      "image_id": 9050,
+      "annotation_id": 751156,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A lighthouse stands on an island in the background as a surfer on an orange board rides the surf while holding a black pole.",
+      "image_id": 371497,
+      "annotation_id": 89512,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a small bed is in a blue walled room",
+      "image_id": 159103,
+      "annotation_id": 811659,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two women holding surfboards while smiling at the camera.",
+      "image_id": 566159,
+      "annotation_id": 245316,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A sign with the name of a street and the name of a cemetery posted on a quiet street.",
+      "image_id": 543215,
+      "annotation_id": 312403,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A crying woman looking at herself in a mirror.",
+      "image_id": 403378,
+      "annotation_id": 51119,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "There is a laptop and other electronic equipment on the table.",
+      "image_id": 49985,
+      "annotation_id": 450645,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A fork is sticking into the meat from a sandwich, which is next to sauce in some containers.",
+      "image_id": 254225,
+      "annotation_id": 144378,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A surfer riding a wave in the ocean.",
+      "image_id": 159044,
+      "annotation_id": 194020,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A marble counter top with two sinks under a mirror.",
+      "image_id": 137763,
+      "annotation_id": 531783,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man sitting at a table with a burrito and a cup of coffee in front of him.",
+      "image_id": 348371,
+      "annotation_id": 406848,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Beach scene, 12 people walking to water carrying surf boards.",
+      "image_id": 5476,
+      "annotation_id": 121248,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Man standing in front of the ocean in a wet suit with a surf board.",
+      "image_id": 11316,
+      "annotation_id": 8190,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An old grey pickup truck is parked in front of a white house with pillars holding the porch up.",
+      "image_id": 75723,
+      "annotation_id": 591412,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A train is parked at the station loading passengers.",
+      "image_id": 384207,
+      "annotation_id": 614505,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A sandy beach with people laying on cots under umbrellas.",
+      "image_id": 456525,
+      "annotation_id": 380672,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A close up of a tooth brush and a blurred background of a man in a blue jacket facing the opposite direction.",
+      "image_id": 323356,
+      "annotation_id": 413117,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two papers display two different sloppy food dishes.",
+      "image_id": 214853,
+      "annotation_id": 654521,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman with a racquet swinging at a ball.",
+      "image_id": 90374,
+      "annotation_id": 351824,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Couch and chair near window with lacy curtain and a wood table in the center and a table with flowers between the couch and chair.",
+      "image_id": 181753,
+      "annotation_id": 277318,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of older people around a long restaurant table.",
+      "image_id": 31296,
+      "annotation_id": 673658,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of men on aircraft carrier with other boats in the distance.",
+      "image_id": 502168,
+      "annotation_id": 347866,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A skier in the air doing a jump over a show covered mound and a person laying on their back taking photos.",
+      "image_id": 549789,
+      "annotation_id": 158978,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "There is a tennis player about to hit a ball",
+      "image_id": 4227,
+      "annotation_id": 113931,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of people walking down a snow covered path with cats and horses.",
+      "image_id": 415183,
+      "annotation_id": 73162,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A red double decker bus is in front of a white bus on the side of a road.",
+      "image_id": 121572,
+      "annotation_id": 704869,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A bunch of flowers set out on a table",
+      "image_id": 447087,
+      "annotation_id": 562805,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A couple of giraffe standing next to each other on a dry grass field.",
+      "image_id": 558927,
+      "annotation_id": 496882,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A skier is high in the air performing a jump while under a canopy of a dark grey sky.",
+      "image_id": 566518,
+      "annotation_id": 69914,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "an orange being piled up on a table",
+      "image_id": 37958,
+      "annotation_id": 719767,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a cat on a desk with a laptop and a mouse",
+      "image_id": 506095,
+      "annotation_id": 469777,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man wearing sunglasses holds up a large red and black umbrella while standing on sand at the beach.",
+      "image_id": 403943,
+      "annotation_id": 297282,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "THIS IS A PICTURE OF A LOADED HOT DOG",
+      "image_id": 187475,
+      "annotation_id": 714967,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Everyone is loading up on the buses and ready to go.",
+      "image_id": 502402,
+      "annotation_id": 697982,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Split screen pictures. One with man using a cutting board. The other contains a cabinet with glass door displaying bottles.",
+      "image_id": 10149,
+      "annotation_id": 729743,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A mirror is on the wall in a bedroom setting.",
+      "image_id": 71466,
+      "annotation_id": 377050,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "The skier in the orange coat is riding on a trail between the trees.",
+      "image_id": 274549,
+      "annotation_id": 748504,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Many double decked buses are lined on a bridge and three of them are red and one is blue.",
+      "image_id": 69944,
+      "annotation_id": 409068,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Four people sitting around a computer station talking.",
+      "image_id": 117701,
+      "annotation_id": 57822,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "There's a kitchen with toaster sitting on the counter between the oven and stove",
+      "image_id": 427239,
+      "annotation_id": 519475,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A street with taxis in the street and a street post with two signs attached that show statues of lions on the signs.",
+      "image_id": 351053,
+      "annotation_id": 181995,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A dog is sitting in a living room.",
+      "image_id": 159463,
+      "annotation_id": 362883,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group of people riding horses on top of a sandy beach.",
+      "image_id": 434247,
+      "annotation_id": 429262,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A jet airplane on a runway with a field of tall grass in the foreground and mountains behind.",
+      "image_id": 468525,
+      "annotation_id": 765021,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "The top of the computer desk is very shiny.",
+      "image_id": 463132,
+      "annotation_id": 326400,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman standing with a bi-wing airplane on a runway.",
+      "image_id": 366031,
+      "annotation_id": 150142,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The photo shows the many ways to enjoy the beach--kite flying, bathing, lying in the sun, walking along the sand.",
+      "image_id": 308587,
+      "annotation_id": 742122,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Four cellphones sitting on a table in a row.",
+      "image_id": 161169,
+      "annotation_id": 286810,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man holding a half eaten hot dog and a dollar.",
+      "image_id": 152482,
+      "annotation_id": 216214,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A fire hydrants and some potted plants sitting on the side of a road where cars are driving.",
+      "image_id": 513690,
+      "annotation_id": 271903,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A close up of flowers in a vase.",
+      "image_id": 541587,
+      "annotation_id": 110520,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Woman skier taking a break and enjoying a snack",
+      "image_id": 227491,
+      "annotation_id": 344730,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man talking in front of a photo of an orange sofa with black and white fence behind it.",
+      "image_id": 170099,
+      "annotation_id": 259501,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "An elephant in captivity stands by a pool of water.",
+      "image_id": 501790,
+      "annotation_id": 476624,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man and woman are signing autographs for fans.",
+      "image_id": 345595,
+      "annotation_id": 550630,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A orange tabby cat sitting on a room pass thru while a black cat sleeps on a couch.",
+      "image_id": 412377,
+      "annotation_id": 196330,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A stainless steel refrigerator sitting in a kitchen",
+      "image_id": 310325,
+      "annotation_id": 85067,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man sitting in front of a white laptop computer smiling.",
+      "image_id": 63525,
+      "annotation_id": 608998,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A cat with it's mouth wide open laying next to an open blue bottle on a window sill.",
+      "image_id": 315073,
+      "annotation_id": 24265,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A BUFFET SPREAD OF AN ARRAY OF FOODS",
+      "image_id": 301486,
+      "annotation_id": 643440,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Several people walking on a sidewalk, with one man holding an umbrella.",
+      "image_id": 360960,
+      "annotation_id": 487112,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Shelves hold rows of teddy bears of all sizes and colors while one lone snowman is sitting with them.",
+      "image_id": 194956,
+      "annotation_id": 332067,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A cat sits curiously perched in an empty cup",
+      "image_id": 459598,
+      "annotation_id": 643098,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A large group of motorcycles driving in a parade with parade onlookers.",
+      "image_id": 281696,
+      "annotation_id": 802737,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in kitchen with a woman holding a pot lid and a spoon in stir fry on stove top..",
+      "image_id": 205601,
+      "annotation_id": 422225,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A small dog sitting on a cushion by a window.",
+      "image_id": 487741,
+      "annotation_id": 560760,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A herd of sheep standing on top of dry grass in a pen.",
+      "image_id": 50304,
+      "annotation_id": 623153,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A chocolate cake decorated with flowers and long, purple candles sits on a blue plate on the floor.",
+      "image_id": 314965,
+      "annotation_id": 261703,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "An image looking down in to a toilet.",
+      "image_id": 273556,
+      "annotation_id": 446040,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A blue plate with chicken, beans, and vegetables on a wooden table.",
+      "image_id": 467500,
+      "annotation_id": 797301,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A public hybrid electric bus on the street with it's doors open, and people next to the bus.",
+      "image_id": 398148,
+      "annotation_id": 181767,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a couple of bears that looks like they are hugging",
+      "image_id": 406332,
+      "annotation_id": 524471,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A person holding a partially eaten sandwich filled with meat.",
+      "image_id": 268734,
+      "annotation_id": 21530,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "The zebra in this shot separates the brown grass from the blue tone of the field and sky.",
+      "image_id": 42135,
+      "annotation_id": 115778,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A cat is sitting by a computer on a desk.",
+      "image_id": 316015,
+      "annotation_id": 102549,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A blue and white boat floating on top of water.",
+      "image_id": 281722,
+      "annotation_id": 701398,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An office desk with a lot of technology including a flat screen PC monitor, a laptop computer, a tablet and an iPhone.",
+      "image_id": 561403,
+      "annotation_id": 435883,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A double deck tour bus parked at a stop.",
+      "image_id": 466346,
+      "annotation_id": 722124,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a narrow alley with signs and buildings down it",
+      "image_id": 527962,
+      "annotation_id": 557173,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man who is holding a garbage bag while a lot of people around him are sitting and eating.",
+      "image_id": 128704,
+      "annotation_id": 467504,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A city bus parked at the curb",
+      "image_id": 496680,
+      "annotation_id": 682670,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A two story white building with lots of umbrellas over them.",
+      "image_id": 293895,
+      "annotation_id": 719710,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A white cat with a dark patch on his head has his arm under a shoe and his head on top of one.",
+      "image_id": 285418,
+      "annotation_id": 217659,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two red buses are passing on the street.",
+      "image_id": 171915,
+      "annotation_id": 372083,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a person sitting down in front of a couch",
+      "image_id": 406555,
+      "annotation_id": 171719,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A young boy in a red shirt flies a kit high in the sky while a girl in a t-shirt watches.",
+      "image_id": 103692,
+      "annotation_id": 82026,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a person riding a two thick wheeled bike on sand",
+      "image_id": 441586,
+      "annotation_id": 119284,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A modern bathroom with rolled towels and wooden side panels.",
+      "image_id": 220741,
+      "annotation_id": 641529,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Four people in ski clothes stand on skis with their ski poles as snowy mountains are in the background.",
+      "image_id": 29138,
+      "annotation_id": 217787,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A lot of chairs that are by a wall.",
+      "image_id": 379314,
+      "annotation_id": 370979,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A woman laying in bed reading a book while wearing purple socks.",
+      "image_id": 536038,
+      "annotation_id": 520328,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A man in a white shirt plays with a remote while next to a man in a green shirt.",
+      "image_id": 189588,
+      "annotation_id": 230729,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A group of women who are standing by their luggage.",
+      "image_id": 549932,
+      "annotation_id": 801152,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A group photo of boys in front of a building.",
+      "image_id": 125873,
+      "annotation_id": 214318,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A black and white image of a man in the shower, formally dressed, drinking a bottle of liquor.",
+      "image_id": 553353,
+      "annotation_id": 332867,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A sheep scratches his back up against a wooden structure.",
+      "image_id": 272008,
+      "annotation_id": 77503,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Pancakes with blueberries and Log Cabin maple syrup on a table.",
+      "image_id": 355430,
+      "annotation_id": 142645,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Three people are out on the sand and one child is holding a kite while the other young one is running and a man is holding the kite string.",
+      "image_id": 155319,
+      "annotation_id": 710044,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A person playing in the maintained play ground",
+      "image_id": 211163,
+      "annotation_id": 617783,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A dinner plate with a stir-fry dish of broccoli and rice.",
+      "image_id": 225943,
+      "annotation_id": 283621,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Close up from behind of a young giraffe standing with front legs splayed and head the ground by a fence outside.",
+      "image_id": 98248,
+      "annotation_id": 597244,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "In less than a mile, there is a walking trail.",
+      "image_id": 495612,
+      "annotation_id": 212556,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A baseball player holding a bat next to home plate.",
+      "image_id": 458045,
+      "annotation_id": 478204,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A woman sitting on ledge with three pigeons, with gate railing, trees, and base of the Eiffel Tower behind.",
+      "image_id": 456496,
+      "annotation_id": 489557,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Someone pinches a bite off of a homemade chocolate cake.",
+      "image_id": 558388,
+      "annotation_id": 501613,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A herd of sheep standing on top of a lush green field",
+      "image_id": 375449,
+      "annotation_id": 504584,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A living room with a white sofa and rug, a picture on the wall, and a table by a window.",
+      "image_id": 504125,
+      "annotation_id": 708457,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A hand that is holding an opened banana.",
+      "image_id": 261207,
+      "annotation_id": 458276,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two young boys looking at a bear behind a glass enclosure.",
+      "image_id": 69009,
+      "annotation_id": 131265,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A path that cuts through an area of lush vegetation has two walkers on it carrying large umbrellas.",
+      "image_id": 54909,
+      "annotation_id": 702725,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Street sign made of metal againt a blue sky.",
+      "image_id": 276731,
+      "annotation_id": 536237,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A view A large metal structure near the side of a building",
+      "image_id": 45596,
+      "annotation_id": 396897,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "An array of images shows the steps to making a cheesecake, from recipe, all the way to a finished fruit-topped cake with a wedge missing.",
+      "image_id": 136021,
+      "annotation_id": 776389,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A family relaxing on the beach on a sunny day.",
+      "image_id": 552364,
+      "annotation_id": 600424,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A dogs face and the dog is laying in the bed",
+      "image_id": 319142,
+      "annotation_id": 814291,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A boy is riding a bike with a teddy bear as a person sitting is toasting a beer.",
+      "image_id": 411938,
+      "annotation_id": 261383,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "a boat that is out on the water",
+      "image_id": 458387,
+      "annotation_id": 673064,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "There are many birds in and next to the water.",
+      "image_id": 271032,
+      "annotation_id": 678677,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A parking area with various buses and vehicles parked bumper to bumper together and a building in the background.",
+      "image_id": 125645,
+      "annotation_id": 499121,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Two men in skis are standing on a ski slope.",
+      "image_id": 138975,
+      "annotation_id": 709310,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A white cup holding a tooth brush on top of an orange table.",
+      "image_id": 518287,
+      "annotation_id": 347442,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A bike is standing in the grass next to a trail that runs beside a river that has a bridge crossing it in the background",
+      "image_id": 532285,
+      "annotation_id": 85743,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man pressing buttons on his cell phone.",
+      "image_id": 183889,
+      "annotation_id": 508485,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two kids with donuts and frosting on their fingers.",
+      "image_id": 334686,
+      "annotation_id": 202754,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "a little girl in an orange and white zig-zag pattern dress holding a tennis raquet with a boy in the background",
+      "image_id": 224647,
+      "annotation_id": 592809,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A dog that is carrying a Frisbee in its mouth.",
+      "image_id": 574208,
+      "annotation_id": 525242,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A man on a court playing tennis with a racket.",
+      "image_id": 14562,
+      "annotation_id": 343845,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A motorcyclist sits on the ground next to his motorcycle in the middle of a road in a wooded area.",
+      "image_id": 84447,
+      "annotation_id": 823236,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "An old clock above a door in an archway.",
+      "image_id": 500446,
+      "annotation_id": 209126,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "Two women and a man sit together in an empty restaurant.",
+      "image_id": 93894,
+      "annotation_id": 277903,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A beautiful woman in a blue dress with white polka dots and lines sitting in front of a laptop.",
+      "image_id": 48044,
+      "annotation_id": 606435,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A man is riding a large motorcycle on a street",
+      "image_id": 33815,
+      "annotation_id": 561745,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "A line in front of a black lunch truck.",
+      "image_id": 16775,
+      "annotation_id": 222059,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "One man is riding a bike while another rides a motorcycle while some people are gathering around to talk.",
+      "image_id": 199883,
+      "annotation_id": 410332,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "A young boy holding a Frisbee, sitting on grass.",
+      "image_id": 161586,
+      "annotation_id": 483248,
+      "stratum": "simple"
+    },
+    {
+      "prompt": "a man sitting in a life guard tower under an orange umbrella.",
+      "image_id": 229184,
+      "annotation_id": 146119,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "A solo man with a hat and cane sitting on a graffiti filled bench on a cobbled path.",
+      "image_id": 340308,
+      "annotation_id": 231047,
+      "stratum": "detailed"
+    },
+    {
+      "prompt": "Hot dogs, buns and croissants on a BBQ grill",
+      "image_id": 297520,
+      "annotation_id": 471983,
+      "stratum": "relational"
+    },
+    {
+      "prompt": "Several dogs and people lay on a couch as one man in jean stands with a remote in his hand.",
+      "image_id": 259567,
+      "annotation_id": 300536,
+      "stratum": "detailed"
+    }
+  ]
+}
