@@ -1,10 +1,10 @@
 # Surrogate-Assisted LHFiD for Expensive Many-Objective Neural Architecture Search of Diffusion Models
 
-*Draft for an evolutionary-computation venue (GECCO / IEEE CEC / EMO). Numbers come from committed scripts; [C2] marks results pending the real-evaluation confirmation.*
+*Draft for an evolutionary-computation venue (GECCO / IEEE CEC / EMO). Numbers come from committed scripts.*
 
 ## Abstract (draft)
 
-Compressing a pretrained text-to-image diffusion model for deployment is a many-objective problem: prompt alignment, fidelity to the original model, latency, compute, memory and weight bytes conflict, and each candidate configuration costs about a minute of GPU time to evaluate on 96 images. We formulate training-free compression of Stable Diffusion 1.5 as a six-objective problem over U-Net unit removal, weight precision, sampler, step count, guidance and feature-caching schedules, and study evolutionary search under the budgets this cost allows. With 150 real evaluations, no multi- or many-objective evolutionary algorithm beats random search, and quality objectives measured on small calibration sets are too noisy to rank good candidates (split-half reliability 0.50). On surrogate benchmarks built from 900 real evaluations, LHFiD outperforms NSGA-III and NSGA-II at realistic budgets, increasingly so with more objectives, but only beyond roughly 336–840 evaluations. We therefore propose surrogate-assisted LHFiD (SA-LHFiD), which spends the real budget on candidates proposed by LHFiD running on an online surrogate. In a pre-registered simulation calibrated to the real problem, SA-LHFiD improves hypervolume by 26–42% over random search at 150 evaluations and beats surrogate-assisted NSGA-II, RVEA and (under one of two truth models) MOEA/D; surrogate assistance with Pareto-dominance selection does not beat random search. [C2: real-evaluation confirmation with 6 seeds per arm.] The best searched configuration halves U-Net weight bytes, reduces peak VRAM by 0.83 GB and FLOPs by 47%, runs 1.58× faster, and is statistically non-inferior in prompt alignment on 500 held-out prompts.
+Compressing a pretrained text-to-image diffusion model for deployment is a many-objective problem: prompt alignment, fidelity to the original model, latency, compute, memory and weight bytes conflict, and each candidate configuration costs about a minute of GPU time to evaluate on 96 images. We formulate training-free compression of Stable Diffusion 1.5 as a six-objective problem over U-Net unit removal, weight precision, sampler, step count, guidance and feature-caching schedules, and study evolutionary search under the budgets this cost allows. With 150 real evaluations, no multi- or many-objective evolutionary algorithm beats random search, and quality objectives measured on small calibration sets are too noisy to rank good candidates (split-half reliability 0.50). On surrogate benchmarks built from 900 real evaluations, LHFiD outperforms NSGA-III and NSGA-II at realistic budgets, increasingly so with more objectives, but only beyond roughly 336–840 evaluations. We therefore propose surrogate-assisted LHFiD (SA-LHFiD), which spends the real budget on candidates proposed by LHFiD running on an online surrogate. In a pre-registered simulation calibrated to the real problem, SA-LHFiD improves hypervolume by 26–42% over random search at 150 evaluations and beats surrogate-assisted NSGA-II, RVEA and (under one of two truth models) MOEA/D; surrogate assistance with Pareto-dominance selection does not beat random search. On real hardware (pre-registered, 6 seeds per arm), SA-LHFiD improves median hypervolume by 44% over random search, 36% over surrogate-assisted NSGA-II and 46% over NSGA-II (Holm p = 0.0065), with 84% of its real evaluations landing in the region of interest versus 23–25% for the alternatives. The best searched configuration halves U-Net weight bytes, reduces peak VRAM by 0.83 GB and FLOPs by 47%, runs 1.58× faster, and is statistically non-inferior in prompt alignment on 500 held-out prompts.
 
 ## 1. Introduction
 
@@ -13,7 +13,7 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 - Contributions:
   1. Formulation of training-free SD1.5 compression as a six-objective expensive optimization problem with real-hardware objectives, and a released benchmark (companion paper).
   2. Evidence that at real budgets selection scheme does not matter (no MOEA beats random at 150 evaluations) and why: noisy quality objectives and an evaluation-count crossover around 336–840.
-  3. SA-LHFiD: surrogate-assisted search with LHFiD's localized high-fidelity dominance as the inner selector; pre-registered simulation and real-evaluation confirmation [C2].
+  3. SA-LHFiD: surrogate-assisted search with LHFiD's localized high-fidelity dominance as the inner selector; pre-registered simulation and real-evaluation confirmation (+44% hypervolume over random search, 3.6× more useful evaluations).
   4. A validated application outcome: a training-free configuration that halves U-Net bytes and is non-inferior on 500 held-out prompts.
 
 ## 2. Related work
@@ -55,8 +55,11 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 - HGB / RF truth medians: SA-LHFiD 0.415 / 0.338; SA-MOEA/D 0.374 / 0.320; SA-RVEA 0.369 / 0.314; LHFiD 0.333 / 0.263; SA-NSGA-II 0.303 / 0.257; random 0.292 / 0.268; NSGA-II 0.260 / 0.208.
 - Noise-aware ties: no benefit.
 
-### 5.4 SA-LHFiD, real evaluations [C2]
+### 5.4 SA-LHFiD, real evaluations (pre-registered, `configs/nas/c2_protocol.json`)
 - Arms: SA-LHFiD, SA-NSGA-II, random, NSGA-II; 6 seeds each; primary 4-D HV with per-job latency normalization; robustness: GFLOPs-HV and HV without CLIP; Mann–Whitney + Holm.
+- Median HV (×10⁶): SA-LHFiD 7.23 (6.75–8.00), SA-NSGA-II 5.30, random 5.02, NSGA-II 4.96. SA-LHFiD beats each arm with Holm p = 0.0065 (raw p = 0.0022, complete separation); GFLOPs-HV p = 0.0022, no-CLIP HV p ≤ 0.026.
+- In-box rate after the random start: SA-LHFiD 84%, others 23–25%.
+- Figure: `docs/figures/c2_sa_lhfid.png`.
 
 ### 5.5 Application outcome (C1, pre-registered)
 - 500 held-out prompts: DDIM-10, guidance 10.5, int8 is non-inferior in CLIP (margin 0.5; difference −0.000, Holm p = 0.0012), with half the U-Net bytes, −0.83 GB peak VRAM, −47% FLOPs, 1.58× speed; it beats distilled BK-SDM-small at the same sampler and precision (+1.31 CLIP).

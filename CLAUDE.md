@@ -2,7 +2,7 @@
 
 Read this file before changing code or interpreting results. Work from the repository root. Check `git status --short` first; existing runs and uncommitted work belong to the user.
 
-**Current goal and phase status live in `docs/RESEARCH_PLAN.md`; read it first.** The study is now a training-free multi-objective NAS (static U-Net unit removal + int8 weights + sampler/caching), validated on `data/prompts/validation.json`. Everything below the plan is exploratory history plus protocol rules that still apply.
+**Current goal and phase status live in `docs/RESEARCH_PLAN.md`; results are in `docs/final_report.md`; read both first.** All planned experiments are complete (validation, surrogate benchmark, SA-LHFiD simulation, C1 confirmatory test, C2 real SA-LHFiD). Headline claims are limited to what those pre-registered analyses support. The study is now a training-free multi-objective NAS (static U-Net unit removal + int8 weights + sampler/caching), validated on `data/prompts/validation.json`. Everything below the plan is exploratory history plus protocol rules that still apply.
 
 ## Research goal and scope
 
@@ -36,6 +36,7 @@ The [Notion project hub](https://app.notion.com/p/3bc73ccc0c7e8008b0dec9839afa47
 | Architecture and metrics | `architecture.py`, `distribution.py`, `stats.py`, `scripts/evaluate_runs.py` | Config key `architecture: {removed_units, weight_precision}` deletes any of 24 removable units (16 attentions, 8 channel-preserving ResNets) and/or stores U-Net Linear/Conv weights as int8 (dequantized per call). Worker records `summary.architecture` (params, weight bytes) and, with `runtime.count_flops`, `gflops_per_image`. Scoring adds black-image counts, CLIP image fidelity to a reference run, and KID/FID (pytorch-fid Inception) vs reference or real images. |
 | Sensitivity probe | `scripts/prepare_probe.py`, `scripts/run_probe.sh`, `scripts/summarize_probe.py` | 32 calibration configs (reference, int8, 24 single removals, 6 groups); srun-able; outputs git-ignored `artifacts/probe/`. |
 | v3 NAS search | `nas_space.py`, `nas_search.py`, `nas_cli.py`, `configs/nas/units.json`, `configs/nas/v3_{random,nsga2}.json`, `scripts/prepare_nas_search.py`, `scripts/slurm/nas_search.sbatch`, `scripts/lock_nas_finalists.py` | Genome = v2 execution genes + one removal bit per probe-selected unit (15) + fp16/int8. Random and NSGA-II, 150 unique candidates each per seed; one job per seed runs its own reference first (fidelity and latency anchor). Search objectives: CLIP, CLIP fidelity, p50 latency, U-Net MB; GFLOPs and peak VRAM reported. Finalist lock normalizes latency by each job's reference. |
+| Many-objective benchmark and SA-LHFiD | `moea.py` (NSGA-II/III, LHFiD, RVEA, MOEA/D-style), `surrogate.py`, `sa_moea.py`, `bench.py`, `scripts/{surrogate_benchmark,sa_simulation,analyze_c1,analyze_c2,export_benchmark}.py`, `configs/nas/{surrogate_benchmark,sa_simulation,c1_protocol,c2_protocol}.json` | Protocols in `configs/nas/` were committed before their data existed; extensions (RVEA, MOEA/D) are labelled and written to separate results files. SA arms (`sa_lhfid`, `sa_nsga2`) run in `nas_search.py` and need scikit-learn on the cluster. |
 | Cluster jobs | `scripts/prepare_experiment.py`, `scripts/slurm/`, `scripts/setup_cluster.sh` | Generates matched configs and provides separate SLURM jobs for generation, CLIP, Pareto, hold-out, random search, and evolutionary search. |
 
 Official AutoDiffusion and DeepCache repositories are pinned Git submodules under `third_party/`. Initialize them with `git submodule update --init --recursive`; preserve their pinned commits and avoid edits inside them. See `README.md` and `scripts/README.md` for command details. The parent folder has separate `../benchmarking_plan.md` and `../training_free_diffusion_moo_plan.md`; keep benchmark procedure and overall research plan distinct.
@@ -101,4 +102,4 @@ On the cluster, an interactive `srun --gres=gpu:1 --pty bash -i` can check CUDA 
 - [Notion project hub](https://app.notion.com/p/3bc73ccc0c7e8008b0dec9839afa47b8)
 - [Notion literature review](https://app.notion.com/p/3bd73ccc0c7e80b2ad61d976e402e70d)
 - [Notion research directions](https://app.notion.com/p/3c773ccc0c7e80e7a1d0ec24083d22bd)
-- [Notion implementation decision log, D001–D018](https://app.notion.com/p/3db73ccc0c7e81838a9cfacc6dd42d5c)
+- [Notion implementation decision log, D001–D025](https://app.notion.com/p/3db73ccc0c7e81838a9cfacc6dd42d5c)

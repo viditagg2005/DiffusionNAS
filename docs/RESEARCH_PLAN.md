@@ -76,3 +76,15 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 **v3 searches (Nov 10–11).** 6 searches × 150 unique candidates, all on the RTX 6000 Ada; job references 485 / 491 / 511 ms (5% between-job drift, so latency is normalized by each job's reference). 233 of 900 candidates pass CLIP ≥ 25.2 and fidelity ≥ 75. Hypervolume (pre-registered 4-D reference, latency normalized), NSGA-II minus random per seed: −0.78, +0.71, +2.64 (×10⁶); drift-free variant with GFLOPs in place of latency gives the same 2-of-3 pattern, and the seed where NSGA-II ran first is not the outlier, so job order does not explain it. **No consistent optimizer advantage at 150 real evaluations** (`scripts/analyze_search.py`, `docs/figures/search_hypervolume.png`). Speed comes mostly from fewer steps (6-step DPM-Solver++ with no edits: 180 ms, CLIP 26.29); the architecture genes mainly buy bytes (U-Net down to 696 MB, −58%, with int8 + 7 removed units at CLIP 25.39).
 
 **Finalist lock (Nov 12).** 839 unique policies, 186 eligible, 82 on the 4-objective front, 10 locked; validation design (`scripts/prepare_validation_v3.py`) committed before the lock.
+
+## Status (2026-11-15): all experiments complete
+
+| Experiment | Outcome | Where |
+| --- | --- | --- |
+| Validation (43 runs, untouched split) | 7/10 finalists retained; twins show unit removal adds nothing beyond int8 | report §5.3 |
+| Surrogate benchmark (+ RVEA, MOEA/D extension) | LHFiD > NSGA-III > NSGA-II at 3,360 evaluations; nothing beats random at 150 | §5.4 |
+| SA simulation (pre-registered) | SA-LHFiD best arm, +26–42% HV over random | §5.5 |
+| C1 confirmatory test (500 prompts, pre-registered) | DDIM-10 + int8 non-inferior (Holm p = 0.0012); beats BK-SDM-small by 1.31 CLIP | §5.6 |
+| C2 real SA-LHFiD (6 seeds/arm, pre-registered) | +44% HV over random, +36% over SA-NSGA-II, Holm p = 0.0065; 84% in-box rate | §5.7 |
+
+Remaining: publish the report page, finalize the two paper drafts (`docs/papers/`), release the benchmark (`scripts/export_benchmark.py`).

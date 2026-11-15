@@ -1,6 +1,6 @@
 # Training-free multi-objective neural architecture search for Stable Diffusion 1.5
 
-*DiffusionNAS — BTP final report (draft; results sections are filled from committed analysis scripts).*
+*DiffusionNAS — BTP final report. Every number comes from a committed script and a result file; pre-registered protocols are in `configs/nas/`.*
 
 ## 1. Question
 
@@ -10,7 +10,7 @@ Can a training-free, multi-objective search over **U-Net architecture edits** (u
 
 - **Model.** `stable-diffusion-v1-5/stable-diffusion-v1-5`, frozen weights, 512×512, batch 1, fp16, safety checker on. No training, fine-tuning or distillation anywhere.
 - **Hardware.** One NVIDIA RTX 6000 Ada Generation (48 GB) per job; every latency comparison is within one GPU model, and within one allocation or normalized by a reference measured in the same allocation. This is a workstation GPU, not an edge device.
-- **Data.** Three disjoint MS-COCO 2014 caption splits, stratified by caption complexity (simple / relational / detailed): calibration (48 prompts × seeds 42, 123) for every search and selection decision; the original hold-out (128 prompts), used only for the first benchmark; and an untouched validation split (128 prompts × seeds 303, 404) used once, for the final evaluation.
+- **Data.** Three disjoint MS-COCO 2014 caption splits, stratified by caption complexity (simple / relational / detailed): calibration (48 prompts × seeds 42, 123) for every search and selection decision; the original hold-out (128 prompts), used only for the first benchmark; an untouched validation split (128 prompts × seeds 303, 404) used once for the finalists; and a 500-prompt test split (seed 505) used once, for the pre-registered confirmatory test.
 - **Metrics.**
   - *Prompt alignment:* CLIP score, `100·cos(image, text)` with frozen CLIP-L/14.
   - *Fidelity to the original model:* CLIP image–image similarity to the 20-step DDIM reference image for the same prompt and seed.
@@ -37,6 +37,8 @@ Removable units are those whose output can be replaced by their input without br
 3. **Finalist lock.** A rule committed before the searches ran: pool all candidates, normalize latency by each job's reference, merge identical signatures, keep CLIP ≥ reference − 1.0, fidelity ≥ 75 and at most two extra black images, take the 4-objective front, choose up to 10 by per-objective best plus farthest-point spread.
 4. **Validation (untouched split, one allocation).** The finalists; an *architecture-ablation twin* for each finalist (same sampler and caching, no unit removal, fp16; and int8 without removal for int8 finalists); DDIM and DPM-Solver++ step sweeps; DeepCache; int8 at 20 steps; two Flexiffusion schedules; BK-SDM base/small/tiny; and the 20-step reference at the start, middle and end of the job to measure drift. Run order is shuffled with a fixed seed.
 5. **Many-objective optimizer benchmark (surrogate).** Real evaluations allow only 150 candidates per run, too few to compare selection schemes designed for thousands. Surrogates of all six objectives are fitted to the 900 real evaluations, and random search, NSGA-II, NSGA-III and a reimplementation of LHFiD (Saxena, Mittal, Kapoor and Deb, COIN Report 2021020) are compared at 3,360 evaluations on 4- and 6-objective formulations, across five independently fitted surrogates × seven seeds, with the protocol fixed in `configs/nas/surrogate_benchmark.json` before any run. Points from each optimizer are then measured for real.
+6. **Surrogate-assisted LHFiD (SA-LHFiD).** Spend the 150 real evaluations as 50 random configurations, then 5 rounds of: refit an internal ExtraTrees surrogate on the noisy observations, run LHFiD on it for 1,680 virtual evaluations excluding evaluated configurations, and evaluate 20 novel candidates chosen from LHFiD's final population (predicted-nondominated, spread by per-objective best then farthest point). Tested first in a pre-registered simulation (`configs/nas/sa_simulation.json`), then on real evaluations (C2, `configs/nas/c2_protocol.json`) against SA-NSGA-II, random search and NSGA-II with 6 seeds each.
+7. **Confirmatory test (C1).** Non-inferiority (margin 0.5 CLIP) of the best finalists on the fresh 500-prompt split, and comparison with distilled BK-SDM at the same sampler and precision (`configs/nas/c1_protocol.json`).
 
 ## 5. Results
 
@@ -101,7 +103,7 @@ Protocol fixed in advance (`configs/nas/surrogate_benchmark.json`); 5 independen
 - LHFiD's stabilization-timed nadir estimation fired in 134 of 140 runs (median first detection at generation 45–49).
 - **Real check of the surrogate on optimizer-chosen points** (`scripts/summarize_confirmation.py`): 25 points (5 per optimizer, from the median run on surrogate 0) measured for real on the calibration split. Mean absolute error: CLIP 0.32, fidelity 1.5, latency 8.8 ms (~3%), GFLOPs 429 (~2%), peak VRAM 15 MB, U-Net 7 MB; CLIP bias +0.16 (real results slightly better than predicted), so the optimizers did not exploit surrogate errors. 24 of 25 points are inside the reference box for real.
 
-### 5.5 Surrogate-assisted LHFiD at the real budget (preliminary, simulation) — `scripts/sa_simulation.py`
+### 5.5 Surrogate-assisted LHFiD in simulation — `scripts/sa_simulation.py`
 
 The real-budget failure of every optimizer (§5.2, §5.4) motivates a surrogate-assisted search: spend 50 real evaluations on random configurations, then 5 rounds of (refit an internal surrogate on the noisy observations → run a many-objective optimizer for 1,680 virtual evaluations → evaluate 20 novel candidates, spread across the predicted front). Protocol fixed in `configs/nas/sa_simulation.json` before any run: the "truth" is a different model family (HistGradientBoosting or RandomForest) fitted on all 900 real evaluations; CLIP and fidelity observations carry Gaussian noise calibrated to the measured reliabilities (0.50 and 0.90); hypervolume is computed on the noise-free truth; 31 seeds per arm and truth; Mann–Whitney U with Holm correction.
 
@@ -120,7 +122,7 @@ The real-budget failure of every optimizer (§5.2, §5.4) motivates a surrogate-
 - Surrogate assistance only pays off with a many-objective-capable selector: SA-NSGA-II is no better than random, while SA-RVEA, SA-MOEA/D and SA-LHFiD all beat their direct versions; LHFiD is the best inner optimizer.
 - The noise-aware tie rule does not help (ablation).
 - RVEA and MOEA/D were added after the pre-registered comparisons, as labelled extensions on the same truths and seeds. On the surrogate benchmark (§5.4) they are close to LHFiD: LHFiD keeps the best 6-objective archive HV (+0.008, consistent across surrogates) but ties on final-population HV, so LHFiD's large lead is over Pareto-dominance methods (NSGA-II/III).
-- This is a simulation calibrated to the real problem; the pre-registered real confirmation (C2, `configs/nas/c2_protocol.json`, 6 seeds per arm) is running.
+- This is a simulation calibrated to the real problem; §5.7 confirms it on real evaluations.
 
 ### 5.6 Confirmatory test on a fresh 500-prompt split (C1) — `scripts/analyze_c1.py`
 
@@ -152,21 +154,33 @@ Protocol fixed before any data (`configs/nas/c1_protocol.json`): 500 COCO prompt
 - nas_01 (2.8×) loses 0.39 CLIP and fails the 0.5 margin's confidence requirement; aggressive step reduction costs measurable alignment on a large prompt set.
 - KID/FID vs real images rank the policies differently from CLIP (e.g. DeepCache has the best KID, BK-SDM and the 6–8-step samplers the worst); FID on 500 images is reported for completeness only.
 
-### 5.7 Pending (cluster)
+### 5.7 Surrogate-assisted LHFiD on real evaluations (C2) — `scripts/analyze_c2.py`, `docs/figures/c2_sa_lhfid.png`
 
-- C2: real SA-LHFiD vs SA-NSGA-II, random and NSGA-II, 6 seeds each.
-- Post-hoc BK-SDM at 10-step DDIM, fp16 and int8.
+Protocol fixed before any C2 job ran (`configs/nas/c2_protocol.json`): 150 real evaluations per run, no warm start, 6 seeds per arm, each job measuring its own reference (all on RTX 6000 Ada; references 494–525 ms, latency normalized per job); primary indicator the pre-registered 4-D hypervolume; two-sided Mann–Whitney U with Holm over the three comparisons; a win is claimed only if the drift-free (GFLOPs) and no-CLIP hypervolumes agree in sign.
 
-## 6. Conclusions so far
+| Arm | Median HV (×10⁶) | Per-seed range | Candidates in the reference box after the 50 random starts |
+| --- | ---: | --- | ---: |
+| **SA-LHFiD** | **7.23** | 6.75 – 8.00 | **505 / 600 (84%)** |
+| SA-NSGA-II | 5.30 | 3.46 – 6.75 | 140 / 600 (23%) |
+| Random | 5.02 | 4.02 – 5.52 | 70 / 300 (23%) |
+| NSGA-II | 4.96 | 2.31 – 6.63 | 76 / 300 (25%) |
 
-1. **Training-free compression of SD1.5 works mainly through int8 weights and sampler choice.** The best searched configuration halves U-Net bytes and peak VRAM by 0.83 GB at 1.58× speed with no measurable alignment loss; a 2.8× faster configuration keeps alignment at full size.
-2. **Static unit removal is not worth it without retraining.** Individually safe units interact, and on top of int8 they save at most ~8% more bytes while always reducing fidelity to the original model.
-3. **The search's value is in combining orthogonal knobs** (precision × steps × guidance × caching), not in finding a better sub-network.
-4. **Optimizer choice only matters with enough evaluations.** At 150 real evaluations nothing beats random search; at thousands, LHFiD is the best of the four selection schemes, increasingly so with more objectives.
-5. **The calibration quality signal is the bottleneck.** With 96 images, CLIP cannot rank good candidates (reliability 0.50); larger calibration sets matter more than the optimizer.
+- **SA-LHFiD beats all three arms** (Holm p = 0.0065 each; raw p = 0.0022, the minimum possible with 6 vs 6 runs): +44% median hypervolume over random search, +36% over SA-NSGA-II, +46% over NSGA-II. Its worst seed is at least as good as every other arm's best seed.
+- **Robust to drift and to CLIP noise:** the GFLOPs-based hypervolume (p = 0.0022 for every comparison) and the hypervolume without CLIP (p ≤ 0.026) agree.
+- **Where the gain comes from:** after the random start, 84% of SA-LHFiD's real evaluations land inside the reference box, 3.6× the rate of the other arms; it concentrates on int8 weights with Flexiffusion schedules or 6-step DPM-Solver++ (about 190–210 ms, 780–810 MB, CLIP ≈ reference on calibration).
+- **The simulation predicted this ordering**, including that surrogate assistance with NSGA-II barely helps.
+- Random and NSGA-II seeds 1–3 come from the earlier searches (`artifacts/nas`), seeds 4–6 from the C2 jobs; the matched BK-SDM runs on the validation split (`artifacts/posthoc_bksdm`) are superseded by the larger C1 comparison (§5.6).
+
+## 6. Conclusions
+
+1. **Training-free compression of SD1.5 is confirmed.** int8 weights with a 10-step DDIM sampler halve U-Net bytes (1,639 → 821 MB without removal), cut peak VRAM by 0.83 GB and FLOPs by 47%, and run 1.58× faster, with prompt alignment statistically non-inferior to the full model on 500 held-out prompts (pre-registered, margin 0.5 CLIP). It beats distilled BK-SDM-small at the same sampler and precision by 1.31 CLIP; distilled BK-SDM-base remains smaller and faster at similar alignment.
+2. **Aggressive step reduction is not free.** The 2.8× faster 6-step configuration loses 0.39 CLIP on 500 prompts and does not pass non-inferiority.
+3. **Static unit removal is not worth it without retraining.** Individually safe units interact; on top of int8 they save at most ~8% more bytes while lowering fidelity, raising black images (1 → 8 of 500) and shifting the output distribution away from the original model.
+4. **Optimizer choice matters only with enough evaluations — so supply them with a surrogate.** At 150 real evaluations no evolutionary algorithm beats random search; on surrogates LHFiD is best at thousands of evaluations, increasingly with more objectives. Surrogate-assisted LHFiD turns this into a real gain at the real budget: +44% hypervolume over random search and 3.6× more useful evaluations, confirmed on real hardware with 6 seeds per arm. Surrogate assistance with Pareto-dominance selection (SA-NSGA-II) does not achieve this.
+5. **The calibration quality signal is the bottleneck.** With 96 images, CLIP cannot rank good candidates (reliability 0.50); fidelity to the original model ranks consistently (0.96 rank agreement across splits).
 
 Limitations: one workstation GPU, not an edge device; CLIP and Inception-based metrics only (no human study); int8 latency reflects a simple dequantize-per-call implementation; BK-SDM is distilled from SD-v1.4, not SD1.5; surrogate-benchmark conclusions are conditional on surrogate accuracy.
 
-## 6. Reproducibility
+## 7. Reproducibility
 
-Every number in this report comes from a committed script and a result file under `artifacts/` (git-ignored because of size; copied from the cluster). The phase tracker and run log are in `docs/RESEARCH_PLAN.md`; protocol rules and known failures are in `CLAUDE.md`; design decisions are in the Notion decision log (D001–D021+).
+Every number in this report comes from a committed script and a result file under `artifacts/` (git-ignored because of size; copied from the cluster). The phase tracker and run log are in `docs/RESEARCH_PLAN.md`; protocol rules and known failures are in `CLAUDE.md`; design decisions are in the Notion decision log (D001–D025). The benchmark export (`scripts/export_benchmark.py`, API `diffusionnas.bench`) and paper drafts (`docs/papers/`) build on the same files.
