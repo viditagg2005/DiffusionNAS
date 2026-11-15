@@ -44,6 +44,14 @@ def main() -> int:
     for name, p in holm({k: v["p"] for k, v in tests.items()}).items():
         tests[name]["p_holm"] = p
         tests[name]["supported"] = p < 0.05
+    # Post-hoc (not pre-registered): the no-removal twin, which the results recommend deploying.
+    post_hoc = {}
+    for name, (left, right) in {"twin_minus_reference": ("nas_04_twin_int8", "reference"),
+                                "twin_minus_nas_04": ("nas_04_twin_int8", "nas_04")}.items():
+        mean, means = bootstrap_means(clip[left], clip[right])
+        post_hoc[name] = {"mean_difference": mean, "ci95": [means[250], means[9749]],
+                          "p_noninferiority_margin": (sum(m <= -margin for m in means) + 1) / (len(means) + 1),
+                          "label": "post hoc, not part of the pre-registered family"}
     secondary = {}
     for label, run in runs.items():
         summary = json.loads((run / "summary.json").read_text())
@@ -57,11 +65,13 @@ def main() -> int:
             "kid_real_x1000": q.get("real_distribution", {}).get("kid", {}).get("mean_x1000"),
             "fid_real": q.get("real_distribution", {}).get("fid"),
         }
-    result = {"protocol": PROTOCOL, "tests": tests, "secondary": secondary}
+    result = {"protocol": PROTOCOL, "tests": tests, "post_hoc": post_hoc, "secondary": secondary}
     out = ROOT / "artifacts/analysis/c1.json"
     out.write_text(json.dumps(result, indent=2) + "\n")
     for name, t in tests.items():
         print(f"{name} {t['comparison']:38s} {t['mean_difference']:+.3f}  pHolm {t['p_holm']:.4f}  supported {t['supported']}")
+    for name, t in post_hoc.items():
+        print(f"post hoc {name:22s} {t['mean_difference']:+.3f}  95% CI [{t['ci95'][0]:+.3f}, {t['ci95'][1]:+.3f}]")
     return 0
 
 

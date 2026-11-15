@@ -87,6 +87,8 @@ Reference latency at the start, middle and end of the job: 507.1 / 508.0 / 507.3
 - Unit removal never significantly improved CLIP over its twin and always cost fidelity: −1.0 to −12.1 points (e.g. nas_07 vs its int8 twin: −1.43 CLIP, −12.0 fidelity; nas_04 vs its int8 twin: +0.09 CLIP, −2.2 fidelity, −9 MB).
 - On the validation 4-D hypervolume (pre-registered reference, CLIP floor = validation reference − 1.0), the finalists reach 4.26 × 10⁶ against 0.52 × 10⁶ for the plain training-free baselines; but the baselines *plus* twins reach 4.42 × 10⁶, more than the finalists. The finalists' advantage comes from int8 and the sampler choice the search found, not from removing units.
 
+Full per-run table with every metric (including KID/FID vs real and vs the reference, parameters and p90 latency): [`docs/appendix_validation_table.md`](appendix_validation_table.md).
+
 **Distribution shift from the original model (KID vs the reference's own images, ×10³, 256 images).** Every configuration with removed units drifts away from the original model (nas_07 +6.6, nas_03 +5.2, nas_00 +4.5, nas_04 +0.4 against −1.3 for its int8 twin), while every configuration without removals is indistinguishable from it (−0.5 to −2.5; the unbiased estimator scatters around zero). KID against real COCO images on 256 images is too noisy to rank policies and is reported only in the 500-prompt test (§5.6).
 
 **Comparison with BK-SDM (distilled from SD-v1.4, external).** At 20-step DDIM, BK-SDM base / small / tiny run at 1.51× / 1.58× / 1.74× with U-Nets of 1,105 / 920 / 617 MB and lose 0.44 / 1.55* / 1.71* CLIP. nas_04 is smaller, uses less VRAM and has higher alignment than BK-SDM base and small at equal or better latency, but the comparison is confounded: nas_04 uses 10 steps and int8, both of which apply to BK-SDM too, and BK-SDM has far fewer parameters (482–579 M vs 851 M). Matched post-hoc BK-SDM runs (10-step DDIM, fp16 and int8) are in §5.5.
@@ -148,7 +150,8 @@ Protocol fixed before any data (`configs/nas/c1_protocol.json`): 500 COCO prompt
 | BK-SDM-small (DDIM 10, g 10.5, int8) | 220 ms | 12,759 | 2,075 MB | 461 MB | 483 M | 25.58 | 80.2 | 3 | 6.55 | 92.5 |
 | BK-SDM-base (DDIM 10, g 10.5, int8) | 233 ms | 13,001 | 2,169 MB | 553 MB | 580 M | 26.67 | 82.3 | 3 | 7.17 | 90.7 |
 
-- **Confirmed:** training-free int8 plus a 10-step sampler halves U-Net bytes, cuts peak VRAM by 0.83 GB and FLOPs by 47%, and runs 1.58× faster with prompt alignment non-inferior to the full model (difference −0.000). int8 alone is non-inferior too.
+- **Confirmed (pre-registered H1):** nas_04 (10-step DDIM, guidance 10.5, int8, one unit removed) has an 812 MB U-Net checkpoint on disk (fp16: 1,639.5 MB), 832 MB less peak VRAM, 47% fewer FLOPs and 1.58× speed, with prompt alignment non-inferior to the full model (difference −0.000). int8 alone is non-inferior too (H3).
+- **Post hoc (not part of the pre-registered family):** nas_04's no-removal twin (821 MB checkpoint, 828 MB less peak VRAM, 46% fewer FLOPs, 1.53× speed) scores +0.10 CLIP against the reference, 95% CI [−0.10, +0.30], with fewer black images and lower FID than nas_04.
 - **Against distillation:** the training-free configuration beats distilled BK-SDM-small at the same sampler and precision by 1.31 CLIP; BK-SDM-base (distilled, 33% fewer parameters) is smaller and faster than nas_04 at statistically indistinguishable CLIP but lower fidelity and similar FID. Training-free search reaches the quality of the larger distilled model, not its cost.
 - **Unit removal hurts on the larger split too.** nas_04's single removed unit saves 9 MB but raises black images from 1 to 8 of 500 and FID from 85.4 to 90.0 relative to its twin; the twin (DDIM 10, g 10.5, int8, no removal) is the configuration to deploy.
 - nas_01 (2.8×) loses 0.39 CLIP and fails the 0.5 margin's confidence requirement; aggressive step reduction costs measurable alignment on a large prompt set.
@@ -160,27 +163,27 @@ Protocol fixed before any C2 job ran (`configs/nas/c2_protocol.json`): 150 real 
 
 | Arm | Median HV (×10⁶) | Per-seed range | Candidates in the reference box after the 50 random starts |
 | --- | ---: | --- | ---: |
-| **SA-LHFiD** | **7.23** | 6.75 – 8.00 | **505 / 600 (84%)** |
+| **SA-LHFiD** | **7.23** | 6.75 – 8.00 | **504 / 600 (84%)** |
 | SA-NSGA-II | 5.30 | 3.46 – 6.75 | 140 / 600 (23%) |
-| Random | 5.02 | 4.02 – 5.52 | 70 / 300 (23%) |
-| NSGA-II | 4.96 | 2.31 – 6.63 | 76 / 300 (25%) |
+| Random | 5.02 | 4.02 – 5.52 | 141 / 600 (24%) |
+| NSGA-II | 4.96 | 2.31 – 6.63 | 162 / 600 (27%) |
 
 - **SA-LHFiD beats all three arms** (Holm p = 0.0065 each; raw p = 0.0022, the minimum possible with 6 vs 6 runs): +44% median hypervolume over random search, +36% over SA-NSGA-II, +46% over NSGA-II. Its worst seed is at least as good as every other arm's best seed.
 - **Robust to drift and to CLIP noise:** the GFLOPs-based hypervolume (p = 0.0022 for every comparison) and the hypervolume without CLIP (p ≤ 0.026) agree.
-- **Where the gain comes from:** after the random start, 84% of SA-LHFiD's real evaluations land inside the reference box, 3.6× the rate of the other arms; it concentrates on int8 weights with Flexiffusion schedules or 6-step DPM-Solver++ (about 190–210 ms, 780–810 MB, CLIP ≈ reference on calibration).
+- **Where the gain comes from:** after the random start, 84% of SA-LHFiD's real evaluations land inside the reference box, 3.1–3.6× the rate of the other arms (all 6 seeds per arm; `scripts/derived_stats.py`); it concentrates on int8 weights with Flexiffusion schedules or 6-step DPM-Solver++ (about 190–210 ms, 780–810 MB, CLIP ≈ reference on calibration).
 - **The simulation predicted this ordering**, including that surrogate assistance with NSGA-II barely helps.
 - Random and NSGA-II seeds 1–3 come from the earlier searches (`artifacts/nas`), seeds 4–6 from the C2 jobs; the matched BK-SDM runs on the validation split (`artifacts/posthoc_bksdm`) are superseded by the larger C1 comparison (§5.6).
 
 ## 6. Conclusions
 
-1. **Training-free compression of SD1.5 is confirmed.** int8 weights with a 10-step DDIM sampler halve U-Net bytes (1,639 → 821 MB without removal), cut peak VRAM by 0.83 GB and FLOPs by 47%, and run 1.58× faster, with prompt alignment statistically non-inferior to the full model on 500 held-out prompts (pre-registered, margin 0.5 CLIP). It beats distilled BK-SDM-small at the same sampler and precision by 1.31 CLIP; distilled BK-SDM-base remains smaller and faster at similar alignment.
+1. **Training-free compression of SD1.5 is confirmed.** The pre-registered configuration (10-step DDIM, guidance 10.5, int8, one unit removed) has an 812 MB U-Net checkpoint instead of 1,639.5 MB, needs 0.83 GB less peak VRAM and 47% fewer FLOPs, and runs 1.58× faster, with prompt alignment statistically non-inferior to the full model on 500 held-out prompts (margin 0.5 CLIP). Its no-removal twin (821 MB, 1.53×) is the one to deploy (post hoc +0.10 CLIP, 95% CI [−0.10, +0.30]). Compression here means measured checkpoint size and resident VRAM on a workstation GPU; target-device latency was not measured. It beats distilled BK-SDM-small at the same sampler and precision by 1.31 CLIP; distilled BK-SDM-base remains smaller and faster at similar alignment.
 2. **Aggressive step reduction is not free.** The 2.8× faster 6-step configuration loses 0.39 CLIP on 500 prompts and does not pass non-inferiority.
 3. **Static unit removal is not worth it without retraining.** Individually safe units interact; on top of int8 they save at most ~8% more bytes while lowering fidelity, raising black images (1 → 8 of 500) and shifting the output distribution away from the original model.
-4. **Optimizer choice matters only with enough evaluations — so supply them with a surrogate.** At 150 real evaluations no evolutionary algorithm beats random search; on surrogates LHFiD is best at thousands of evaluations, increasingly with more objectives. Surrogate-assisted LHFiD turns this into a real gain at the real budget: +44% hypervolume over random search and 3.6× more useful evaluations, confirmed on real hardware with 6 seeds per arm. Surrogate assistance with Pareto-dominance selection (SA-NSGA-II) does not achieve this.
+4. **Optimizer choice matters only with enough evaluations — so supply them with a surrogate.** At 150 real evaluations no evolutionary algorithm beats random search; on surrogates LHFiD is best at thousands of evaluations, increasingly with more objectives. Surrogate-assisted LHFiD turns this into a real gain at the real budget: +44% hypervolume over random search and about 3× more useful evaluations, confirmed on real hardware with 6 seeds per arm. Surrogate assistance with Pareto-dominance selection (SA-NSGA-II) does not achieve this.
 5. **The calibration quality signal is the bottleneck.** With 96 images, CLIP cannot rank good candidates (reliability 0.50); fidelity to the original model ranks consistently (0.96 rank agreement across splits).
 
-Limitations: one workstation GPU, not an edge device; CLIP and Inception-based metrics only (no human study); int8 latency reflects a simple dequantize-per-call implementation; BK-SDM is distilled from SD-v1.4, not SD1.5; surrogate-benchmark conclusions are conditional on surrogate accuracy.
+Limitations: SA-LHFiD's fronts were scored on calibration prompts only and were not re-tested on held-out prompts; one workstation GPU, not an edge device; CLIP and Inception-based metrics only (no human study); int8 latency reflects a simple dequantize-per-call implementation; BK-SDM is distilled from SD-v1.4, not SD1.5; surrogate-benchmark conclusions are conditional on surrogate accuracy.
 
 ## 7. Reproducibility
 
-Every number in this report comes from a committed script and a result file under `artifacts/` (git-ignored because of size; copied from the cluster). The phase tracker and run log are in `docs/RESEARCH_PLAN.md`; protocol rules and known failures are in `CLAUDE.md`; design decisions are in the Notion decision log (D001–D025). The benchmark export (`scripts/export_benchmark.py`, API `diffusionnas.bench`) and paper drafts (`docs/papers/`) build on the same files.
+Every number in this report comes from a committed script and a result file under `artifacts/` (git-ignored because of size; copied from the cluster). The phase tracker and run log are in `docs/RESEARCH_PLAN.md`; protocol rules and known failures are in `CLAUDE.md`; design decisions are in the Notion decision log (D001–D025). Derived statistics quoted here without their own script (CLIP reliability, in-box rates, RVEA/MOEA/D comparison, nadir firing, routing vs mixture) are regenerated by `scripts/derived_stats.py`; checkpoint sizes by `scripts/export_int8_unet.py`. The benchmark export (`scripts/export_benchmark.py`, API `diffusionnas.bench`) and paper drafts (`docs/papers/`) build on the same files.

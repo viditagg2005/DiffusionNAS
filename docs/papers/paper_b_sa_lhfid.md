@@ -4,7 +4,7 @@
 
 ## Abstract (draft)
 
-Compressing a pretrained text-to-image diffusion model for deployment is a many-objective problem: prompt alignment, fidelity to the original model, latency, compute, memory and weight bytes conflict, and each candidate configuration costs about a minute of GPU time to evaluate on 96 images. We formulate training-free compression of Stable Diffusion 1.5 as a six-objective problem over U-Net unit removal, weight precision, sampler, step count, guidance and feature-caching schedules, and study evolutionary search under the budgets this cost allows. With 150 real evaluations, no multi- or many-objective evolutionary algorithm beats random search, and quality objectives measured on small calibration sets are too noisy to rank good candidates (split-half reliability 0.50). On surrogate benchmarks built from 900 real evaluations, LHFiD outperforms NSGA-III and NSGA-II at realistic budgets, increasingly so with more objectives, but only beyond roughly 336–840 evaluations. We therefore propose surrogate-assisted LHFiD (SA-LHFiD), which spends the real budget on candidates proposed by LHFiD running on an online surrogate. In a pre-registered simulation calibrated to the real problem, SA-LHFiD improves hypervolume by 26–42% over random search at 150 evaluations and beats surrogate-assisted NSGA-II, RVEA and (under one of two truth models) MOEA/D; surrogate assistance with Pareto-dominance selection does not beat random search. On real hardware (pre-registered, 6 seeds per arm), SA-LHFiD improves median hypervolume by 44% over random search, 36% over surrogate-assisted NSGA-II and 46% over NSGA-II (Holm p = 0.0065), with 84% of its real evaluations landing in the region of interest versus 23–25% for the alternatives. The best searched configuration halves U-Net weight bytes, reduces peak VRAM by 0.83 GB and FLOPs by 47%, runs 1.58× faster, and is statistically non-inferior in prompt alignment on 500 held-out prompts.
+Compressing a pretrained text-to-image diffusion model for deployment is a many-objective problem: prompt alignment, fidelity to the original model, latency, compute, memory and weight bytes conflict, and each candidate configuration costs about a minute of GPU time to evaluate on 96 images. We formulate training-free compression of Stable Diffusion 1.5 as a six-objective problem over U-Net unit removal, weight precision, sampler, step count, guidance and feature-caching schedules, and study evolutionary search under the budgets this cost allows. With 150 real evaluations, no multi- or many-objective evolutionary algorithm beats random search, and quality objectives measured on small calibration sets are too noisy to rank good candidates (split-half reliability 0.50). On surrogate benchmarks built from 900 real evaluations, LHFiD outperforms NSGA-III and NSGA-II at realistic budgets, increasingly so with more objectives, but only beyond roughly 336–840 evaluations. We therefore propose surrogate-assisted LHFiD (SA-LHFiD), which spends the real budget on candidates proposed by LHFiD running on an online surrogate. In a pre-registered simulation calibrated to the real problem, SA-LHFiD improves hypervolume by 26–42% over random search at 150 evaluations and beats surrogate-assisted NSGA-II, RVEA and (under one of two truth models) MOEA/D; surrogate assistance with Pareto-dominance selection does not beat random search. On real hardware (pre-registered, 6 seeds per arm), SA-LHFiD improves median hypervolume by 44% over random search, 36% over surrogate-assisted NSGA-II and 46% over NSGA-II (Holm p = 0.0065), with 84% of its real evaluations after the random start landing in the region of interest versus 23–27% for the alternatives. The best searched configuration shrinks the U-Net checkpoint from 1,639.5 MB to 812 MB, reduces peak VRAM by 0.83 GB and FLOPs by 47%, runs 1.58× faster, and is statistically non-inferior in prompt alignment on 500 held-out prompts.
 
 ## 1. Introduction
 
@@ -13,15 +13,15 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 - Contributions:
   1. Formulation of training-free SD1.5 compression as a six-objective expensive optimization problem with real-hardware objectives, and a released benchmark (companion paper).
   2. Evidence that at real budgets selection scheme does not matter (no MOEA beats random at 150 evaluations) and why: noisy quality objectives and an evaluation-count crossover around 336–840.
-  3. SA-LHFiD: surrogate-assisted search with LHFiD's localized high-fidelity dominance as the inner selector; pre-registered simulation and real-evaluation confirmation (+44% hypervolume over random search, 3.6× more useful evaluations).
-  4. A validated application outcome: a training-free configuration that halves U-Net bytes and is non-inferior on 500 held-out prompts.
+  3. SA-LHFiD: surrogate-assisted search with LHFiD's localized high-fidelity dominance as the inner selector; pre-registered simulation and real-evaluation confirmation (+44% hypervolume over random search, about 3× more useful evaluations).
+  4. A validated application outcome: a training-free configuration with a 50% smaller U-Net checkpoint that is non-inferior on 500 held-out prompts.
 
 ## 2. Related work
 
 - Many-objective EAs: NSGA-III (Deb and Jain 2014), MOEA/D (Zhang and Li 2007), RVEA (Cheng et al. 2016), LHFiD (Saxena, Mittal, Kapoor and Deb, COIN 2021020; stabilization-timed nadir estimation, Saxena and Kapoor 2019).
 - Surrogate-assisted (many-objective) optimization: ParEGO, K-RVEA, MOEA/D-EGO, CSEA; NAS surrogates (NAS-Bench-301).
 - Diffusion efficiency: DeepCache, Flexiffusion, AutoDiffusion, ECAD, LDMOES, SnapFusion, BK-SDM, Q-Diffusion/PTQ4DM.
-- Positioning: first application of hf-dominance-based selection inside a surrogate-assisted loop for an expensive real-hardware many-objective problem; first many-objective formulation of training-free diffusion compression with measured cost objectives.
+- Positioning (to be verified against the latest literature, including the LHFiD authors' later work and K-RVEA-style methods, before claiming priority): hf-dominance-based selection inside a surrogate-assisted loop for an expensive real-hardware many-objective problem, and a many-objective formulation of training-free diffusion compression with measured cost objectives.
 
 ## 3. Problem
 
@@ -58,12 +58,14 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 ### 5.4 SA-LHFiD, real evaluations (pre-registered, `configs/nas/c2_protocol.json`)
 - Arms: SA-LHFiD, SA-NSGA-II, random, NSGA-II; 6 seeds each; primary 4-D HV with per-job latency normalization; robustness: GFLOPs-HV and HV without CLIP; Mann–Whitney + Holm.
 - Median HV (×10⁶): SA-LHFiD 7.23 (6.75–8.00), SA-NSGA-II 5.30, random 5.02, NSGA-II 4.96. SA-LHFiD beats each arm with Holm p = 0.0065 (raw p = 0.0022, complete separation); GFLOPs-HV p = 0.0022, no-CLIP HV p ≤ 0.026.
-- In-box rate after the random start: SA-LHFiD 84%, others 23–25%.
+- In-box rate after the random start (all 6 seeds per arm): SA-LHFiD 84%, SA-NSGA-II 23%, random 24%, NSGA-II 27% (`scripts/derived_stats.py`).
 - Figure: `docs/figures/c2_sa_lhfid.png`.
 
 ### 5.5 Application outcome (C1, pre-registered)
-- 500 held-out prompts: DDIM-10, guidance 10.5, int8 is non-inferior in CLIP (margin 0.5; difference −0.000, Holm p = 0.0012), with half the U-Net bytes, −0.83 GB peak VRAM, −47% FLOPs, 1.58× speed; it beats distilled BK-SDM-small at the same sampler and precision (+1.31 CLIP).
+- 500 held-out prompts: DDIM-10, guidance 10.5, int8 with one unit removed is non-inferior in CLIP (margin 0.5; difference −0.000, Holm p = 0.0012), with an 812 MB U-Net checkpoint (fp16 1,639.5 MB), −0.83 GB peak VRAM, −47% FLOPs, 1.58× speed; its no-removal twin (821 MB, 1.53×) scores +0.10 [−0.10, +0.30] post hoc; it beats distilled BK-SDM-small at the same sampler and precision (+1.31 CLIP).
 
 ## 6. Discussion and limitations
+- LHFiD reimplementation details: stabilization tracking (Saxena and Kapoor 2019) is approximated from its description in the LHFiD paper (mean per-vector change, ψN = 2 decimals over 10 generations); zero reference-vector components are floored at the smallest positive component for p = 1/w; self-termination is disabled to equalize budgets. Objective scaling uses fixed lower bounds from the 900 prior evaluations; the same scaling is given to SA-NSGA-II, and LHFiD translates by its own ideal point, so only the scale carries prior information.
+- SA-LHFiD's fronts were scored on calibration prompts only; they were not re-tested on held-out prompts.
 - Training-free unit removal is not worth it once int8 is available (twins ablation, C1).
 - Single GPU model; CLIP/Inception metrics only; int8 latency from a dequantize-per-call implementation; simulation conclusions conditional on calibrated truths, hence C2.
