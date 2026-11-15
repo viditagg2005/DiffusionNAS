@@ -147,6 +147,30 @@ def run_task(task: dict) -> dict:
             "hv5_oracle": final_selection.hypervolume(true_n[oracle], ref)}
 
 
+class RunTimeout(Exception):
+    pass
+
+
+def run_task_guarded(task: dict) -> dict:
+    """run_task with the protocol's wall-clock limit; a run that exceeds it is recorded, never dropped."""
+    import signal
+
+    def alarm(signum, frame):
+        raise RunTimeout()
+
+    limit = int(PROTOCOL["run_time_limit_s"])
+    signal.signal(signal.SIGALRM, alarm)
+    signal.alarm(limit)
+    try:
+        return {**run_task(task), "status": "ok"}
+    except RunTimeout:
+        return {**task, "status": "timeout", "time_limit_s": limit}
+    except Exception as error:  # recorded so a crash is visible in the results, not silently retried
+        return {**task, "status": "error", "error": repr(error)[:500]}
+    finally:
+        signal.alarm(0)
+
+
 def tasks_for(setting: str, only: list[str] | None) -> list[dict]:
     s = PROTOCOL["settings"][setting]
     algorithms = only or PROTOCOL["algorithms"]
@@ -186,7 +210,7 @@ def main() -> int:
     print(f"{len(tasks)} tasks on {args.workers} workers -> {results}", flush=True)
     start = time.time()
     with get_context("spawn").Pool(args.workers, maxtasksperchild=20) as pool, results.open("a") as sink:
-        for i, row in enumerate(pool.imap_unordered(run_task, tasks), 1):
+        for i, row in enumerate(pool.imap_unordered(run_task_guarded, tasks), 1):
             sink.write(json.dumps(row) + "\n")
             sink.flush()
             if i % 25 == 0 or i == len(tasks):

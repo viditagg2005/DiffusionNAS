@@ -23,6 +23,8 @@
     "primary": "igd_plus: IGD+ of the nondominated noise-free values of all evaluated points to a dense true front, normalized by the true ideal and nadir",
     "secondary": "hv5_deliverable: greedy hypervolume subset selection of 5 points on the observed values, scored by their noise-free hypervolume (normalized, reference 1.1); hv5_oracle: the same selection on noise-free values"
   },
+  "run_time_limit_s": 10800,
+  "failures": "a run exceeding 3 h wall clock (status timeout) or raising (status error) is recorded with its status; in the statistics it is ranked worst in its cell (counts against that algorithm); failure counts are reported per algorithm",
   "statistics": "per setting x problem x M x noise: Wilcoxon rank-sum (two-sided) of sa_lhfid against each other algorithm over 21 seeds, Holm over the 8 comparisons within the cell; report wins/ties/losses counts across cells per comparison; no claim from a single cell",
   "claim_rule": "SA-LHFiD is claimed competitive with an algorithm on a setting if, across that setting's cells, its Holm-significant losses on IGD+ are no more than its Holm-significant wins; claimed better if wins exceed losses and the median IGD+ ratio across cells is below 1. Noise-free and noisy cells reported separately.",
   "expectation": "stated in advance: K-RVEA and KTA2 are strong in the noise-free D=10 setting; ParEGO and MOEA/D-EGO degrade at M >= 6; the deliverable indicator is where noise matters",
