@@ -41,7 +41,7 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | 3 | Lock finalists (`scripts/lock_nas_finalists.py`, committed before searches ran) | CPU | ✅ 10 finalists (`configs/generated/validation_v3/locked_finalists.json`) |
 | 3b | Many-objective optimizer benchmark on surrogates (LHFiD, NSGA-III, NSGA-II, random; protocol `configs/nas/surrogate_benchmark.json`) + real confirmation | CPU + srun | ✅ benchmark (report §5.4); ⏳ confirmation in `run_followup.sh` |
 | 4 | Validation: 43 runs (10 finalists, 12 architecture-ablation twins, DDIM/DPM++ sweeps, DeepCache, int8, 2 Flexiffusion, BK-SDM ×3, reference ×3) in one allocation | `validation_v3.sbatch` (job 9827) | ✅ generation, CLIP, fidelity (report §5.3); ⏳ KID/FID (job's final scoring step failed) and post-hoc BK-SDM in `run_followup.sh` |
-| 5 | Final report, Pareto/HV figures, docs, Notion | local | ⏳ `docs/final_report.md` drafted with all results except §5.5 |
+| 5 | Final report, Pareto/HV figures, docs, Notion | local | ✅ `docs/final_report.md`, published page, Notion D021–D025 |
 
 ## Cluster run log
 
@@ -87,4 +87,4 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | C1 confirmatory test (500 prompts, pre-registered) | DDIM-10 + int8 non-inferior (Holm p = 0.0012); beats BK-SDM-small by 1.31 CLIP | §5.6 |
 | C2 real SA-LHFiD (6 seeds/arm, pre-registered) | +44% HV over random, +36% over SA-NSGA-II, Holm p = 0.0065; 84% in-box rate | §5.7 |
 
-Remaining: publish the report page, finalize the two paper drafts (`docs/papers/`), release the benchmark (`scripts/export_benchmark.py`).
+Report page published: https://claude.ai/artifact/TTX8qDRxUtSs4RNjRxGNKr (private until shared). Remaining optional work: turn the two paper drafts (`docs/papers/`) into venue LaTeX, and release the benchmark (`scripts/export_benchmark.py` output) publicly.
