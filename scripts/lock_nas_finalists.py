@@ -38,24 +38,34 @@ def local_run(path: str, runs_dir: Path) -> Path:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--nas-root", type=Path, default=ROOT / "artifacts" / "nas")
+    parser.add_argument("--nas-root", type=Path, action="append",
+                        help="search output root(s); default artifacts/nas. Repeat to pool several roots.")
+    parser.add_argument("--arms", default="random,nsga2", help="comma-separated search arms to pool")
     parser.add_argument("--max-finalists", type=int, default=10)
     parser.add_argument("--output", type=Path, default=ROOT / "artifacts" / "nas" / "finalists.json")
     args = parser.parse_args()
+    roots = args.nas_root or [ROOT / "artifacts" / "nas"]
+    arms = args.arms.split(",")
     if args.output.exists():
         raise SystemExit(f"{args.output} exists; finalists are locked once. Delete it only with a logged reason.")
 
     references, pool, gpus = {}, {}, set()
-    for seed_dir in sorted(args.nas_root.glob("seed*")):
+    seed_dirs = [d for root in roots for d in sorted(root.glob("seed*"))]
+    for seed_dir in seed_dirs:
+        if not any((seed_dir / arm / "search_results.json").exists() for arm in arms):
+            continue
+        job = f"{seed_dir.parent.name}/{seed_dir.name}"  # each job measured its own reference
         ref_run = next((seed_dir / "reference" / "runs").iterdir())
         ref_summary = read(ref_run / "summary.json")
-        references[seed_dir.name] = {
+        references[job] = {
             "latency": ref_summary["latency_ms"]["p50"],
             "clip": ref_summary["quality_metrics"]["clip_score"]["mean"],
             "black": ref_summary["quality_metrics"]["black_images"],
         }
         gpus.add(read(ref_run / "manifest.json")["provenance"]["gpu"]["name"])
-        for method in ("random", "nsga2"):
+        for method in arms:
+            if not (seed_dir / method / "search_results.json").exists():
+                continue
             results = read(seed_dir / method / "search_results.json")
             for candidate in results["candidates"]:
                 run = local_run(candidate["run_dir"], seed_dir / method / "runs")
@@ -64,8 +74,8 @@ def main() -> int:
                 key = nas_space.signature(candidate["policy"])
                 entry = pool.setdefault(key, {"policy": candidate["policy"], "objectives": dict(candidate["objectives"]),
                                               "relative_latency": [], "sources": []})
-                entry["relative_latency"].append(candidate["objectives"]["latency_p50_ms"] / references[seed_dir.name]["latency"])
-                entry["sources"].append(f"{seed_dir.name}/{method}/{candidate['candidate_id']}")
+                entry["relative_latency"].append(candidate["objectives"]["latency_p50_ms"] / references[job]["latency"])
+                entry["sources"].append(f"{job}/{method}/{candidate['candidate_id']}")
     if len(gpus) != 1:
         raise SystemExit(f"searches ran on {sorted(gpus)}; latency is not comparable")
     pooled_latency = statistics.median(r["latency"] for r in references.values())

@@ -13,6 +13,7 @@ data/prompts/*
 !data/prompts/holdout.json
 !data/prompts/validation.json
 !data/prompts/test.json
+!data/prompts/test2.json
 .env
 .cache/
 artifacts/search
@@ -32,3 +33,4 @@ artifacts/c1
 artifacts/nas_c2
 artifacts/benchmark
 artifacts/export
+artifacts/c3
