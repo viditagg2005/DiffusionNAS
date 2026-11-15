@@ -1,0 +1,544 @@
+<title>DiffusionNAS Final Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: long-form explainer. One ~68ch reading column; figures, tables and the interactive chart break out to ~1040px. */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --ink: #121821; --muted: #566173; --rule: #d9dee6;
+  --accent: #2457c5; --accent-soft: #e4ecfa; --warm: #b86e00; --warm-soft: #fbf0dc;
+  --good: #1d7a4c; --good-soft: #e1f1e7; --bad: #b23b2b; --bad-soft: #f8e4df; --aqua: #128a66; --plate: #ffffff;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f141b; --surface: #171d26; --ink: #e7ecf2; --muted: #9aa6b5; --rule: #2a3340;
+  --accent: #82a8f0; --accent-soft: #1b2638; --warm: #f0b54a; --warm-soft: #2e2513;
+  --good: #5cc48e; --good-soft: #16291e; --bad: #f08a78; --bad-soft: #34201c; --aqua: #46c99b; --plate: #f3f5f8; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171d26; --ink: #e7ecf2; --muted: #9aa6b5; --rule: #2a3340;
+  --accent: #82a8f0; --accent-soft: #1b2638; --warm: #f0b54a; --warm-soft: #2e2513;
+  --good: #5cc48e; --good-soft: #16291e; --bad: #f08a78; --bad-soft: #34201c; --aqua: #46c99b; --plate: #f3f5f8; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 18px/1.65 var(--text); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.col { max-width: 68ch; }
+h1, h2, h3, .label, nav, th, .k, .chip, button { font-family: var(--display); }
+h1, h2, h3 { text-wrap: balance; line-height: 1.1; margin: 0; font-stretch: 88%; }
+h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 750; margin: 0 0 14px; }
+h3 { font-size: 22px; font-weight: 700; margin: 34px 0 10px; }
+p { margin: 0 0 14px; }
+.label { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+code, .num { font-family: var(--data); font-size: .82em; }
+.num, td.n { font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { padding-block: 56px 8px; border-top: 1px solid var(--rule); }
+
+/* Hero */
+.hero { padding-block: 56px 40px; display: grid; gap: 22px; }
+.hero h1 { font-size: clamp(44px, 8vw, 84px); font-weight: 800; font-stretch: 80%; letter-spacing: -.01em; }
+.hero h1 span { color: var(--warm); }
+.hero .lede { font-size: 21px; max-width: 60ch; color: var(--ink); margin: 0; }
+.strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.strip figure { margin: 0; display: grid; gap: 6px; }
+.strip canvas { width: 100%; aspect-ratio: 1; border-radius: 6px; display: block; background: var(--rule); }
+.strip figcaption { font: 500 12px/1.2 var(--data); color: var(--muted); text-align: center; }
+.strip-note { font-size: 15px; color: var(--muted); max-width: 70ch; }
+.keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 6px; }
+.key { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.key .k { font-size: 30px; font-weight: 750; font-stretch: 80%; color: var(--warm); line-height: 1; }
+.key .t { font-size: 15px; color: var(--muted); line-height: 1.45; }
+nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; padding-block: 14px; border-top: 1px solid var(--rule); }
+nav a { text-decoration: none; color: var(--muted); } nav a:hover { color: var(--accent); }
+
+/* Cards, lists, tables */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 18px 0; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; min-width: 0; }
+.card h4 { margin: 0 0 6px; font: 700 17px/1.2 var(--display); }
+.card p { font-size: 16px; margin: 0; }
+ul.plain { padding-left: 20px; margin: 0 0 14px; display: grid; gap: 6px; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-family: var(--text); }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap; vertical-align: top; }
+th { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--accent-soft); }
+td.n { text-align: right; font-family: var(--data); font-size: 13.5px; }
+td.wrap { white-space: normal; min-width: 220px; }
+tr:last-child td { border-bottom: 0; }
+tr.ours td { background: var(--warm-soft); }
+.yes { color: var(--good); font-weight: 600; } .no { color: var(--bad); font-weight: 600; }
+.callout { border-left: 3px solid var(--warm); background: var(--warm-soft); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; max-width: 72ch; }
+.callout p:last-child { margin: 0; }
+
+/* Figures */
+figure.fig { margin: 22px 0 10px; display: grid; gap: 8px; }
+figure.fig figcaption { font-size: 15px; color: var(--muted); max-width: 80ch; }
+.plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 8px; padding: 10px; overflow-x: auto; }
+.plate img { display: block; width: 100%; min-width: 620px; height: auto; }
+.svgbox { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px; overflow-x: auto; color: var(--ink); }
+.svgbox svg { display: block; width: 100%; min-width: 720px; height: auto; }
+
+/* U-Net map */
+.unet { display: grid; grid-template-columns: repeat(8, minmax(96px, 1fr)); gap: 8px; align-items: end; overflow-x: auto; padding-bottom: 4px; }
+.stage { display: grid; gap: 6px; align-content: end; min-width: 0; }
+.stage .res { font: 500 11px/1.2 var(--data); color: var(--muted); text-align: center; }
+.stage .name { font: 700 13px/1.2 var(--display); text-align: center; }
+.chip { font-size: 12px; font-weight: 600; border-radius: 6px; padding: 6px 6px; text-align: center; border: 1px solid transparent; cursor: default; }
+.chip small { display: block; font: 400 11px/1.2 var(--data); opacity: .9; }
+.chip.keep { background: var(--good-soft); color: var(--good); border-color: color-mix(in srgb, var(--good) 35%, transparent); }
+.chip.drop { background: var(--bad-soft); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+.chip.fixed { background: transparent; color: var(--muted); border: 1px dashed var(--rule); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); margin-top: 10px; align-items: center; }
+.legend .chip { display: inline-block; padding: 2px 8px; }
+
+/* Splits */
+.splits { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 16px 0; }
+.split { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; background: var(--surface); display: grid; gap: 4px; }
+.split .k { font: 750 24px/1 var(--display); font-stretch: 80%; }
+.split .t { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+
+/* Timeline */
+ol.timeline { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 0; }
+ol.timeline li { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rule); }
+ol.timeline .when { font: 600 13px/1.4 var(--data); color: var(--muted); }
+ol.timeline .what { font: 700 18px/1.25 var(--display); margin-bottom: 4px; }
+ol.timeline .out { font-size: 16px; color: var(--ink); }
+ol.timeline li.hi .what { color: var(--warm); }
+
+/* Interactive chart */
+.chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px; position: relative; }
+.chart-top { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.toggle { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.toggle button { background: transparent; color: var(--muted); border: 0; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.chart svg { width: 100%; height: auto; display: block; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font: 13px/1.45 var(--data); padding: 8px 10px; border-radius: 6px; max-width: 280px; }
+.series { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 500 13px/1.3 var(--display); color: var(--muted); }
+.series span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; background: var(--c); vertical-align: -1px; }
+
+/* Glossary */
+dl.gloss { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 10px 20px; margin: 16px 0; }
+dl.gloss dt { font: 700 16px/1.4 var(--display); }
+dl.gloss dd { margin: 0; font-size: 16px; }
+footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; }
+
+@media (max-width: 640px) {
+  .strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  ol.timeline li { grid-template-columns: 1fr; gap: 2px; }
+  dl.gloss { grid-template-columns: 1fr; }
+  body { font-size: 17px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="label">B.Tech project · Neural architecture search for diffusion model compression</div>
+    <h1>Diffusion<span>NAS</span></h1>
+    <p class="lede">Can a pretrained text-to-image model be made smaller and faster without retraining it, while keeping its images as good? This report explains how we searched for such configurations of Stable Diffusion 1.5, how we measured them, and what held up under pre-registered tests.</p>
+    <div class="strip" aria-label="Six tiles showing a picture emerging from noise over the denoising steps">
+      <figure><canvas data-t="1.00" width="120" height="120"></canvas><figcaption>t = 999</figcaption></figure>
+      <figure><canvas data-t="0.80" width="120" height="120"></canvas><figcaption>t = 799</figcaption></figure>
+      <figure><canvas data-t="0.60" width="120" height="120"></canvas><figcaption>t = 599</figcaption></figure>
+      <figure><canvas data-t="0.40" width="120" height="120"></canvas><figcaption>t = 399</figcaption></figure>
+      <figure><canvas data-t="0.20" width="120" height="120"></canvas><figcaption>t = 199</figcaption></figure>
+      <figure><canvas data-t="0.00" width="120" height="120"></canvas><figcaption>t = 0</figcaption></figure>
+    </div>
+    <p class="strip-note">A diffusion model starts from pure noise and removes a little of it at every step, calling a 860-million-parameter U-Net each time. The number of steps and the size of that network decide how long an image takes and how much memory it needs. (Illustration, not a real model output.)</p>
+    <div class="keys">
+      <div class="key"><span class="k">812 MB</span><span class="t">U-Net checkpoint instead of 1,639.5 MB, with prompt alignment statistically non-inferior on 500 new prompts</span></div>
+      <div class="key"><span class="k">1.58×</span><span class="t">faster generation, 47% fewer FLOPs and 0.83 GB less GPU memory for that same configuration</span></div>
+      <div class="key"><span class="k">+44%</span><span class="t">search quality (hypervolume) from our surrogate-assisted LHFiD over random search, on real hardware</span></div>
+      <div class="key"><span class="k">0</span><span class="t">training steps: every result uses the frozen, publicly released model weights</span></div>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#problem">Problem</a><a href="#goal">Goal</a><a href="#pipeline">How it works</a><a href="#space">Search space</a>
+      <a href="#measure">Measurement</a><a href="#journey">Timeline</a><a href="#compress">Compression results</a>
+      <a href="#search">Search results</a><a href="#learned">What we learned</a><a href="#limits">Limits and next steps</a><a href="#glossary">Glossary</a>
+    </nav>
+  </header>
+
+  <section id="problem">
+    <div class="label">1 · The problem</div>
+    <h2>Diffusion models are slow and heavy</h2>
+    <div class="col">
+      <p>Stable Diffusion 1.5 turns a sentence into a 512×512 image. On a 48 GB workstation GPU (an NVIDIA RTX 6000 Ada) one image takes about half a second, 34.7 trillion floating-point operations and 3.3 GB of GPU memory, most of it spent running the same U-Net 20 times. Phones, laptops and embedded boards have far less of everything.</p>
+      <p>Existing ways to make it cheaper each change one thing:</p>
+      <ul class="plain">
+        <li><strong>Fewer denoising steps</strong> with a better numerical solver (DDIM, DPM-Solver++).</li>
+        <li><strong>Feature caching</strong>, which reuses deep U-Net features from the previous step (DeepCache) or skips whole steps (Flexiffusion).</li>
+        <li><strong>Distilled compact models</strong> such as BK-SDM or SnapFusion, which remove blocks and then retrain the network to recover quality. That needs days of GPU training.</li>
+      </ul>
+      <p>These knobs interact, and they trade off different things: speed, memory, model size and image quality. Choosing them together is a <em>multi-objective</em> problem, and testing one combination costs about a minute of GPU time, so you cannot try them all.</p>
+    </div>
+  </section>
+
+  <section id="goal">
+    <div class="label">2 · The goal</div>
+    <h2>Search for good configurations, without any training</h2>
+    <div class="col">
+      <p><strong>Goal:</strong> use neural architecture search (NAS) and multi-objective evolutionary optimization to find configurations of the frozen Stable Diffusion 1.5 that are smaller and faster than the original while keeping image quality, and validate them against established methods on prompts the search never saw.</p>
+    </div>
+    <div class="grid2">
+      <div class="card"><h4>Training-free</h4><p>Only the released weights. Blocks can be removed or stored in 8 bits, but nothing is fine-tuned or distilled.</p></div>
+      <div class="card"><h4>Six objectives</h4><p>Prompt alignment and fidelity to the original model up; latency, compute, peak memory and weight size down.</p></div>
+      <div class="card"><h4>Honest comparisons</h4><p>Same model, prompts, seeds, precision and GPU model for every method. Latency is only compared within one GPU allocation or against a reference measured in the same job.</p></div>
+      <div class="card"><h4>Pre-registered tests</h4><p>The final hypotheses, margins and analysis scripts were committed to the repository before their data existed.</p></div>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <div class="label">3 · How an image is made, and where the knobs act</div>
+    <h2>Five knobs on one pipeline</h2>
+    <figure class="fig">
+      <div class="svgbox">
+        <svg viewBox="0 0 960 330" role="img" aria-label="Stable Diffusion pipeline: the prompt is encoded once, the U-Net runs inside a denoising loop N times on a noisy latent, then a VAE decoder produces the image. Knobs: steps and sampler on the loop, caching and step skipping inside the loop, unit removal and int8 weights inside the U-Net, guidance on each U-Net call.">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+          </defs>
+          <g font-family="Archivo, system-ui, sans-serif" font-size="14" fill="currentColor">
+            <rect x="10" y="120" width="120" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="70" y="145" text-anchor="middle" font-weight="700">Prompt</text>
+            <text x="70" y="163" text-anchor="middle" font-size="12" opacity=".75">"two dogs…"</text>
+            <rect x="170" y="120" width="130" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="235" y="145" text-anchor="middle" font-weight="700">Text encoder</text>
+            <text x="235" y="163" text-anchor="middle" font-size="12" opacity=".75">runs once</text>
+            <line x1="130" y1="148" x2="166" y2="148" stroke="currentColor" marker-end="url(#arr)"/>
+            <rect x="340" y="70" width="400" height="190" rx="12" fill="none" stroke="currentColor" stroke-dasharray="5 4" stroke-opacity=".6"/>
+            <text x="352" y="92" font-weight="700">Denoising loop, repeated N times</text>
+            <rect x="370" y="122" width="130" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="435" y="147" text-anchor="middle" font-weight="700">Noisy latent</text>
+            <text x="435" y="165" text-anchor="middle" font-size="12" opacity=".75">64×64×4</text>
+            <rect x="560" y="112" width="150" height="76" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <text x="635" y="143" text-anchor="middle" font-weight="700">U-Net</text>
+            <text x="635" y="161" text-anchor="middle" font-size="12" opacity=".75">860 M parameters</text>
+            <text x="635" y="177" text-anchor="middle" font-size="12" opacity=".75">predicts the noise</text>
+            <line x1="500" y1="150" x2="556" y2="150" stroke="currentColor" marker-end="url(#arr)"/>
+            <path d="M635 188 L635 230 L435 230 L435 182" fill="none" stroke="currentColor" marker-end="url(#arr)"/>
+            <text x="535" y="250" text-anchor="middle" font-size="12" opacity=".8">sampler removes predicted noise</text>
+            <line x1="300" y1="148" x2="556" y2="128" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+            <text x="350" y="117" font-size="11" opacity=".7">text conditioning</text>
+            <rect x="780" y="120" width="80" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="820" y="145" text-anchor="middle" font-weight="700">VAE</text>
+            <text x="820" y="163" text-anchor="middle" font-size="12" opacity=".75">decode</text>
+            <rect x="880" y="120" width="70" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+            <text x="915" y="153" text-anchor="middle" font-weight="700">Image</text>
+            <line x1="740" y1="148" x2="776" y2="148" stroke="currentColor" marker-end="url(#arr)"/>
+            <line x1="860" y1="148" x2="876" y2="148" stroke="currentColor" marker-end="url(#arr)"/>
+          </g>
+          <g font-family="Archivo, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#c47a00" stroke="none">
+            <circle cx="352" cy="40" r="11" fill="#c47a00"/><text x="352" y="44.5" text-anchor="middle" fill="#ffffff">1</text>
+            <text x="370" y="44">Steps and sampler: N = 4–25, DDIM or DPM-Solver++</text>
+            <circle cx="352" cy="300" r="11" fill="#c47a00"/><text x="352" y="304.5" text-anchor="middle" fill="#ffffff">2</text>
+            <text x="370" y="304">Caching / step skipping: reuse deep features or skip whole steps</text>
+            <circle cx="726" cy="104" r="11" fill="#c47a00"/><text x="726" y="108.5" text-anchor="middle" fill="#ffffff">3</text>
+            <text x="745" y="70">Unit removal: delete</text>
+            <text x="745" y="86">attention / ResNet blocks</text>
+            <circle cx="726" cy="196" r="11" fill="#c47a00"/><text x="726" y="200.5" text-anchor="middle" fill="#ffffff">4</text>
+            <text x="745" y="214">int8: store weights in 8 bits</text>
+            <circle cx="545" cy="104" r="11" fill="#c47a00"/><text x="545" y="108.5" text-anchor="middle" fill="#ffffff">5</text>
+            <text x="560" y="62">Guidance 5–12: how hard</text>
+            <text x="560" y="78">to follow the prompt</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>The loop dominates the cost. Knob 1 changes how many times it runs, knob 2 how much of the U-Net each pass computes, knobs 3 and 4 how big the U-Net is, and knob 5 how strongly each pass follows the prompt. Knobs 1, 2 and 5 keep every original weight; knobs 3 and 4 shrink the stored model.</figcaption>
+    </figure>
+  </section>
+
+  <section id="space">
+    <div class="label">4 · The search space</div>
+    <h2>Which parts of the U-Net can go?</h2>
+    <div class="col">
+      <p>A block can be removed without retraining only if its output can be replaced by its input without breaking tensor shapes. In SD1.5 that is true for the 16 attention blocks (they add to a residual stream) and for 8 ResNet blocks whose input and output channel counts match; up-path ResNets merge skip connections and cannot go. We removed each of those 24 units alone and measured the damage on the calibration prompts.</p>
+    </div>
+    <figure class="fig">
+      <div class="unet" id="unet" role="img" aria-label="Map of the 24 removable U-Net units by stage, coloured by whether removing the unit alone was safe."></div>
+      <div class="legend">
+        <span class="chip keep">safe, kept in search</span><span class="chip drop">harmful, excluded</span><span class="chip fixed">not removable</span>
+        <span>Number under each unit: change in CLIP score when that unit alone is removed (hover for details).</span>
+      </div>
+      <figcaption>15 of 24 units were individually safe (the CLIP confidence interval reaches zero and fidelity stays at or above 80). Two were catastrophic: removing the first high-resolution ResNet (down0.res0) lowered CLIP by 11.5 and blacked out 16 of 96 images; removing up3.attn2 lowered it by 5.1. Removals also interact: five individually safe 32-pixel attention blocks removed together cost 3.1 CLIP, which is why the search tries combinations instead of stacking safe units.</figcaption>
+    </figure>
+    <div class="col">
+      <p>The final search space has 45 genes: the method (plain sampler, DeepCache or a Flexiffusion step schedule), its settings, steps, guidance, one on/off bit for each of the 15 safe units, and the weight precision (16-bit or 8-bit). That is far too many combinations to test exhaustively, which is what the evolutionary search is for.</p>
+    </div>
+  </section>
+
+  <section id="measure">
+    <div class="label">5 · How we measured</div>
+    <h2>Six objectives, four prompt sets, rules fixed in advance</h2>
+    <div class="grid2">
+      <div class="card"><h4>Prompt alignment (CLIP score)</h4><p>How well the image matches its caption, scored by a frozen CLIP-L/14 model. Higher is better.</p></div>
+      <div class="card"><h4>Fidelity to the original</h4><p>CLIP similarity between the image and the full model's image for the same prompt and seed. Shows how far a configuration drifts.</p></div>
+      <div class="card"><h4>Latency and compute</h4><p>Median end-to-end time per image (GPU-synchronized) and GFLOPs per image counted by PyTorch.</p></div>
+      <div class="card"><h4>Memory and size</h4><p>Peak allocated GPU memory, U-Net parameter count and the U-Net checkpoint size on disk.</p></div>
+    </div>
+    <div class="col"><p>We also report KID and FID (distribution distance to real COCO photos and to the full model's images) and count images the safety checker blacks out. All prompts are MS-COCO captions, split so that no image or caption appears in two sets:</p></div>
+    <div class="splits">
+      <div class="split"><span class="label">Calibration</span><span class="k">48 × 2</span><span class="t">prompts × seeds. Every search decision is made here.</span></div>
+      <div class="split"><span class="label">Hold-out</span><span class="k">128 × 2</span><span class="t">First benchmark of DeepCache and AutoDiffusion.</span></div>
+      <div class="split"><span class="label">Validation</span><span class="k">128 × 2</span><span class="t">Used once, for the 10 locked search finalists and 33 comparison runs.</span></div>
+      <div class="split"><span class="label">Test</span><span class="k">500 × 1</span><span class="t">Used once, for the pre-registered confirmatory test.</span></div>
+    </div>
+    <div class="callout"><p><strong>Why pre-register?</strong> With dozens of configurations and noisy quality scores, some will look better by chance. Writing the hypothesis, the margin and the analysis script down before generating any images, and correcting for multiple comparisons (Holm), means the results below are not chosen after the fact.</p></div>
+  </section>
+
+  <section id="journey">
+    <div class="label">6 · Timeline</div>
+    <h2>From benchmark to method</h2>
+    <ol class="timeline">
+      <li><div class="when">Sep 2026</div><div><div class="what">Matched baseline benchmark</div><div class="out">20-step DDIM, DeepCache and an AutoDiffusion timestep schedule on identical prompts and GPU. DeepCache is 2.1× faster with no clear quality loss; the 4-step schedule is 3.6× faster but loses quality.</div></div></li>
+      <li><div class="when">Oct 2026</div><div><div class="what">First searches and controls</div><div class="out">Random search and an evolutionary search over sampler and caching settings perform the same. Controls show the AutoDiffusion schedule equals the native 4-step DPM-Solver++, and no fixed Flexiffusion schedule beats DeepCache.</div></div></li>
+      <li><div class="when">10 Nov</div><div><div class="what">Unit-removal and int8 probe</div><div class="out">int8 weights halve the U-Net with no measurable quality loss; 15 of 24 units are individually safe to remove.</div></div></li>
+      <li><div class="when">10–11 Nov</div><div><div class="what">Architecture + policy search</div><div class="out">Random search vs NSGA-II, 150 configurations each, three seeds: 900 measured configurations, no consistent winner.</div></div></li>
+      <li><div class="when">12 Nov</div><div><div class="what">Validation on unseen prompts</div><div class="out">43 runs in one GPU job: 7 of 10 locked finalists hold up; removing units turns out to add nothing beyond int8.</div></div></li>
+      <li><div class="when">12–13 Nov</div><div><div class="what">Optimizer benchmark and simulation</div><div class="out">On surrogate models, LHFiD beats NSGA-III and NSGA-II once it gets enough evaluations; a surrogate-assisted LHFiD wins at the real budget in simulation.</div></div></li>
+      <li class="hi"><div class="when">13–15 Nov</div><div><div class="what">Confirmatory tests (pre-registered)</div><div class="out">C1: compression non-inferior on 500 new prompts. C2: surrogate-assisted LHFiD beats every alternative on real hardware.</div></div></li>
+    </ol>
+  </section>
+
+  <section id="compress">
+    <div class="label">7 · Results: compression</div>
+    <h2>What actually makes SD1.5 smaller and faster</h2>
+    <div class="col"><p>The chart shows all 41 Stable Diffusion configurations from the validation job plus the three distilled BK-SDM models, all measured in the same GPU allocation. Hover a point for its details and switch the horizontal axis between speed and model size.</p></div>
+    <div class="chart" id="chart">
+      <div class="chart-top">
+        <div class="series"><span style="--c: var(--warm)">Searched finalists</span><span style="--c: var(--accent)">Training-free baselines and ablations</span><span style="--c: var(--aqua)">BK-SDM (distilled, needs training)</span></div>
+        <div class="toggle" role="group" aria-label="Horizontal axis">
+          <button type="button" id="x-ms" aria-pressed="true">Latency</button><button type="button" id="x-mb" aria-pressed="false">U-Net size</button>
+        </div>
+      </div>
+      <svg id="scatter" viewBox="0 0 900 430" role="img" aria-label="Scatter of CLIP score against latency or U-Net size for the validation runs"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <p style="font-size:15px;color:var(--muted);margin-top:8px">Validation split: 128 unseen prompts × 2 seeds per point. Dashed line: the full model. The full per-run table, with every metric and confidence interval, is in the repository (<code>docs/appendix_validation_table.md</code>).</p>
+
+    <h3>The pre-registered confirmatory test (C1)</h3>
+    <div class="col"><p>Nine configurations on 500 brand-new prompts, all in one GPU job. "Non-inferior" means we are 97.5% confident the configuration's CLIP score is at most 0.5 below the full model's.</p></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Hypothesis</th><th>CLIP difference</th><th>Holm p</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td class="wrap">10-step DDIM, int8, one unit removed (nas_04) is non-inferior to the full model</td><td class="n">−0.000 (bound −0.25)</td><td class="n">0.0012</td><td class="yes">Supported</td></tr>
+          <tr><td class="wrap">int8 weights alone are non-inferior</td><td class="n">−0.03 (bound −0.16)</td><td class="n">0.0005</td><td class="yes">Supported</td></tr>
+          <tr><td class="wrap">nas_04 beats BK-SDM-small at the same sampler and precision</td><td class="n">+1.31 [+0.99, +1.63]</td><td class="n">0.0008</td><td class="yes">Supported</td></tr>
+          <tr><td class="wrap">6-step DPM-Solver++ (2.8× faster) is non-inferior</td><td class="n">−0.39 (bound −0.61)</td><td class="n">0.25</td><td class="no">Not supported</td></tr>
+          <tr><td class="wrap">nas_04 beats BK-SDM-base at the same sampler and precision</td><td class="n">+0.23 [−0.07, +0.51]</td><td class="n">0.25</td><td class="no">Not supported</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Configuration (500 test prompts)</th><th>Latency</th><th>GFLOPs</th><th>Peak memory</th><th>U-Net on disk</th><th>CLIP</th><th>Fidelity</th><th>Black images</th></tr></thead>
+        <tbody>
+          <tr><td>Full model (20-step DDIM, 16-bit)</td><td class="n">512 ms</td><td class="n">34,672</td><td class="n">3,271 MB</td><td class="n">1,639.5 MB</td><td class="n">26.89</td><td class="n">100</td><td class="n">1</td></tr>
+          <tr><td>int8 weights only</td><td class="n">631 ms</td><td class="n">34,672</td><td class="n">2,448 MB</td><td class="n">820.8 MB</td><td class="n">26.87</td><td class="n">96.1</td><td class="n">1</td></tr>
+          <tr><td>nas_04: 10-step DDIM, int8, one unit removed</td><td class="n">325 ms</td><td class="n">18,210</td><td class="n">2,439 MB</td><td class="n">812.0 MB</td><td class="n">26.89</td><td class="n">86.9</td><td class="n">8</td></tr>
+          <tr class="ours"><td>Recommended: same without the removal</td><td class="n">334 ms</td><td class="n">18,607</td><td class="n">2,443 MB</td><td class="n">820.8 MB</td><td class="n">26.99</td><td class="n">89.0</td><td class="n">1</td></tr>
+          <tr><td>DeepCache (20-step DDIM)</td><td class="n">235 ms</td><td class="n">15,431</td><td class="n">3,380 MB</td><td class="n">1,639.5 MB</td><td class="n">26.76</td><td class="n">88.7</td><td class="n">0</td></tr>
+          <tr><td>BK-SDM-small (10-step DDIM, int8)</td><td class="n">220 ms</td><td class="n">12,759</td><td class="n">2,075 MB</td><td class="n">461 MB</td><td class="n">25.58</td><td class="n">80.2</td><td class="n">3</td></tr>
+          <tr><td>BK-SDM-base (10-step DDIM, int8)</td><td class="n">233 ms</td><td class="n">13,001</td><td class="n">2,169 MB</td><td class="n">553 MB</td><td class="n">26.67</td><td class="n">82.3</td><td class="n">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <ul class="plain">
+        <li><strong>int8 storage plus fewer steps carries the compression.</strong> Half the checkpoint, 0.83 GB less memory, 1.58× speed, and alignment indistinguishable from the full model.</li>
+        <li><strong>Removing blocks without retraining is not worth it.</strong> On top of int8 it saves at most about 8% more bytes but always lowers fidelity; here one removed unit saved 9 MB and raised blacked-out images from 1 to 8. The highlighted configuration skips the removal; it scores +0.10 CLIP against the full model, 95% CI [−0.10, +0.30] (a post-hoc comparison, outside the pre-registered set).</li>
+        <li><strong>Distillation still wins on raw size.</strong> BK-SDM-base, which needed training, is smaller and faster at similar alignment; our training-free result beats the smaller BK-SDM-small clearly.</li>
+        <li><strong>Very few steps cost quality.</strong> The 6-step configuration is 2.8× faster but loses 0.39 CLIP on 500 prompts.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="search">
+    <div class="label">8 · Results: the search method</div>
+    <h2>Making many-objective search work on a tiny budget</h2>
+    <div class="col">
+      <p>Each configuration takes about 40 seconds of GPU time to evaluate on 96 images, so a search gets roughly 150 evaluations in two hours. At that budget, evolutionary search (NSGA-II) was no better than picking configurations at random.</p>
+      <p>Two reasons emerged. First, the quality signal is noisy: among good configurations, CLIP measured on 96 images agrees with itself across two halves of the prompts with a reliability of only 0.50. Second, many-objective algorithms need more evaluations before their selection pays off. On surrogate models fitted to our 900 real measurements, LHFiD (a many-objective algorithm by Saxena, Mittal, Kapoor and Deb that ranks solutions by how many objectives improve and by how much) beats NSGA-III and NSGA-II, but only after about 336–840 evaluations.</p>
+    </div>
+    <figure class="fig">
+      <div class="plate"><img src="figures/optimizer_benchmark.png" alt="Median archive hypervolume against the number of evaluations for random search, NSGA-II, NSGA-III and two LHFiD variants with 4 and 6 objectives; random search leads at 150 evaluations and LHFiD leads from about 336; final-population hypervolume bars show LHFiD and NSGA-III far above NSGA-II." loading="lazy"></div>
+      <figcaption>Surrogate benchmark (5 independently fitted surrogates × 7 seeds). Dashed line: the real budget. With six objectives LHFiD reaches the highest hypervolume; RVEA and MOEA/D, added later as a labelled extension, come close. Measured for real, the surrogate's errors on 25 optimizer-chosen points were small (CLIP 0.32, latency about 3%).</figcaption>
+    </figure>
+    <div class="col">
+      <p><strong>Our method: surrogate-assisted LHFiD (SA-LHFiD).</strong> Spend 50 real evaluations on random configurations; then, five times, fit a fast surrogate model to everything measured so far, let LHFiD run 1,680 virtual evaluations on it, and measure the 20 most promising new configurations for real. LHFiD gets the evaluations it needs, and the GPU only runs configurations it has good reason to believe in.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Real hardware, 150 evaluations, 6 seeds each</th><th>Median hypervolume ×10⁶</th><th>Range over seeds</th><th>Useful evaluations after the random start</th></tr></thead>
+        <tbody>
+          <tr class="ours"><td>SA-LHFiD (ours)</td><td class="n">7.23</td><td class="n">6.75–8.00</td><td class="n">84%</td></tr>
+          <tr><td>Surrogate-assisted NSGA-II</td><td class="n">5.30</td><td class="n">3.46–6.75</td><td class="n">23%</td></tr>
+          <tr><td>Random search</td><td class="n">5.02</td><td class="n">4.02–5.52</td><td class="n">24%</td></tr>
+          <tr><td>NSGA-II</td><td class="n">4.96</td><td class="n">2.31–6.63</td><td class="n">27%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="fig">
+      <div class="plate"><img src="figures/c2_sa_lhfid.png" alt="Left: final hypervolume of each of the six seeds per method; SA-LHFiD's six seeds all sit above the other methods. Right: number of evaluated configurations inside the region of interest over 150 evaluations; after evaluation 50 SA-LHFiD climbs to about 96 while the other three reach about 36." loading="lazy"></div>
+      <figcaption>Pre-registered confirmation (C2). SA-LHFiD beats each alternative with Holm-corrected p = 0.0065; its worst seed is better than every other method's best. "Useful" means inside the pre-registered quality and cost limits (CLIP ≥ 25.2, fidelity ≥ 75, ≤ 600 ms, ≤ 1,700 MB). The result holds with GFLOPs in place of latency and without CLIP.</figcaption>
+    </figure>
+    <div class="callout"><p>The surrogate alone is not enough: surrogate-assisted NSGA-II barely beats random search. What works is the combination of a surrogate with a selection rule built for many objectives, and LHFiD was the best such rule we tested.</p></div>
+  </section>
+
+  <section id="learned">
+    <div class="label">9 · What we learned</div>
+    <h2>Five takeaways</h2>
+    <div class="grid2">
+      <div class="card"><h4>Training-free compression works</h4><p>int8 weights and a 10-step sampler give a 812–821 MB U-Net, 1.53–1.58× speed and non-inferior alignment, with no training.</p></div>
+      <div class="card"><h4>Removing blocks does not</h4><p>Safe units interact, removal shifts outputs away from the original model, and on top of int8 it saves little.</p></div>
+      <div class="card"><h4>The quality signal is the bottleneck</h4><p>CLIP on 96 images cannot rank good configurations (reliability 0.50); fidelity to the original model can (0.96 agreement across splits).</p></div>
+      <div class="card"><h4>Budget decides whether optimizers help</h4><p>At 150 evaluations nothing beats random search; with thousands, LHFiD leads, more so with more objectives.</p></div>
+      <div class="card"><h4>Surrogates unlock many-objective search</h4><p>Surrogate-assisted LHFiD gives +44% hypervolume over random search at the real budget and spends 84% of its GPU time on useful configurations.</p></div>
+      <div class="card"><h4>Fair baselines matter</h4><p>Routing prompts by type to different configurations looked useful until compared with a simple random mix of two configurations at the same average speed.</p></div>
+    </div>
+  </section>
+
+  <section id="limits">
+    <div class="label">10 · Limits and next steps</div>
+    <h2>What this does not show yet</h2>
+    <div class="col">
+      <ul class="plain">
+        <li>All timings come from one workstation GPU, not a phone or embedded board; an edge-device measurement is still needed for deployment claims.</li>
+        <li>Quality is judged by CLIP, KID and FID, not by people.</li>
+        <li>int8 is about 22% slower than 16-bit here because weights are converted back on every call; a fused int8 kernel would remove that cost.</li>
+        <li>SA-LHFiD's best configurations were scored on the calibration prompts only. The next experiment tests them on new prompts.</li>
+        <li>BK-SDM is distilled from SD 1.4, not 1.5.</li>
+      </ul>
+      <p>Next: test SA-LHFiD's configurations on new prompts, check the literature for prior surrogate-assisted LHFiD work, and prepare two papers: the benchmark (2,850 measured configurations with an API) and the SA-LHFiD method.</p>
+    </div>
+  </section>
+
+  <section id="glossary">
+    <div class="label">Glossary</div>
+    <h2>Terms used above</h2>
+    <dl class="gloss">
+      <dt>Denoising step</dt><dd>One pass of the U-Net that removes part of the noise from the image being generated.</dd>
+      <dt>DDIM, DPM-Solver++</dt><dd>Numerical solvers that decide how much noise to remove per step; better solvers need fewer steps.</dd>
+      <dt>DeepCache</dt><dd>Reuses the U-Net's deep features from the previous step and recomputes only the shallow layers.</dd>
+      <dt>Flexiffusion</dt><dd>Splits the steps into segments of full, partial (cached) and skipped steps; we reimplemented its schedules.</dd>
+      <dt>int8</dt><dd>Storing each weight in 8 bits with a per-channel scale instead of 16 bits; halves the stored size.</dd>
+      <dt>Pareto front</dt><dd>The configurations that no other configuration beats on every objective at once.</dd>
+      <dt>Hypervolume</dt><dd>The volume of objective space covered by a set of configurations, up to fixed quality and cost limits; bigger means a better set of trade-offs.</dd>
+      <dt>NSGA-II, NSGA-III, LHFiD</dt><dd>Evolutionary multi- and many-objective optimizers. LHFiD compares solutions by how many objectives improve and by how much, within reference directions.</dd>
+      <dt>Surrogate model</dt><dd>A fast regression model that predicts a configuration's objectives from its settings, fitted to real measurements.</dd>
+      <dt>CLIP score</dt><dd>Similarity between an image and its caption according to a frozen CLIP model, ×100.</dd>
+      <dt>Non-inferiority test</dt><dd>A test that a new method is not worse than the reference by more than a pre-set margin.</dd>
+      <dt>Holm correction</dt><dd>Adjusts p-values when several hypotheses are tested together, so chance wins do not pass as results.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    DiffusionNAS · B.Tech project. Code, protocols, analysis scripts and the full written report (<code>docs/final_report.md</code>) are in the project repository; every number on this page comes from a committed script and a measured result file. Hardware: NVIDIA RTX 6000 Ada Generation. Captions: MS-COCO 2014 (CC BY 4.0).
+  </footer>
+</div>
+
+<script>
+(function () {
+  var DATA = {"probe": [{"unit": "down0.attn0", "kept": true, "dclip": -0.03, "lo": -0.65, "hi": 0.51, "fid": 85.3, "black": 0, "mb": 5.0, "gf": 4.5}, {"unit": "down0.attn1", "kept": true, "dclip": -0.23, "lo": -0.81, "hi": 0.28, "fid": 85.2, "black": 0, "mb": 5.0, "gf": 4.5}, {"unit": "down0.res0", "kept": false, "dclip": -11.51, "lo": -12.54, "hi": -10.53, "fid": 55.0, "black": 16, "mb": 4.0, "gf": 1.7}, {"unit": "down0.res1", "kept": false, "dclip": -3.82, "lo": -5.14, "hi": -2.59, "fid": 68.2, "black": 3, "mb": 4.0, "gf": 1.7}, {"unit": "down1.attn0", "kept": false, "dclip": -0.63, "lo": -1.22, "hi": -0.07, "fid": 84.9, "black": 3, "mb": 18.0, "gf": 2.3}, {"unit": "down1.attn1", "kept": true, "dclip": -0.46, "lo": -1.24, "hi": 0.18, "fid": 85.0, "black": 1, "mb": 18.0, "gf": 2.3}, {"unit": "down1.res1", "kept": true, "dclip": -0.11, "lo": -0.74, "hi": 0.51, "fid": 83.1, "black": 1, "mb": 16.0, "gf": 1.7}, {"unit": "down2.attn0", "kept": true, "dclip": 0.4, "lo": -0.19, "hi": 0.95, "fid": 84.6, "black": 0, "mb": 66.0, "gf": 2.0}, {"unit": "down2.attn1", "kept": true, "dclip": 0.11, "lo": -0.61, "hi": 0.81, "fid": 82.1, "black": 1, "mb": 66.0, "gf": 2.0}, {"unit": "down2.res1", "kept": false, "dclip": -1.75, "lo": -2.76, "hi": -0.84, "fid": 79.6, "black": 2, "mb": 59.0, "gf": 1.7}, {"unit": "down3.res0", "kept": true, "dclip": 0.29, "lo": -0.13, "hi": 0.69, "fid": 90.2, "black": 1, "mb": 59.0, "gf": 0.4}, {"unit": "down3.res1", "kept": true, "dclip": 0.12, "lo": -0.38, "hi": 0.6, "fid": 90.4, "black": 0, "mb": 59.0, "gf": 0.4}, {"unit": "mid.attn0", "kept": false, "dclip": -1.98, "lo": -2.73, "hi": -1.24, "fid": 80.8, "black": 3, "mb": 66.0, "gf": 0.5}, {"unit": "mid.res0", "kept": false, "dclip": -0.81, "lo": -1.49, "hi": -0.15, "fid": 84.1, "black": 1, "mb": 59.0, "gf": 0.4}, {"unit": "mid.res1", "kept": true, "dclip": -0.02, "lo": -0.62, "hi": 0.58, "fid": 86.9, "black": 0, "mb": 59.0, "gf": 0.4}, {"unit": "up1.attn0", "kept": false, "dclip": -0.98, "lo": -1.51, "hi": -0.46, "fid": 80.0, "black": 0, "mb": 66.0, "gf": 2.0}, {"unit": "up1.attn1", "kept": false, "dclip": -0.78, "lo": -1.5, "hi": -0.13, "fid": 80.9, "black": 4, "mb": 66.0, "gf": 2.0}, {"unit": "up1.attn2", "kept": true, "dclip": -0.41, "lo": -1.16, "hi": 0.26, "fid": 84.4, "black": 3, "mb": 66.0, "gf": 2.0}, {"unit": "up2.attn0", "kept": true, "dclip": -0.34, "lo": -1.0, "hi": 0.25, "fid": 87.9, "black": 4, "mb": 18.0, "gf": 2.3}, {"unit": "up2.attn1", "kept": true, "dclip": -0.0, "lo": -0.64, "hi": 0.5, "fid": 88.1, "black": 0, "mb": 18.0, "gf": 2.3}, {"unit": "up2.attn2", "kept": true, "dclip": 0.32, "lo": -0.16, "hi": 0.78, "fid": 88.3, "black": 1, "mb": 18.0, "gf": 2.3}, {"unit": "up3.attn0", "kept": true, "dclip": 0.32, "lo": -0.08, "hi": 0.71, "fid": 92.2, "black": 0, "mb": 5.0, "gf": 4.5}, {"unit": "up3.attn1", "kept": true, "dclip": 0.13, "lo": -0.38, "hi": 0.65, "fid": 89.7, "black": 0, "mb": 5.0, "gf": 4.5}, {"unit": "up3.attn2", "kept": false, "dclip": -5.1, "lo": -6.47, "hi": -3.74, "fid": 63.8, "black": 15, "mb": 5.0, "gf": 4.5}], "validation": [{"label": "ref_a", "g": "base", "ms": 507, "mb": 1639, "clip": 26.98, "fid": 100.0, "black": 3, "d": null, "lo": null, "hi": null, "desc": "baseline ddim 20 steps, g 7.5, fp16"}, {"label": "nas_03", "g": "nas", "ms": 212, "mb": 788, "clip": 26.1, "fid": 80.2, "black": 3, "d": -0.88, "lo": -1.37, "hi": -0.38, "desc": "baseline dpm_solver++ 6 steps, g 12.0, int8, \u22121 units"}, {"label": "nas_05", "g": "nas", "ms": 476, "mb": 818, "clip": 26.91, "fid": 90.6, "black": 5, "d": -0.07, "lo": -0.29, "hi": 0.15, "desc": "flexiffusion ddim 30 steps, g 7.5, int8, \u22121 units"}, {"label": "nas_05_twin_int8", "g": "base", "ms": 500, "mb": 821, "clip": 27.16, "fid": 91.6, "black": 3, "d": 0.18, "lo": -0.09, "hi": 0.47, "desc": "flexiffusion ddim 30 steps, g 7.5, int8"}, {"label": "dpm10", "g": "base", "ms": 271, "mb": 1639, "clip": 26.99, "fid": 89.2, "black": 4, "d": 0.01, "lo": -0.33, "hi": 0.35, "desc": "baseline dpm_solver++ 10 steps, g 7.5, fp16"}, {"label": "nas_08_twin_fp16", "g": "base", "ms": 505, "mb": 1639, "clip": 27.2, "fid": 90.3, "black": 3, "d": 0.23, "lo": -0.1, "hi": 0.6, "desc": "baseline dpm_solver++ 20 steps, g 7.5, fp16"}, {"label": "ddim25", "g": "base", "ms": 626, "mb": 1639, "clip": 27.04, "fid": 94.7, "black": 3, "d": 0.07, "lo": -0.12, "hi": 0.28, "desc": "baseline ddim 25 steps, g 7.5, fp16"}, {"label": "bksdm_small", "g": "bksdm", "ms": 320, "mb": 920, "clip": 25.43, "fid": 80.5, "black": 5, "d": -1.55, "lo": -2.08, "hi": -1.02, "desc": "bk-sdm-small, DDIM 20"}, {"label": "flex_n11_b6_i2", "g": "base", "ms": 480, "mb": 1639, "clip": 27.0, "fid": 92.1, "black": 3, "d": 0.02, "lo": -0.23, "hi": 0.29, "desc": "flexiffusion ddim 33 steps, g 7.5, fp16"}, {"label": "nas_07", "g": "nas", "ms": 518, "mb": 696, "clip": 25.78, "fid": 77.0, "black": 7, "d": -1.2, "lo": -1.81, "hi": -0.58, "desc": "baseline dpm_solver++ 20 steps, g 9.0, int8, \u22127 units"}, {"label": "nas_08_twin_int8", "g": "base", "ms": 616, "mb": 821, "clip": 27.29, "fid": 90.3, "black": 2, "d": 0.31, "lo": -0.02, "hi": 0.69, "desc": "baseline dpm_solver++ 20 steps, g 7.5, int8"}, {"label": "nas_00_twin_fp16", "g": "base", "ms": 180, "mb": 1639, "clip": 26.45, "fid": 87.0, "black": 6, "d": -0.53, "lo": -0.88, "hi": -0.19, "desc": "baseline dpm_solver++ 6 steps, g 5.0, fp16"}, {"label": "nas_09_twin_fp16", "g": "base", "ms": 622, "mb": 1639, "clip": 27.11, "fid": 91.0, "black": 2, "d": 0.14, "lo": -0.19, "hi": 0.5, "desc": "baseline dpm_solver++ 25 steps, g 6.5, fp16"}, {"label": "nas_04_twin_fp16", "g": "base", "ms": 272, "mb": 1639, "clip": 27.11, "fid": 89.7, "black": 5, "d": 0.14, "lo": -0.12, "hi": 0.39, "desc": "baseline ddim 10 steps, g 10.5, fp16"}, {"label": "nas_05_twin_fp16", "g": "base", "ms": 428, "mb": 1639, "clip": 27.04, "fid": 92.0, "black": 4, "d": 0.06, "lo": -0.18, "hi": 0.3, "desc": "flexiffusion ddim 30 steps, g 7.5, fp16"}, {"label": "dpm8", "g": "base", "ms": 224, "mb": 1639, "clip": 27.07, "fid": 88.4, "black": 3, "d": 0.1, "lo": -0.22, "hi": 0.42, "desc": "baseline dpm_solver++ 8 steps, g 7.5, fp16"}, {"label": "nas_02", "g": "nas", "ms": 214, "mb": 821, "clip": 26.41, "fid": 86.7, "black": 8, "d": -0.57, "lo": -0.99, "hi": -0.2, "desc": "baseline dpm_solver++ 6 steps, g 5.0, int8"}, {"label": "dpm6", "g": "base", "ms": 179, "mb": 1639, "clip": 26.68, "fid": 86.7, "black": 5, "d": -0.3, "lo": -0.65, "hi": 0.03, "desc": "baseline dpm_solver++ 6 steps, g 7.5, fp16"}, {"label": "nas_09", "g": "nas", "ms": 761, "mb": 821, "clip": 27.07, "fid": 91.0, "black": 3, "d": 0.1, "lo": -0.23, "hi": 0.46, "desc": "baseline dpm_solver++ 25 steps, g 6.5, int8"}, {"label": "nas_01", "g": "nas", "ms": 181, "mb": 1639, "clip": 26.88, "fid": 86.9, "black": 4, "d": -0.1, "lo": -0.41, "hi": 0.21, "desc": "baseline dpm_solver++ 6 steps, g 6.5, fp16"}, {"label": "nas_04_twin_int8", "g": "base", "ms": 329, "mb": 821, "clip": 26.98, "fid": 89.7, "black": 5, "d": 0.0, "lo": -0.31, "hi": 0.31, "desc": "baseline ddim 10 steps, g 10.5, int8"}, {"label": "nas_07_twin_int8", "g": "base", "ms": 620, "mb": 821, "clip": 27.21, "fid": 89.0, "black": 4, "d": 0.23, "lo": -0.09, "hi": 0.59, "desc": "baseline dpm_solver++ 20 steps, g 9.0, int8"}, {"label": "nas_00", "g": "nas", "ms": 161, "mb": 1504, "clip": 25.87, "fid": 79.7, "black": 8, "d": -1.11, "lo": -1.66, "hi": -0.59, "desc": "baseline dpm_solver++ 6 steps, g 5.0, fp16, \u22124 units"}, {"label": "ddim8", "g": "base", "ms": 225, "mb": 1639, "clip": 26.75, "fid": 85.9, "black": 4, "d": -0.22, "lo": -0.58, "hi": 0.11, "desc": "baseline ddim 8 steps, g 7.5, fp16"}, {"label": "bksdm_base", "g": "bksdm", "ms": 335, "mb": 1105, "clip": 26.54, "fid": 83.0, "black": 4, "d": -0.44, "lo": -0.86, "hi": -0.02, "desc": "bk-sdm-base, DDIM 20"}, {"label": "dpm4", "g": "base", "ms": 136, "mb": 1639, "clip": 25.87, "fid": 81.6, "black": 10, "d": -1.1, "lo": -1.57, "hi": -0.65, "desc": "baseline dpm_solver++ 4 steps, g 7.5, fp16"}, {"label": "int8_ddim20", "g": "base", "ms": 617, "mb": 821, "clip": 26.99, "fid": 96.3, "black": 5, "d": 0.01, "lo": -0.15, "hi": 0.18, "desc": "baseline ddim 20 steps, g 7.5, int8"}, {"label": "nas_03_twin_int8", "g": "base", "ms": 214, "mb": 821, "clip": 26.32, "fid": 81.5, "black": 7, "d": -0.66, "lo": -1.15, "hi": -0.16, "desc": "baseline dpm_solver++ 6 steps, g 12.0, int8"}, {"label": "nas_08", "g": "nas", "ms": 566, "mb": 776, "clip": 26.95, "fid": 82.4, "black": 5, "d": -0.02, "lo": -0.57, "hi": 0.54, "desc": "baseline dpm_solver++ 20 steps, g 7.5, int8, \u22123 units"}, {"label": "deepcache_i3b0", "g": "base", "ms": 233, "mb": 1639, "clip": 27.03, "fid": 89.3, "black": 4, "d": 0.05, "lo": -0.22, "hi": 0.3, "desc": "deepcache ddim 20 steps, g 7.5, fp16"}, {"label": "ddim15", "g": "base", "ms": 388, "mb": 1639, "clip": 26.99, "fid": 92.2, "black": 5, "d": 0.02, "lo": -0.25, "hi": 0.26, "desc": "baseline ddim 15 steps, g 7.5, fp16"}, {"label": "nas_03_twin_fp16", "g": "base", "ms": 181, "mb": 1639, "clip": 26.38, "fid": 81.4, "black": 6, "d": -0.59, "lo": -1.04, "hi": -0.12, "desc": "baseline dpm_solver++ 6 steps, g 12.0, fp16"}, {"label": "ddim6", "g": "base", "ms": 180, "mb": 1639, "clip": 25.98, "fid": 82.3, "black": 8, "d": -1.0, "lo": -1.43, "hi": -0.58, "desc": "baseline ddim 6 steps, g 7.5, fp16"}, {"label": "ddim50", "g": "base", "ms": 1223, "mb": 1639, "clip": 27.12, "fid": 91.9, "black": 2, "d": 0.15, "lo": -0.14, "hi": 0.48, "desc": "baseline ddim 50 steps, g 7.5, fp16"}, {"label": "flex_n7_b1_i2", "g": "base", "ms": 242, "mb": 1639, "clip": 26.93, "fid": 89.3, "black": 3, "d": -0.05, "lo": -0.31, "hi": 0.22, "desc": "flexiffusion ddim 21 steps, g 7.5, fp16"}, {"label": "nas_04", "g": "nas", "ms": 322, "mb": 812, "clip": 27.08, "fid": 87.5, "black": 3, "d": 0.1, "lo": -0.26, "hi": 0.49, "desc": "baseline ddim 10 steps, g 10.5, int8, \u22121 units"}, {"label": "nas_07_twin_fp16", "g": "base", "ms": 505, "mb": 1639, "clip": 27.31, "fid": 89.1, "black": 2, "d": 0.33, "lo": -0.01, "hi": 0.72, "desc": "baseline dpm_solver++ 20 steps, g 9.0, fp16"}, {"label": "ddim10", "g": "base", "ms": 274, "mb": 1639, "clip": 26.84, "fid": 88.3, "black": 6, "d": -0.13, "lo": -0.42, "hi": 0.14, "desc": "baseline ddim 10 steps, g 7.5, fp16"}, {"label": "bksdm_tiny", "g": "bksdm", "ms": 292, "mb": 617, "clip": 25.27, "fid": 79.6, "black": 6, "d": -1.71, "lo": -2.25, "hi": -1.16, "desc": "bk-sdm-tiny, DDIM 20"}, {"label": "dpm15", "g": "base", "ms": 386, "mb": 1639, "clip": 27.37, "fid": 90.2, "black": 1, "d": 0.4, "lo": 0.09, "hi": 0.77, "desc": "baseline dpm_solver++ 15 steps, g 7.5, fp16"}, {"label": "nas_06", "g": "nas", "ms": 495, "mb": 1639, "clip": 26.92, "fid": 92.1, "black": 4, "d": -0.06, "lo": -0.29, "hi": 0.18, "desc": "flexiffusion ddim 33 steps, g 7.5, fp16"}]};
+
+  // Hero: illustrative denoising strip (procedural scene blended with seeded noise).
+  function rand(seed) { return function () { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+  function scene(ctx, s) {
+    var sky = ctx.createLinearGradient(0, 0, 0, s);
+    sky.addColorStop(0, "#f6c27a"); sky.addColorStop(0.55, "#e98a5a"); sky.addColorStop(1, "#7a4b6e");
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, s, s);
+    ctx.fillStyle = "#fff1c9"; ctx.beginPath(); ctx.arc(s * 0.62, s * 0.42, s * 0.14, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#3d3a5c"; ctx.beginPath(); ctx.moveTo(0, s * 0.72);
+    ctx.quadraticCurveTo(s * 0.3, s * 0.5, s * 0.55, s * 0.7); ctx.quadraticCurveTo(s * 0.8, s * 0.86, s, s * 0.64);
+    ctx.lineTo(s, s); ctx.lineTo(0, s); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#26243d"; ctx.beginPath(); ctx.moveTo(0, s * 0.86);
+    ctx.quadraticCurveTo(s * 0.45, s * 0.74, s, s * 0.9); ctx.lineTo(s, s); ctx.lineTo(0, s); ctx.closePath(); ctx.fill();
+  }
+  document.querySelectorAll(".strip canvas").forEach(function (canvas) {
+    var ctx = canvas.getContext("2d"), s = canvas.width, t = parseFloat(canvas.dataset.t);
+    scene(ctx, s);
+    var img = ctx.getImageData(0, 0, s, s), d = img.data, r = rand(7), a = Math.cos(t * Math.PI / 2), b = Math.sin(t * Math.PI / 2);
+    for (var i = 0; i < d.length; i += 4) {
+      var n = (r() + r() + r() - 1.5) * 170;
+      for (var c = 0; c < 3; c++) d[i + c] = Math.max(0, Math.min(255, a * d[i + c] + b * (128 + n + (r() - 0.5) * 60)));
+    }
+    ctx.putImageData(img, 0, 0);
+  });
+
+  // U-Net map from the single-unit probe.
+  var stages = [["down0", "64 px"], ["down1", "32 px"], ["down2", "16 px"], ["down3", "8 px"], ["mid", "8 px"], ["up1", "16 px"], ["up2", "32 px"], ["up3", "64 px"]];
+  var byUnit = {}; DATA.probe.forEach(function (u) { byUnit[u.unit] = u; });
+  var unet = document.getElementById("unet");
+  stages.forEach(function (st) {
+    var col = document.createElement("div"); col.className = "stage";
+    var units = DATA.probe.filter(function (u) { return u.unit.split(".")[0] === st[0]; })
+      .sort(function (a, b) { return a.unit < b.unit ? -1 : 1; });
+    units.forEach(function (u) {
+      var chip = document.createElement("div");
+      chip.className = "chip " + (u.kept ? "keep" : "drop");
+      chip.title = u.unit + ": CLIP " + (u.dclip >= 0 ? "+" : "") + u.dclip + " [" + u.lo + ", " + u.hi + "], fidelity " + u.fid +
+        ", black images " + u.black + ", saves " + u.mb + " MB and " + u.gf + "% FLOPs";
+      chip.textContent = u.unit.split(".")[1];
+      var small = document.createElement("small"); small.textContent = (u.dclip >= 0 ? "+" : "") + u.dclip.toFixed(2);
+      chip.appendChild(small); col.appendChild(chip);
+    });
+    if (st[0].indexOf("up") === 0) { var f = document.createElement("div"); f.className = "chip fixed"; f.textContent = "ResNets fixed"; col.appendChild(f); }
+    var name = document.createElement("div"); name.className = "name"; name.textContent = st[0];
+    var res = document.createElement("div"); res.className = "res"; res.textContent = st[1];
+    col.appendChild(name); col.appendChild(res); unet.appendChild(col);
+  });
+
+  // Interactive validation scatter.
+  var svg = document.getElementById("scatter"), tip = document.getElementById("tip"), chart = document.getElementById("chart");
+  var W = 900, H = 430, M = { l: 62, r: 20, t: 16, b: 52 }, xKey = "ms";
+  var color = { nas: "var(--warm)", base: "var(--accent)", bksdm: "var(--aqua)" };
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) {
+      var v = String(attrs[k]);
+      // CSS variables resolve only through style, not SVG presentation attributes.
+      if ((k === "fill" || k === "stroke") && v.indexOf("var(") === 0) e.style[k] = v; else e.setAttribute(k, v);
+    }
+    (parent || svg).appendChild(e); return e;
+  }
+  function ticks(lo, hi, n) { var step = Math.pow(10, Math.floor(Math.log10((hi - lo) / n))), err = (hi - lo) / n / step;
+    step *= err >= 7.5 ? 10 : err >= 3.5 ? 5 : err >= 1.5 ? 2 : 1; var out = []; for (var v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(6)); return out; }
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var pts = DATA.validation, xs = pts.map(function (p) { return p[xKey]; }), ys = pts.map(function (p) { return p.clip; });
+    var x0 = xKey === "ms" ? 0 : 400, x1 = Math.max.apply(null, xs) * 1.05, y0 = Math.floor(Math.min.apply(null, ys) * 2) / 2 - 0.25, y1 = Math.ceil(Math.max.apply(null, ys) * 2) / 2 + 0.1;
+    var sx = function (v) { return M.l + (v - x0) / (x1 - x0) * (W - M.l - M.r); }, sy = function (v) { return H - M.b - (v - y0) / (y1 - y0) * (H - M.t - M.b); };
+    ticks(y0, y1, 6).forEach(function (v) { el("line", { x1: M.l, x2: W - M.r, y1: sy(v), y2: sy(v), stroke: "var(--rule)" });
+      var t = el("text", { x: M.l - 8, y: sy(v) + 4, "text-anchor": "end", "font-size": 12, fill: "var(--muted)", "font-family": "JetBrains Mono, monospace" }); t.textContent = v.toFixed(1); });
+    ticks(x0, x1, 7).forEach(function (v) { el("line", { x1: sx(v), x2: sx(v), y1: M.t, y2: H - M.b, stroke: "var(--rule)" });
+      var t = el("text", { x: sx(v), y: H - M.b + 18, "text-anchor": "middle", "font-size": 12, fill: "var(--muted)", "font-family": "JetBrains Mono, monospace" }); t.textContent = v.toLocaleString(); });
+    var xl = el("text", { x: (M.l + W - M.r) / 2, y: H - 12, "text-anchor": "middle", "font-size": 13, fill: "var(--muted)", "font-family": "Archivo, sans-serif" });
+    xl.textContent = xKey === "ms" ? "Median latency per image, ms (lower is better)" : "U-Net weights, MB (lower is better)";
+    var yl = el("text", { x: 16, y: (M.t + H - M.b) / 2, transform: "rotate(-90 16 " + (M.t + H - M.b) / 2 + ")", "text-anchor": "middle", "font-size": 13, fill: "var(--muted)", "font-family": "Archivo, sans-serif" });
+    yl.textContent = "CLIP prompt alignment";
+    var ref = pts.filter(function (p) { return p.label === "ref_a"; })[0];
+    el("line", { x1: M.l, x2: W - M.r, y1: sy(ref.clip), y2: sy(ref.clip), stroke: "var(--muted)", "stroke-dasharray": "5 4" });
+    var rt = el("text", { x: W - M.r - 4, y: sy(ref.clip) - 6, "text-anchor": "end", "font-size": 12, fill: "var(--muted)", "font-family": "Archivo, sans-serif" }); rt.textContent = "full model";
+    ["base", "bksdm", "nas"].forEach(function (g) {
+      pts.filter(function (p) { return p.g === g; }).forEach(function (p) {
+        var c = el("circle", { cx: sx(p[xKey]), cy: sy(p.clip), r: g === "nas" ? 7 : 5.5, fill: color[g], stroke: "var(--surface)", "stroke-width": 2, tabindex: 0 });
+        var hit = el("circle", { cx: sx(p[xKey]), cy: sy(p.clip), r: 13, fill: "transparent" });
+        function show(ev) {
+          var diff = p.d === null ? "reference" : (p.d >= 0 ? "+" : "") + p.d.toFixed(2) + " [" + p.lo.toFixed(2) + ", " + p.hi.toFixed(2) + "]";
+          tip.textContent = ""; var lines = [p.label, p.desc, p.ms + " ms · " + p.mb.toLocaleString() + " MB", "CLIP " + p.clip.toFixed(2) + " · vs full model " + diff, "fidelity " + p.fid + " · black " + p.black + "/256"];
+          lines.forEach(function (l, i) { var dv = document.createElement("div"); dv.textContent = l; if (i === 0) dv.style.fontWeight = "600"; tip.appendChild(dv); });
+          tip.hidden = false;
+          var box = chart.getBoundingClientRect(), r = c.getBoundingClientRect(), left = r.left - box.left + 14, top = r.top - box.top - 10;
+          if (left + 280 > box.width) left = r.left - box.left - 290;
+          tip.style.left = Math.max(4, left) + "px"; tip.style.top = Math.max(4, top) + "px";
+        }
+        [c, hit].forEach(function (n) { n.addEventListener("mouseenter", show); n.addEventListener("mouseleave", function () { tip.hidden = true; }); });
+        c.addEventListener("focus", show); c.addEventListener("blur", function () { tip.hidden = true; });
+      });
+    });
+  }
+  function setX(k) { xKey = k; document.getElementById("x-ms").setAttribute("aria-pressed", k === "ms"); document.getElementById("x-mb").setAttribute("aria-pressed", k === "mb"); draw(); }
+  document.getElementById("x-ms").addEventListener("click", function () { setX("ms"); });
+  document.getElementById("x-mb").addEventListener("click", function () { setX("mb"); });
+  draw();
+})();
+</script>
