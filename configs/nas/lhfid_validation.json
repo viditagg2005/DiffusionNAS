@@ -1,0 +1,16 @@
+{
+  "purpose": "Check our LHFiD and NSGA-III reimplementations against the LHFiD paper (Saxena, Mittal, Kapoor and Deb; COIN Report 2021020 / IEEE TEVC 2023), Table V medians, at the paper's settings. Fixed before any validation run (one-seed sanity runs on DTLZ2 M=3 were made while writing the code: LHFiD 0.6570, NSGA-III 0.6670).",
+  "settings": "DTLZ with nvar = (M - 1) + 20; Das-Dennis N = 105 / 210 / 275 (M = 3 / 5 / 10; two layers p = 3, 2 for M = 10); SBX pc 0.9, eta_c 20; polynomial mutation pm 1/nvar, eta_m 20; generations = the paper's tTM for that problem and M (also used for NSGA-III, as in the paper); 31 seeds",
+  "indicator": "hypervolume of the final population (exact via moocore for M <= 5; Monte Carlo with 10^6 fixed uniform samples over [0, r]^M for M = 10, PlatEMO's convention for many objectives), objectives normalized by the true ideal 0 and nadir 1, reference point 1 + 1/p (p = 13, 6, 3)",
+  "targets": {
+    "dtlz2": {"3": {"generations": 500, "nsga3": 0.666954, "lhfid": 0.660475},
+              "5": {"generations": 570, "nsga3": 1.855361, "lhfid": 1.844668},
+              "10": {"generations": 669, "nsga3": 17.663406, "lhfid": 17.687847}},
+    "dtlz4": {"3": {"generations": 904, "nsga3": 0.667274, "lhfid": 0.661308},
+              "5": {"generations": 852, "nsga3": 1.859055, "lhfid": 1.847690},
+              "10": {"generations": 817, "nsga3": 17.677868, "lhfid": 17.684803}}
+  },
+  "excluded": "DTLZ1 and DTLZ3: the paper's values approach the full reference box (e.g. 1.2489 = (1 + 1/13)^3 at M = 3), implying a normalization not recoverable from the text",
+  "agreement": "descriptive: our median, its gap to the paper's median relative to the paper's gap between the maximum attainable value and its own median, and whether the paper's NSGA-III vs LHFiD ordering is reproduced in each cell",
+  "results_policy": "artifacts/lhfid_validation (git-ignored) and chat only"
+}

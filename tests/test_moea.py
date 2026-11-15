@@ -76,3 +76,34 @@ class RunTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RunSaGoldenTests(unittest.TestCase):
+    """run_sa with default arguments must reproduce the trajectories recorded before the ablation options
+    (surrogate_family, pick) were added (tests/golden/run_sa.json), so C2 behaviour is unchanged."""
+
+    def test_defaults_reproduce_recorded_trajectories(self):
+        import json
+        from pathlib import Path
+
+        import numpy as np
+
+        from diffusionnas import moea, nas_space
+        from diffusionnas.sa_moea import run_sa
+        from diffusionnas.surrogate import features
+
+        def toy(policies):
+            out = []
+            for p in policies:
+                v = np.array(features(p), dtype=float)
+                s = np.sin(np.arange(len(v)) + 1)
+                out.append([float((v * s).sum() % 7), float((v ** 2).sum() % 5),
+                            float(len(nas_space.signature(p)) % 11), float(v.sum() % 3)])
+            return np.array(out) / np.array([7, 5, 11, 3])
+
+        golden = json.loads((Path(__file__).parent / "golden" / "run_sa.json").read_text())
+        for seed in (1, 2):
+            r = run_sa("lhfid", toy, 90, seed, moea.das_dennis(4, 5), initial=30, batch=20, inner_population=28, inner_generations=6)
+            self.assertEqual([nas_space.signature(p) for p in r["policies"]], golden[f"sa_lhfid_{seed}"])
+            r = run_sa("nsga2", toy, 70, seed, moea.das_dennis(4, 5), initial=30, batch=20, inner_population=28, inner_generations=6)
+            self.assertEqual([nas_space.signature(p) for p in r["policies"]], golden[f"sa_nsga2_{seed}"])

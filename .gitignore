@@ -34,3 +34,8 @@ artifacts/nas_c2
 artifacts/benchmark
 artifacts/export
 artifacts/c3
+.venv-saea/
+artifacts/saea_benchmark
+artifacts/lhfid_validation
+artifacts/sa_ablation
+artifacts/c4

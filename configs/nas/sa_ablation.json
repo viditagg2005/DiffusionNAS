@@ -1,0 +1,26 @@
+{
+  "purpose": "Which design choices of SA-LHFiD matter, on the simulated real problem (same truths, noise and budget as configs/nas/sa_simulation.json). Each arm changes one setting of the C2 configuration. Fixed before any ablation run.",
+  "base": {"inner": "lhfid", "surrogate_family": "extratrees", "batch": 20, "initial": 50, "inner_population": 56, "inner_generations": 30, "pick": "spread"},
+  "arms": {
+    "base": {},
+    "surrogate_randomforest": {"surrogate_family": "randomforest"},
+    "surrogate_knn": {"surrogate_family": "knn"},
+    "surrogate_gp": {"surrogate_family": "gp"},
+    "batch_10": {"batch": 10},
+    "batch_40": {"batch": 40},
+    "initial_30": {"initial": 30},
+    "initial_80": {"initial": 80},
+    "inner_generations_10": {"inner_generations": 10},
+    "inner_generations_60": {"inner_generations": 60},
+    "pick_hssp": {"pick": "hssp"},
+    "inner_nsga3": {"inner": "nsga3"}
+  },
+  "budget": 150,
+  "seeds_per_truth": 31,
+  "indicators": {
+    "primary": "true 4-D hypervolume of all evaluated points (noise-free truth, scaled space, reference 1), as in sa_simulation",
+    "secondary": "deliverable: greedy hypervolume subset selection of 5 points on the observed (noisy) values, scored by their true hypervolume; and the in-box count"
+  },
+  "statistics": "per truth: Wilcoxon signed-rank (paired by seed; the noise stream is shared) of each arm against base, Holm over the 11 comparisons; an effect is claimed only if significant in the same direction under both truths",
+  "results_policy": "artifacts/sa_ablation (git-ignored) and chat only"
+}

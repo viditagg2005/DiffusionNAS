@@ -26,15 +26,42 @@ Observe = Callable[[list[dict]], np.ndarray]
 
 
 class InternalSurrogate:
-    def __init__(self, seed: int) -> None:
+    """ExtraTrees (default, as in C2); "randomforest", "knn" and "gp" exist for the ablation study."""
+
+    def __init__(self, seed: int, family: str = "extratrees") -> None:
         self.seed = seed
+        self.family = family
         self.model = None
 
     def fit(self, policies: list[dict], f: np.ndarray) -> "InternalSurrogate":
-        from sklearn.ensemble import ExtraTreesRegressor
+        x = np.array([features(p) for p in policies])
+        if self.family == "extratrees":
+            from sklearn.ensemble import ExtraTreesRegressor
 
-        self.model = ExtraTreesRegressor(n_estimators=100, min_samples_leaf=2, random_state=self.seed, n_jobs=1)
-        self.model.fit(np.array([features(p) for p in policies]), f)
+            self.model = ExtraTreesRegressor(n_estimators=100, min_samples_leaf=2, random_state=self.seed, n_jobs=1)
+        elif self.family == "randomforest":
+            from sklearn.ensemble import RandomForestRegressor
+
+            self.model = RandomForestRegressor(n_estimators=100, min_samples_leaf=2, random_state=self.seed, n_jobs=1)
+        elif self.family == "knn":
+            from sklearn.neighbors import KNeighborsRegressor
+            from sklearn.pipeline import make_pipeline
+            from sklearn.preprocessing import StandardScaler
+
+            self.model = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=5, weights="distance"))
+        elif self.family == "gp":
+            from sklearn.gaussian_process import GaussianProcessRegressor
+            from sklearn.gaussian_process.kernels import ConstantKernel, Matern, WhiteKernel
+            from sklearn.multioutput import MultiOutputRegressor
+            from sklearn.pipeline import make_pipeline
+            from sklearn.preprocessing import StandardScaler
+
+            kernel = ConstantKernel() * Matern(nu=2.5) + WhiteKernel()
+            self.model = make_pipeline(StandardScaler(), MultiOutputRegressor(
+                GaussianProcessRegressor(kernel, normalize_y=True, random_state=self.seed)))
+        else:
+            raise ValueError(self.family)
+        self.model.fit(x, f)
         return self
 
     def predict(self, policies: list[dict]) -> np.ndarray:
@@ -57,7 +84,10 @@ def spread_pick(f: np.ndarray, count: int) -> list[int]:
 
 def run_sa(inner: str, observe: Observe, budget: int, seed: int, vectors: np.ndarray, initial: int = 50,
            batch: int = 20, inner_population: int = 56, inner_generations: int = 30,
-           tie_tolerance: np.ndarray | None = None) -> dict:
+           tie_tolerance: np.ndarray | None = None, surrogate_family: str = "extratrees",
+           pick: str = "spread") -> dict:
+    """``surrogate_family`` and ``pick`` ("spread" as in C2, or "hssp": greedy hypervolume subset selection in
+    predicted space, reference 1.1 on the fixed scale) exist for the ablation study; defaults reproduce C2."""
     rng = random.Random(seed)
     seen: set[str] = set()
     policies: list[dict] = []
@@ -77,7 +107,7 @@ def run_sa(inner: str, observe: Observe, budget: int, seed: int, vectors: np.nda
     round_index = 0
     while len(policies) < budget:
         round_index += 1
-        model = InternalSurrogate(seed * 100 + round_index).fit(policies, np.array(observed))
+        model = InternalSurrogate(seed * 100 + round_index, surrogate_family).fit(policies, np.array(observed))
         result = moea.run(inner, model.predict, inner_population * inner_generations, inner_population, vectors,
                           seed=seed * 100 + round_index, tie_tolerance=tie_tolerance, exclude=set(seen))
         # Candidates come from the optimizer's final population, so its selection scheme matters;
@@ -96,7 +126,15 @@ def run_sa(inner: str, observe: Observe, budget: int, seed: int, vectors: np.nda
                 continue
             predicted = model.predict(pool)
             front = moea.nondominated_sort(predicted)[0]
-            order = [front[i] for i in spread_pick(predicted[front], take - len(new))]
+            if pick == "hssp":
+                from .final_selection import greedy_hssp
+
+                order = [front[i] for i in greedy_hssp(predicted[front], np.full(predicted.shape[1], 1.1), take - len(new))]
+                if len(order) < take - len(new):
+                    spare = [i for i in front if i not in set(order)]
+                    order += [spare[i] for i in spread_pick(predicted[spare], take - len(new) - len(order))] if spare else []
+            else:
+                order = [front[i] for i in spread_pick(predicted[front], take - len(new))]
             rest = [i for i in range(len(pool)) if i not in set(order)]
             if len(order) < take - len(new) and rest:
                 order += [rest[i] for i in spread_pick(predicted[rest], take - len(new) - len(order))]

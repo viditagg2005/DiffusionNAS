@@ -1,0 +1,30 @@
+{
+  "purpose": "Does SA-LHFiD hold up against established surrogate-assisted EAs on standard many-objective test problems, with and without observation noise, and does its deliverable 5-point set hold up? Fixed before any benchmark run (a timing pilot of one task per algorithm on DTLZ2 M=10 was run and discarded).",
+  "environment": ".venv-saea (scripts/setup_saea_env.sh): ddmtolab 1.0.10 (MIT; Python port of PlatEMO algorithms), torch 2.5.1 CPU; one thread per worker",
+  "problems": "DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ7 (src/diffusionnas/continuous.py; standard definitions, identical to PlatEMO/DDMTOLab)",
+  "settings": {
+    "main": {"dim": 10, "budget": 300, "initial": 109, "objectives": [3, 4, 6, 8, 10], "problems": ["dtlz1", "dtlz2", "dtlz3", "dtlz4", "dtlz7"], "noise": [0.0, 0.1], "seeds": 21,
+             "note": "the standard expensive-SAEA setting (D = 10, 300 evaluations, 11D - 1 Latin hypercube start), as used by K-RVEA, KTA2 and CSEA"},
+    "real_budget": {"dim": 10, "budget": 150, "initial": 50, "objectives": [4, 6], "problems": ["dtlz2", "dtlz7"], "noise": [0.0, 0.1], "seeds": 21,
+                    "note": "our real-problem budget (150 evaluations, 50 initial)"}
+  },
+  "noise": "observed value = true value + N(0, (sigma x range_j)^2) on objectives 1..ceil(M/2), range_j = true-front nadir_j - ideal_j; sigma 0 (standard) or 0.1; noise seed shared by all algorithms for a given problem/M/sigma/seed",
+  "algorithms": ["sa_lhfid", "sa_nsga3", "sa_nsga2", "k_rvea", "kta2", "csea", "parego", "moead_ego", "lhs"],
+  "our_arms": {
+    "sa_lhfid": {"inner": "lhfid", "surrogate": "gp_ddmto", "batch": 20, "inner_generations": 30, "pick": "spread"},
+    "sa_nsga3": {"inner": "nsga3", "surrogate": "gp_ddmto", "batch": 20, "inner_generations": 30, "pick": "spread"},
+    "sa_nsga2": {"inner": "nsga2", "surrogate": "gp_ddmto", "batch": 20, "inner_generations": 30, "pick": "spread"}
+  },
+  "our_arm_details": "src/diffusionnas/sa_continuous.py: Latin hypercube start; each round scale observations by observed min/max, fit DDMTOLab's Kriging (the model K-RVEA and KTA2 use) per objective, run the inner MOEA (population = reference vectors of continuous.reference_vectors(M): 105/120/126/156/275 for M = 3/4/6/8/10) for 30 generations from the best observed points, evaluate 20 novel candidates by spread pick; SBX eta_c 20, polynomial mutation eta_m 20 (5 for DTLZ1/3, as in the LHFiD paper)",
+  "eta_m": {"default": 20, "dtlz1": 5, "dtlz3": 5},
+  "ddmtolab_kwargs": {},
+  "baselines": "k_rvea (Chugh et al. 2018), kta2 (Song et al. 2021), csea (Pan et al. 2019), parego (Knowles 2006), moead_ego (Zhang et al. 2010): DDMTOLab 1.0.10 implementations with their default parameters, given n_initial and max_nfes; lhs: the whole budget as one Latin hypercube",
+  "indicators": {
+    "primary": "igd_plus: IGD+ of the nondominated noise-free values of all evaluated points to a dense true front, normalized by the true ideal and nadir",
+    "secondary": "hv5_deliverable: greedy hypervolume subset selection of 5 points on the observed values, scored by their noise-free hypervolume (normalized, reference 1.1); hv5_oracle: the same selection on noise-free values"
+  },
+  "statistics": "per setting x problem x M x noise: Wilcoxon rank-sum (two-sided) of sa_lhfid against each other algorithm over 21 seeds, Holm over the 8 comparisons within the cell; report wins/ties/losses counts across cells per comparison; no claim from a single cell",
+  "claim_rule": "SA-LHFiD is claimed competitive with an algorithm on a setting if, across that setting's cells, its Holm-significant losses on IGD+ are no more than its Holm-significant wins; claimed better if wins exceed losses and the median IGD+ ratio across cells is below 1. Noise-free and noisy cells reported separately.",
+  "expectation": "stated in advance: K-RVEA and KTA2 are strong in the noise-free D=10 setting; ParEGO and MOEA/D-EGO degrade at M >= 6; the deliverable indicator is where noise matters",
+  "results_policy": "results stay in artifacts/saea_benchmark (git-ignored) and chat; not written into report, papers or report page without the user's permission"
+}

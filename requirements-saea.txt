@@ -1,0 +1,6 @@
+# CPU SAEA benchmark environment (scripts/setup_saea_env.sh); torch 2.5.1 CPU is installed first.
+ddmtolab==1.0.10
+moocore
+scikit-learn>=1.7.2
+scipy>=1.15.3
+numpy>=2.0.1
