@@ -1,0 +1,193 @@
+{
+  "eligible_count": 194,
+  "finalists": [
+    {
+      "name": "nas_00",
+      "objectives": {
+        "black_images": 2.0,
+        "clip_image_fidelity": 76.33515052000682,
+        "clip_score": 25.252938091754913,
+        "gflops_per_image": 8268.126101504,
+        "latency_p50_ms": 144.5725063182853,
+        "peak_allocated_mb": 2304.40380859375,
+        "unet_weight_mb": 687.1301422119141
+      },
+      "policy": {
+        "architecture": {
+          "removed_units": [
+            "down2.attn0",
+            "down3.res0",
+            "down3.res1",
+            "mid.res1",
+            "up2.attn0",
+            "up3.attn1"
+          ],
+          "weight_precision": "int8"
+        },
+        "guidance_scale": 5.0,
+        "method": "baseline",
+        "num_inference_steps": 4,
+        "scheduler": "dpm_solver++"
+      },
+      "relative_latency": [
+        0.2821236845464292
+      ],
+      "sources": [
+        "nas_c2/seed5/sa_nsga2/85"
+      ]
+    },
+    {
+      "name": "nas_01",
+      "objectives": {
+        "black_images": 1.0,
+        "clip_image_fidelity": 82.41595617930095,
+        "clip_score": 26.128921002149582,
+        "gflops_per_image": 11715.619856384,
+        "latency_p50_ms": 174.23811984785678,
+        "peak_allocated_mb": 3254.6181640625,
+        "unet_weight_mb": 1634.5495681762695
+      },
+      "policy": {
+        "architecture": {
+          "removed_units": [
+            "down0.attn0"
+          ],
+          "weight_precision": "fp16"
+        },
+        "guidance_scale": 10.5,
+        "method": "baseline",
+        "num_inference_steps": 6,
+        "scheduler": "dpm_solver++"
+      },
+      "relative_latency": [
+        0.3400141673666372
+      ],
+      "sources": [
+        "nas_c2/seed2/sa_nsga2/47"
+      ]
+    },
+    {
+      "name": "nas_02",
+      "objectives": {
+        "black_images": 1.0,
+        "clip_image_fidelity": 86.76400868097942,
+        "clip_score": 26.943532665570576,
+        "gflops_per_image": 19897.426386944,
+        "latency_p50_ms": 350.11633024550366,
+        "peak_allocated_mb": 2550.63916015625,
+        "unet_weight_mb": 820.7336578369141
+      },
+      "policy": {
+        "architecture": {
+          "removed_units": [],
+          "weight_precision": "int8"
+        },
+        "flexiffusion": {
+          "segment_length": 3,
+          "segments": [
+            {
+              "branch": 1,
+              "interval": 1
+            },
+            {
+              "branch": 3,
+              "interval": 2
+            },
+            {
+              "branch": 1,
+              "interval": 2
+            },
+            {
+              "branch": 3,
+              "interval": 3
+            },
+            {
+              "branch": 6,
+              "interval": 2
+            },
+            {
+              "branch": 3,
+              "interval": 2
+            },
+            {
+              "branch": 3,
+              "interval": 3
+            }
+          ]
+        },
+        "guidance_scale": 12.0,
+        "method": "flexiffusion",
+        "num_inference_steps": 21,
+        "scheduler": "ddim"
+      },
+      "relative_latency": [
+        0.6832288629711808
+      ],
+      "sources": [
+        "nas_c2/seed1/sa_nsga2/51"
+      ]
+    },
+    {
+      "name": "nas_03",
+      "objectives": {
+        "black_images": 1.0,
+        "clip_image_fidelity": 95.89077158768971,
+        "clip_score": 26.254173656304676,
+        "gflops_per_image": 34672.053592064,
+        "latency_p50_ms": 626.3001445930563,
+        "peak_allocated_mb": 2442.87353515625,
+        "unet_weight_mb": 820.7336578369141
+      },
+      "policy": {
+        "architecture": {
+          "removed_units": [],
+          "weight_precision": "int8"
+        },
+        "guidance_scale": 7.5,
+        "method": "baseline",
+        "num_inference_steps": 20,
+        "scheduler": "ddim"
+      },
+      "relative_latency": [
+        1.222183310812579
+      ],
+      "sources": [
+        "nas_c2/seed2/sa_nsga2/51"
+      ]
+    },
+    {
+      "name": "nas_04",
+      "objectives": {
+        "black_images": 0.0,
+        "clip_image_fidelity": 90.34978369871776,
+        "clip_score": 26.564429720242817,
+        "gflops_per_image": 42704.788004864,
+        "latency_p50_ms": 651.8239879762742,
+        "peak_allocated_mb": 3260.7060546875,
+        "unet_weight_mb": 1639.406135559082
+      },
+      "policy": {
+        "architecture": {
+          "removed_units": [],
+          "weight_precision": "fp16"
+        },
+        "guidance_scale": 10.5,
+        "method": "baseline",
+        "num_inference_steps": 25,
+        "scheduler": "ddim"
+      },
+      "relative_latency": [
+        1.2719914031147643
+      ],
+      "sources": [
+        "nas_c2/seed4/sa_nsga2/70"
+      ]
+    }
+  ],
+  "front_size": 66,
+  "gpu": "NVIDIA RTX 6000 Ada Generation",
+  "pool_unique_policies": 900,
+  "pooled_reference_latency_ms": 512.4437055000001,
+  "reference_clip": 26.214831451574963,
+  "rule": "pool all seeds/optimizers; normalize latency by job reference; merge signatures; CLIP >= ref-1.0, fidelity >= 75, black <= ref+2; 4-objective front; per-objective best then farthest-point"
+}
