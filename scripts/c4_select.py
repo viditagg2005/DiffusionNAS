@@ -52,10 +52,14 @@ def main() -> int:
         raise SystemExit(f"{test_dir} exists; C4 selection is locked once")
     screen = read(args.c4 / "screen.json")
     runs = succeeded_runs(args.runs)
-    needed = sorted({i["label"] for s in screen["arms"].values() for i in s["screened"]} | {"ref_a", "ref_b", "ref_c"})
-    missing = [label for label in needed if label not in runs]
-    if missing:
-        raise SystemExit(f"missing re-measurement runs: {missing}")
+    missing_refs = [r for r in ("ref_a", "ref_b", "ref_c") if r not in runs]
+    if missing_refs:
+        raise SystemExit(f"missing reference runs: {missing_refs}")
+    screened = sorted({i["label"] for s in screen["arms"].values() for i in s["screened"]})
+    failed = [label for label in screened if label not in runs]  # protocol: excluded from Stage C, logged
+    if failed:
+        print(f"WARNING: no succeeded re-measurement for {failed}; excluded from Stage C", flush=True)
+    needed = [label for label in screened if label in runs] + ["ref_a", "ref_b", "ref_c"]
     gpus = {read(runs[label] / "manifest.json")["provenance"]["gpu"]["name"] for label in needed}
     if len(gpus) != 1:
         raise SystemExit(f"re-measurement ran on {sorted(gpus)}")
@@ -73,11 +77,13 @@ def main() -> int:
                 "unet_weight_mb": summary[label]["architecture"]["unet_weight_bytes"] / 2**20,
                 "black_images": q["black_images"]}
 
-    selection = {"box": ref.tolist(), "reference_latency_ms": ref_latency, "reference_clip": ref_clip,
+    selection = {"failed_remeasurements": failed, "box": ref.tolist(), "reference_latency_ms": ref_latency, "reference_clip": ref_clip,
                  "reference_black": ref_black2, "gpu": gpus.pop(), "arms": {}}
     for arm, s in screen["arms"].items():
         rows = []
         for item in s["screened"]:
+            if item["label"] in failed:
+                continue
             o = fresh(item["label"])
             black_total = item["calibration_objectives"]["black_images"] + o["black_images"]
             eligible = black_total <= s["reference_black_median"] + ref_black2 + 2
