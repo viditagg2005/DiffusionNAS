@@ -24,7 +24,8 @@ done
 REF=$(python - "${RUNS}" <<'PY'
 import json, sys
 from pathlib import Path
-print(next(d for d in sorted(Path(sys.argv[1]).glob("*")) if json.load(open(d / "config.json")).get("label") == "reference"))
+print(next(d for d in sorted(Path(sys.argv[1]).glob("*")) if json.load(open(d / "config.json")).get("label") == "reference"
+           and json.load(open(d / "manifest.json")).get("status") == "succeeded"))
 PY
 )
 python scripts/evaluate_runs.py --runs-root "${RUNS}" --reference-run "${REF}"
