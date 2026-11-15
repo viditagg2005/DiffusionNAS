@@ -18,10 +18,11 @@ Compressing a pretrained text-to-image diffusion model for deployment is a many-
 
 ## 2. Related work
 
-- Many-objective EAs: NSGA-III (Deb and Jain 2014), MOEA/D (Zhang and Li 2007), RVEA (Cheng et al. 2016), LHFiD (Saxena, Mittal, Kapoor and Deb, COIN 2021020; stabilization-timed nadir estimation, Saxena and Kapoor 2019).
-- Surrogate-assisted (many-objective) optimization: ParEGO, K-RVEA, MOEA/D-EGO, CSEA; NAS surrogates (NAS-Bench-301).
+- Many-objective EAs: NSGA-III (Deb and Jain 2014), MOEA/D (Zhang and Li 2007), RVEA (Cheng et al. 2016), LHFiD (Saxena, Mittal, Kapoor and Deb, IEEE TEVC 27(4):923–937, 2023; stabilization-timed nadir estimation, Saxena and Kapoor 2019); ML-assisted EMO book by the same group (Springer 2024; check for overlapping surrogate-assisted variants).
+- Surrogate-assisted (many-objective) optimization: ParEGO, K-RVEA, MOEA/D-EGO, CSEA, dominance prediction (Yuan and Banzhaf 2022); mixed-fidelity EMO for objectives with heterogeneous evaluation times (Santoshkumar and Deb, COIN 2025001), directly relevant because our cost objectives are cheap and quality is expensive; NAS surrogates (NAS-Bench-301).
+- Surrogate-assisted evolution for diffusion compression: DELTA-Diff (Song, GIST Ph.D. thesis) selects distillation paths for SD U-Net compression with a hybrid surrogate; ours is training-free and many-objective with measured hardware objectives.
 - Diffusion efficiency: DeepCache, Flexiffusion, AutoDiffusion, ECAD, LDMOES, SnapFusion, BK-SDM, Q-Diffusion/PTQ4DM.
-- Positioning (to be verified against the latest literature, including the LHFiD authors' later work and K-RVEA-style methods, before claiming priority): hf-dominance-based selection inside a surrogate-assisted loop for an expensive real-hardware many-objective problem, and a many-objective formulation of training-free diffusion compression with measured cost objectives.
+- Positioning (see `docs/literature_check.md`; keep "to our knowledge" until the Springer book and LHFiD's citing papers are checked): hf-dominance-based selection inside a surrogate-assisted loop for an expensive real-hardware many-objective problem, and a many-objective formulation of training-free diffusion compression with measured cost objectives.
 
 ## 3. Problem
 
