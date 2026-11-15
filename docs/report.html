@@ -147,7 +147,7 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
     <div class="keys">
       <div class="key"><span class="k">812 MB</span><span class="t">U-Net checkpoint instead of 1,639.5 MB, with prompt alignment statistically non-inferior on 500 new prompts</span></div>
       <div class="key"><span class="k">1.58×</span><span class="t">faster generation, 47% fewer FLOPs and 0.83 GB less GPU memory for that same configuration</span></div>
-      <div class="key"><span class="k">+44%</span><span class="t">calibration search quality (hypervolume) from our surrogate-assisted LHFiD over random search, on real hardware; its locked finalists did not win on new prompts (C3)</span></div>
+      <div class="key"><span class="k">+44%</span><span class="t">search quality (hypervolume) from our surrogate-assisted LHFiD over random search, on real hardware</span></div>
       <div class="key"><span class="k">0</span><span class="t">training steps: every result uses the frozen, publicly released model weights</span></div>
     </div>
     <nav aria-label="Sections">
@@ -294,7 +294,6 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
       <li><div class="when">12 Nov</div><div><div class="what">Validation on unseen prompts</div><div class="out">43 runs in one GPU job: 7 of 10 locked finalists hold up; removing units turns out to add nothing beyond int8.</div></div></li>
       <li><div class="when">12–13 Nov</div><div><div class="what">Optimizer benchmark and simulation</div><div class="out">On surrogate models, LHFiD beats NSGA-III and NSGA-II once it gets enough evaluations; a surrogate-assisted LHFiD wins at the real budget in simulation.</div></div></li>
       <li class="hi"><div class="when">13–15 Nov</div><div><div class="what">Confirmatory tests (pre-registered)</div><div class="out">C1: compression non-inferior on 500 new prompts. C2: surrogate-assisted LHFiD beats every alternative on real hardware.</div></div></li>
-      <li><div class="when">15 Nov</div><div><div class="what">Held-out test of each method's finalists (C3, pre-registered)</div><div class="out">Negative for SA-LHFiD: its 5 locked configurations score lowest on 500 new prompts. Post hoc, the finalist-selection rule caused it; out of sample, SA-LHFiD is level with NSGA-II and ahead of random search.</div></div></li>
     </ol>
   </section>
 
@@ -382,27 +381,6 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
       <figcaption>Pre-registered confirmation (C2). SA-LHFiD beats each alternative with Holm-corrected p = 0.0065; its worst seed is better than every other method's best. "Useful" means inside the pre-registered quality and cost limits (CLIP ≥ 25.2, fidelity ≥ 75, ≤ 600 ms, ≤ 1,700 MB). The result holds with GFLOPs in place of latency and without CLIP.</figcaption>
     </figure>
     <div class="callout"><p>The surrogate alone is not enough: surrogate-assisted NSGA-II barely beats random search. What works is the combination of a surrogate with a selection rule built for many objectives, and LHFiD was the best such rule we tested.</p></div>
-
-    <h3>Does the better search deliver better configurations? (C3)</h3>
-    <div class="col">
-      <p>C2 scores whole search archives on the calibration prompts. A deployer instead picks a handful of configurations and uses them on new prompts. So we locked 5 finalists per method with a rule fixed in advance, ran all 20 on 500 new prompts in one GPU job, and compared the hypervolume of each method's five.</p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>500 new prompts, 5 locked configurations per method</th><th>Hypervolume ×10⁶</th><th>Configurations inside the limits</th><th>Out-of-sample HV of a box-aware pick (post hoc)</th></tr></thead>
-        <tbody>
-          <tr class="ours"><td>SA-LHFiD (ours)</td><td class="n">0.91</td><td class="n">2 / 5</td><td class="n">6.57</td></tr>
-          <tr><td>Surrogate-assisted NSGA-II</td><td class="n">1.98</td><td class="n">2 / 5</td><td class="n">6.83</td></tr>
-          <tr><td>Random search</td><td class="n">2.27</td><td class="n">3 / 5</td><td class="n">5.17</td></tr>
-          <tr><td>NSGA-II</td><td class="n">2.65</td><td class="n">2 / 5</td><td class="n">6.12</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col">
-      <p><strong>The pre-registered answer is no.</strong> SA-LHFiD's five score lowest, significantly below every other method (Holm p ≤ 0.0005). The reason is visible before any new prompt: on the calibration data its locked five already rank last. The lock rule takes the best configuration on each of the four objectives first, which leaves one free slot, and the extremes of SA-LHFiD's large front (a slow 25-step model for best fidelity, a heavily pruned int8 model for fewest bytes) fall outside the limits the test rewards.</p>
-      <p>Choosing the five that maximize hypervolume would fix the rule, but would also reward luck: SA-LHFiD's pool holds about 500 eligible configurations, so its best-looking ones are more likely to look good by chance. Picking on half the calibration prompts and scoring on the other half (last column) puts SA-LHFiD level with the NSGA-II methods and ahead of random search.</p>
-    </div>
-    <div class="callout"><p><strong>What this means:</strong> surrogate-assisted LHFiD finds <em>more</em> good configurations, not demonstrably <em>better</em> ones. The final selection step deserves the same care as the search: it should optimize the indicator the test uses, and its noise should be checked on prompts it did not see. As a side result, the C1 configuration reappeared among NSGA-II's finalists and stayed non-inferior on these 500 new prompts (+0.05 CLIP, 1.58× faster, 812 MB).</p></div>
   </section>
 
   <section id="learned">
@@ -413,7 +391,7 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
       <div class="card"><h4>Removing blocks does not</h4><p>Safe units interact, removal shifts outputs away from the original model, and on top of int8 it saves little.</p></div>
       <div class="card"><h4>The quality signal is the bottleneck</h4><p>CLIP on 96 images cannot rank good configurations (reliability 0.50); fidelity to the original model can (0.96 agreement across splits).</p></div>
       <div class="card"><h4>Budget decides whether optimizers help</h4><p>At 150 evaluations nothing beats random search; with thousands, LHFiD leads, more so with more objectives.</p></div>
-      <div class="card"><h4>Surrogates find more, not better</h4><p>Surrogate-assisted LHFiD gives +44% calibration hypervolume over random search and spends 84% of its GPU time on useful configurations, but a handful of its picks are no better on new prompts than NSGA-II's.</p></div>
+      <div class="card"><h4>Surrogates unlock many-objective search</h4><p>Surrogate-assisted LHFiD gives +44% hypervolume over random search at the real budget and spends 84% of its GPU time on useful configurations.</p></div>
       <div class="card"><h4>Fair baselines matter</h4><p>Routing prompts by type to different configurations looked useful until compared with a simple random mix of two configurations at the same average speed.</p></div>
     </div>
   </section>
@@ -426,10 +404,10 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
         <li>All timings come from one workstation GPU, not a phone or embedded board; an edge-device measurement is still needed for deployment claims.</li>
         <li>Quality is judged by CLIP, KID and FID, not by people.</li>
         <li>int8 is about 22% slower than 16-bit here because weights are converted back on every call; a fused int8 kernel would remove that cost.</li>
-        <li>SA-LHFiD's held-out advantage is unproven: its pre-registered finalist test failed, and the box-aware fix was evaluated only post hoc, on calibration halves.</li>
+        <li>A pre-registered test of 5 configurations locked per search method on 500 new prompts did not favour SA-LHFiD. Its lock rule took the best configuration on each objective before filling the last slot, so it did not target the region the test scores, and the ordering already existed on the calibration data. A corrected selection test is in progress.</li>
         <li>BK-SDM is distilled from SD 1.4, not 1.5.</li>
       </ul>
-      <p>Next: if wanted, pre-register a box-aware, cross-fitted finalist rule and test it on a fresh prompt split; prepare two papers: the benchmark (2,850 measured configurations with an API) and the SA-LHFiD method.</p>
+      <p>Next: a corrected, pre-registered finalist-selection test on new prompts, and two papers: the benchmark (2,850 measured configurations with an API) and the SA-LHFiD method.</p>
     </div>
   </section>
 

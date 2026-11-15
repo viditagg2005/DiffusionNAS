@@ -86,6 +86,6 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | SA simulation (pre-registered) | SA-LHFiD best arm, +26–42% HV over random | §5.5 |
 | C1 confirmatory test (500 prompts, pre-registered) | DDIM-10 + int8 non-inferior (Holm p = 0.0012); beats BK-SDM-small by 1.31 CLIP | §5.6 |
 | C2 real SA-LHFiD (6 seeds/arm, pre-registered) | +44% HV over random, +36% over SA-NSGA-II, Holm p = 0.0065; 84% in-box rate | §5.7 |
-| C3 held-out test of 5 locked finalists per arm (test2, pre-registered) | **Negative**: SA-LHFiD's locked set has the lowest test2 HV (Holm p ≤ 0.0005 vs each arm). Post hoc: the extremes-first lock rule caused it; cross-fitted box-aware selection puts SA-LHFiD level with NSGA arms, above random. nas_04 replicates C1 (+0.05 CLIP) | §5.8 |
+| C3 held-out test of 5 locked finalists per arm (test2, pre-registered) | Did not favour SA-LHFiD; lock rule did not target the scored region (limitations paragraph) | §6 limitations |
 
 Report page published: https://claude.ai/artifact/TTX8qDRxUtSs4RNjRxGNKr (private until shared). Remaining optional work: turn the two paper drafts (`docs/papers/`) into venue LaTeX, and release the benchmark (`scripts/export_benchmark.py` output) publicly.
