@@ -1,0 +1,135 @@
+{
+  "nfs": {
+    "sa_lhfid": [
+      "t00",
+      "t01",
+      "t02",
+      "t03",
+      "t04"
+    ],
+    "sa_nsga2": [
+      "t09",
+      "t10",
+      "t11",
+      "t12",
+      "t13"
+    ],
+    "random": [
+      "t17",
+      "t18",
+      "t19",
+      "t20",
+      "t21"
+    ],
+    "nsga2": [
+      "t25",
+      "t26",
+      "t27",
+      "t28",
+      "t29"
+    ]
+  },
+  "naive": {
+    "sa_lhfid": [
+      "t05",
+      "t00",
+      "t06",
+      "t07",
+      "t08"
+    ],
+    "sa_nsga2": [
+      "t11",
+      "t14",
+      "t10",
+      "t15",
+      "t16"
+    ],
+    "random": [
+      "t20",
+      "t22",
+      "t23",
+      "t17",
+      "t24"
+    ],
+    "nsga2": [
+      "t30",
+      "t20",
+      "t28",
+      "t31",
+      "t32"
+    ]
+  },
+  "order": [
+    "ref_a",
+    "t30",
+    "t19",
+    "t14",
+    "t25",
+    "t23",
+    "t28",
+    "t17",
+    "t31",
+    "t08",
+    "t09",
+    "t16",
+    "t20",
+    "t04",
+    "t03",
+    "t18",
+    "t11",
+    "ref_b",
+    "t29",
+    "t26",
+    "t27",
+    "t06",
+    "t05",
+    "t32",
+    "t22",
+    "t15",
+    "t10",
+    "t12",
+    "t07",
+    "t00",
+    "t24",
+    "t01",
+    "t02",
+    "t21",
+    "t13",
+    "ref_c"
+  ],
+  "signatures": {
+    "t00": "{\"actions\": [\"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P3\", \"P3\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+    "t01": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"ddim\", \"steps\": 18, \"weight_precision\": \"int8\"}",
+    "t02": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t03": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [\"up3.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t04": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+    "t05": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+    "t06": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [\"down3.res0\", \"up3.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t07": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+    "t08": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+    "t09": "{\"actions\": [\"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 10.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+    "t10": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t11": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res1\", \"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t12": "{\"actions\": [\"F\", \"P6\", \"P6\", \"F\", \"P1\", \"P1\", \"F\", \"P1\", \"P1\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P6\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P1\", \"N\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+    "t13": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"fp16\"}",
+    "t14": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 21, \"weight_precision\": \"int8\"}",
+    "t15": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down2.attn0\", \"down3.res0\", \"up3.attn0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+    "t16": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"P6\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P1\", \"P1\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 33, \"weight_precision\": \"int8\"}",
+    "t17": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 7.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 8, \"weight_precision\": \"int8\"}",
+    "t18": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [\"down3.res0\", \"up3.attn1\"], \"scheduler\": \"ddim\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t19": "{\"actions\": [\"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\"], \"guidance\": 10.5, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 27, \"weight_precision\": \"int8\"}",
+    "t20": "{\"actions\": [\"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\", \"F\", \"P3\"], \"guidance\": 6.5, \"removed_units\": [\"up3.attn1\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t21": "{\"actions\": [\"F\", \"P3\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P6\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 7.5, \"removed_units\": [\"down2.attn0\", \"down3.res1\", \"up2.attn1\"], \"scheduler\": \"ddim\", \"steps\": 24, \"weight_precision\": \"int8\"}",
+    "t22": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 12.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t23": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}",
+    "t24": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"down3.res1\"], \"scheduler\": \"ddim\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t25": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 9.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t26": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"int8\"}",
+    "t27": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 12, \"weight_precision\": \"int8\"}",
+    "t28": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 5.0, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"dpm_solver++\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t29": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 6.5, \"removed_units\": [], \"scheduler\": \"dpm_solver++\", \"steps\": 6, \"weight_precision\": \"fp16\"}",
+    "t30": "{\"actions\": [\"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\", \"F\"], \"guidance\": 10.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 10, \"weight_precision\": \"int8\"}",
+    "t31": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"P1\", \"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"P3\", \"F\", \"P6\", \"P6\", \"F\", \"N\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"P3\", \"P3\"], \"guidance\": 7.5, \"removed_units\": [\"down3.res0\"], \"scheduler\": \"ddim\", \"steps\": 30, \"weight_precision\": \"int8\"}",
+    "t32": "{\"actions\": [\"F\", \"N\", \"N\", \"F\", \"N\", \"N\", \"F\", \"P3\", \"N\", \"F\", \"P1\", \"N\", \"F\", \"N\", \"N\"], \"guidance\": 6.5, \"removed_units\": [\"up2.attn2\"], \"scheduler\": \"ddim\", \"steps\": 15, \"weight_precision\": \"int8\"}"
+  }
+}
