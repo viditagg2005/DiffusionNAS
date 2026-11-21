@@ -381,6 +381,28 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
       <figcaption>Pre-registered confirmation (C2). SA-LHFiD beats each alternative with Holm-corrected p = 0.0065; its worst seed is better than every other method's best. "Useful" means inside the pre-registered quality and cost limits (CLIP ≥ 25.2, fidelity ≥ 75, ≤ 600 ms, ≤ 1,700 MB). The result holds with GFLOPs in place of latency and without CLIP.</figcaption>
     </figure>
     <div class="callout"><p>The surrogate alone is not enough: surrogate-assisted NSGA-II barely beats random search. What works is the combination of a surrogate with a selection rule built for many objectives, and LHFiD was the best such rule we tested.</p></div>
+
+    <h3>What makes it work? (ablations)</h3>
+    <div class="col">
+      <p>On the simulated version of the real problem, we changed one setting of SA-LHFiD at a time and ran each variant 62 times (31 seeds under each of two simulated truths), with the analysis fixed in advance. An effect counts only if it is significant in the same direction under both truths.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Change from the C2 configuration</th><th>Search quality (hypervolume)</th><th>Best 5 configurations it delivers</th></tr></thead>
+        <tbody>
+          <tr class="ours"><td>NSGA-III instead of LHFiD inside the loop</td><td class="n">−0.074 / −0.048, worse</td><td class="n">−0.041 / −0.031, worse</td></tr>
+          <tr><td>k-nearest-neighbour surrogate</td><td class="n">−0.024 / −0.023, worse</td><td class="n">no effect</td></tr>
+          <tr><td>Random-forest or Gaussian-process surrogate</td><td class="n">no effect</td><td class="n">no effect</td></tr>
+          <tr><td>Batch of 10 or 40 instead of 20</td><td class="n">no effect</td><td class="n">no effect</td></tr>
+          <tr><td>30 or 80 random starting points instead of 50</td><td class="n">no robust effect</td><td class="n">no effect</td></tr>
+          <tr><td>10 or 60 inner generations instead of 30</td><td class="n">no robust effect</td><td class="n">no effect</td></tr>
+          <tr><td>Hypervolume-based pick instead of spread pick</td><td class="n">no effect</td><td class="n">no effect</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p><strong>The selection rule is the active ingredient.</strong> With the surrogate and every other setting fixed, swapping LHFiD for NSGA-III is the one change that clearly hurts. The method is otherwise insensitive to its settings, so its result does not hinge on tuning. This is simulation; the real-hardware evidence is the C2 table above.</p>
+    </div>
   </section>
 
   <section id="learned">
@@ -391,7 +413,7 @@ footer { margin-top: 56px; padding-block: 22px 56px; border-top: 1px solid var(-
       <div class="card"><h4>Removing blocks does not</h4><p>Safe units interact, removal shifts outputs away from the original model, and on top of int8 it saves little.</p></div>
       <div class="card"><h4>The quality signal is the bottleneck</h4><p>CLIP on 96 images cannot rank good configurations (reliability 0.50); fidelity to the original model can (0.96 agreement across splits).</p></div>
       <div class="card"><h4>Budget decides whether optimizers help</h4><p>At 150 evaluations nothing beats random search; with thousands, LHFiD leads, more so with more objectives.</p></div>
-      <div class="card"><h4>Surrogates unlock many-objective search</h4><p>Surrogate-assisted LHFiD gives +44% hypervolume over random search at the real budget and spends 84% of its GPU time on useful configurations.</p></div>
+      <div class="card"><h4>Surrogates unlock many-objective search</h4><p>Surrogate-assisted LHFiD gives +44% hypervolume over random search at the real budget and spends 84% of its GPU time on useful configurations. Ablations show the LHFiD selector is what makes it work, and that it needs no tuning.</p></div>
       <div class="card"><h4>Fair baselines matter</h4><p>Routing prompts by type to different configurations looked useful until compared with a simple random mix of two configurations at the same average speed.</p></div>
     </div>
   </section>

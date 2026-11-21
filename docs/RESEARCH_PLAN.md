@@ -87,5 +87,6 @@ Interpretation rules: fidelity measures drift from the original model, not absol
 | C1 confirmatory test (500 prompts, pre-registered) | DDIM-10 + int8 non-inferior (Holm p = 0.0012); beats BK-SDM-small by 1.31 CLIP | §5.6 |
 | C2 real SA-LHFiD (6 seeds/arm, pre-registered) | +44% HV over random, +36% over SA-NSGA-II, Holm p = 0.0065; 84% in-box rate | §5.7 |
 | C3 held-out test of 5 locked finalists per arm (test2, pre-registered) | Did not favour SA-LHFiD; lock rule did not target the scored region (limitations paragraph) | §6 limitations |
+| SA-LHFiD ablations (simulation, base + 11 one-change arms × 62 runs, pre-registered) | Inner NSGA-III instead of LHFiD is worse under both truths (HV −0.074/−0.048, deliverable −0.041/−0.031); k-NN surrogate worse; all other settings no robust effect | §5.8 |
 
 Report page published: https://claude.ai/artifact/TTX8qDRxUtSs4RNjRxGNKr (private until shared). Remaining optional work: turn the two paper drafts (`docs/papers/`) into venue LaTeX, and release the benchmark (`scripts/export_benchmark.py` output) publicly.
